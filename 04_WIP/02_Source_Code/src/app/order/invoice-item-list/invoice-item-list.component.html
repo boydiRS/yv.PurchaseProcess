@@ -1,0 +1,131 @@
+<section class="content-header">
+    <div class="row col-12">
+      <div>
+        <span style="font-size: 20px;">Import Item</span>
+      </div>
+      <div style="width: 100px; margin-left: 10px;">
+        <ngx-select [items]="dataForm.PICGroupList" [(ngModel)]="searchData.PICGroup" (selectionChanges)="onChangePICGroup($event)" placeholder="Section"></ngx-select>
+      </div>
+      <div style="width: 120px; margin-left: 5px;">
+        <input class="form-control" type="text" [(ngModel)]="searchData.InvoiceNo" placeholder="Invoice..." (keyup)="triggerEnter($event)">
+      </div>
+      <div style="width: 90px; margin-left: 5px;">
+        <ngx-select [items]="dataForm.IncotermList" [(ngModel)]="searchData.IncotermCode" placeholder="Incoterm" (selectionChanges)="onChangeIncoterm($event)"></ngx-select>
+      </div>
+      <div style="width: 90px; margin-left: 5px;">
+        <ngx-select [items]="dataForm.CDSTypeList" [(ngModel)]="searchData.CDSType" placeholder="CDS Type" (selectionChanges)="onChangeCDSType($event)"></ngx-select>
+      </div>
+      <div style="width: 100px; margin-left: 5px;">
+        <ngx-select [items]="dataForm.CDSSelectivityList" [(ngModel)]="searchData.CDSSelectivity" placeholder="Selectivity" (selectionChanges)="onChangeSelectivity($event)"></ngx-select>
+      </div>
+      <button class="btn btn-primary btn-sm" (click)="loadData()" style="margin-left: 5px;"><i class="fa fa-search"></i></button>
+    </div>
+  </section>
+  <section class="content" style="margin-top: -5px;">
+    <div class="row">
+      <div class="col-12">
+  <!----------------------------------------------------------------------------------------------------->
+        <div class="row">
+          <div class="col-6">
+            <div class="col-12 row" style="vertical-align: middle;">
+              <div style="margin-right: 5px; margin-top: 8px;"><span >Show</span></div>
+              <select (change)="onChangeRowPerPage($event)" style="width: 100px;" [(ngModel)]="searchData.ItemsPerPage">
+                <option *ngFor="let i of rowPerPage" value="{{i}}">{{i}}</option>
+              </select>
+              <div style="margin-left: 5px; margin-top: 8px;"><span >entries/page</span></div>
+            </div>
+          </div>
+          <div class="col-6" style="text-align: right;">
+            <button class="btn btn-sm btn-success" (click)="openPopupEdit(editTemplate, 'New')" style="margin-left: 5px;"><i class="fa fa-plus"></i> CREATE NEW</button>
+            <a class="btn btn-sm" title="Grid"><i class="fa fa-th" style="color: #666EE8; font-size: 16px;"></i></a>
+            <a class="btn btn-sm" title="Table" [routerLink]="['/order/invoice-list']"><i class="fa fa-th-list" style="color: gray; font-size: 16px;"></i></a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="">
+              <ngx-datatable class="material fullscreen custom" 
+                [externalSorting]="true" 
+                (sort)="onSort($event)"
+                [columnMode]="'force'" 
+                
+                [footerHeight]="25"
+                [rowHeight]="'auto'" 
+                [rows]="pagingModel.DataList" 
+                [count]="pagingModel.TotalItems" 
+                [offset]="pagingModel.CurrentPage-1"
+                [limit]="pagingModel.ItemsPerPage" 
+                [externalPaging]="true" 
+                (page)='setPage($event)' 
+                [scrollbarH]="true" 
+                [scrollbarV]="true" 
+                [virtualization]="false" 
+                [style.height.px]="innerHeight"
+                [loadingIndicator]="loadingIndicator">
+                <ngx-datatable-column [canAutoResize]="false" [width]="35" name="No." prop="RowIndex" cellClass="text-center" [sortable]="false"></ngx-datatable-column>
+                <ngx-datatable-column [canAutoResize]="false" [width]="50" name="Section" prop="PICGroupName" cellClass="text-center"></ngx-datatable-column>
+                <ngx-datatable-column [canAutoResize]="false" [width]="80" name="InvoiceNo" prop="InvoiceNo" cellClass="text-center"></ngx-datatable-column>
+                <ngx-datatable-column [canAutoResize]="false" [width]="100" name="Invoice Type" prop="InvoiceTypeName" cellClass="text-center"></ngx-datatable-column>
+                <ngx-datatable-column [canAutoResize]="false" [width]="80" name="Invoice Date" prop="InvoiceDate" cellClass="text-center">
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    {{value | date: 'dd/MM/yyyy'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [canAutoResize]="false" [width]="100" name="BillNo" prop="BillNo" cellClass="text-center"></ngx-datatable-column>
+                <ngx-datatable-column [canAutoResize]="false" [width]="50" name="Incoterm" prop="IncotermID" cellClass="text-center"></ngx-datatable-column>
+                <ngx-datatable-column [canAutoResize]="false" [width]="60" name="HSCode" prop="HSCode" cellClass="text-center"></ngx-datatable-column>
+                <ngx-datatable-column [width]="110" name="ProductName" prop="ProductName" cellClass="text-left"></ngx-datatable-column>
+                <ngx-datatable-column [width]="110" name="ProductDes" prop="ProductDes" cellClass="text-left"></ngx-datatable-column>
+                <ngx-datatable-column [canAutoResize]="false" [width]="40" name="Q'ty" prop="Quantity" cellClass="text-center"></ngx-datatable-column>
+                <ngx-datatable-column [canAutoResize]="false" [width]="50" name="Unit" prop="UnitName" cellClass="text-center"></ngx-datatable-column>
+                <ngx-datatable-column [canAutoResize]="false" [width]="110" name="Price" prop="POPrice" cellClass="text-right">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                        {{formatMoney(row['POPrice'], row['POCurrency'])}}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [canAutoResize]="false" [width]="90" name="CDSNo" prop="CDSNo" cellClass="text-center"></ngx-datatable-column>
+                <ngx-datatable-column [canAutoResize]="false" [width]="80" name="CDSDate" prop="CDSDate" cellClass="text-center">
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    {{value | date: 'dd/MM/yyyy'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [canAutoResize]="false" [width]="70" name="CDSType" prop="CDSType" cellClass="text-center"></ngx-datatable-column>
+                <ngx-datatable-column [canAutoResize]="false" [width]="70" name="Selectivity" prop="CDSSelectivity" cellClass="text-center">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                        <i class="fa fa-circle" [style.color] = "row['CDSSelectivity']"></i> {{row['CDSSelectivity']}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [canAutoResize]="false" [width]="70" cellClass="text-center">
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <a href='javascript:void(0)' 
+                      class='btn-edit btn btn-outline btn-sm btn-warning btn-icon' 
+                      title='Detail'
+                      style='width:30px;' 
+                      (click)="openPopupDetail(detailTemplate, row['InvoiceID'])">
+                      <i class='fa fa-info'></i>
+                    </a>
+                    <a href='javascript:void(0)' 
+                      class='btn-edit btn btn-outline btn-sm btn-primary btn-icon' 
+                      title='Edit'
+                      style='width:30px; margin-left: 2px;' 
+                      (click)="openPopupEdit(editTemplate, row['InvoiceID'])">
+                      <i class='fa fa-edit'></i>
+                    </a>
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+            </div>
+          </div>
+        </div>
+        <ng-template #detailTemplate>
+          <app-invoice-detail [bsModalRef]="bsModalRefDetail" [id]="id"></app-invoice-detail>
+        </ng-template>
+  
+        <ng-template #editTemplate>
+          <app-invoice-edit [bsModalRef]="bsModalRefEdit" [updateBy]="userInfo.code" [id]="id" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-invoice-edit>
+        </ng-template>
+  <!----------------------------------------------------------------------------------------------------->
+      </div>
+    </div>
+  </section>

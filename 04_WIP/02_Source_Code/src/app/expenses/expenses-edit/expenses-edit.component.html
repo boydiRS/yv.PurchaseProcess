@@ -1,0 +1,61 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{expNo}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="padding: 10px;">
+  <div class="row">
+    <div class="col-12">
+      <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-info"></i></span>  Info</h5>
+        </div>
+        <div class="box-body">
+          <div class="row">
+            <div class="col-12">
+              <table class="table table-sm">
+                <tr>
+                  <td><span class="col-form-label">Description</span></td>
+                  <td colspan="3"><input placeholder="..." class="form-control" [(ngModel)]="ReceiptDate"></td>
+                </tr>
+                <tr>
+                  <td><span class="col-form-label">Unit Price</span></td>
+                  <td><input class="form-control" type="number" [(ngModel)]="dataItem.UnitPrice"></td>
+                  <td><span class="col-form-label">Bill</span></td>
+                  <td><input class="form-control" type="text" [(ngModel)]="dataItem.BillNo"></td>
+                </tr>
+                <tr>
+                  <td><span class="col-form-label">Quantity</span></td>
+                  <td><input class="form-control" type="number" [(ngModel)]="dataItem.Quantity"></td>
+                  <td><span class="col-form-label">Expenses Date</span></td>
+                  <td><input type="text" placeholder="Expenses Date" class="form-control" bsDatepicker [(ngModel)]="ExpensesDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"></td>
+                </tr>
+                <tr>
+                  <td><span class="col-form-label">Currency</span></td>
+                  <td><ngx-select [items]="dataForm.CurrencyList" [(ngModel)]="dataItem.Currency" [allowClear]=false (selectionChanges)="onChangeCurrency($event)"></ngx-select></td>
+                  <td><span class="col-form-label">PIC</span></td>
+                  <td><ngx-select [items]="dataForm.PICList" [(ngModel)]="dataItem.PICCode"></ngx-select></td>
+                </tr>
+                <tr>
+                  <td><span class="col-form-label">VAT Tax</span></td>
+                  <td><ngx-select [items]="dataForm.VATTaxList" [(ngModel)]="dataItem.VATTax" [allowClear]=false (selectionChanges)="onChangeVATTax($event)"></ngx-select></td>
+                  <td><span class="col-form-label">Remark</span></td>
+                  <td colspan="3"><input class="form-control" [(ngModel)]="dataItem.Remark"></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">CLOSE</button>
+  <button type="button" class="btn btn-success float-right" (click)="acceptBtnModalClicked()" autofocus>
+    <div *ngIf="prNoTitle == 'New'; then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock>ADD NEW</ng-template>
+    <ng-template #elseBlock>UPDATE</ng-template>
+  </button>
+</div>

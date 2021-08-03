@@ -1,0 +1,104 @@
+<section class="content-header">
+  <div class="row col-12">
+    <div>
+      <span style="font-size: 20px;">PR Check</span>
+    </div>
+    <div style="width: 100px; margin-left: 10px;">
+      <ngx-select [items]="dataForm.PICGroupList"
+                  [(ngModel)]="searchData.PICGroup"
+                  (selectionChanges)="onChangePICGroup($event)"
+                  placeholder="All Section">
+      </ngx-select>
+    </div>
+    <div style="width: 140px; margin-left: 5px;">
+      <input class="form-control" type="text" [(ngModel)]="searchData.PRNo" placeholder="PR..." (keyup)="triggerEnter($event)">
+    </div>
+    <div style="width: 100px; margin-left: 5px;">
+      <ngx-select [items]="dataForm.StatusList" [(ngModel)]="searchData.Status" (selectionChanges)="onChangeStatus($event)" placeholder="Status"></ngx-select>
+    </div>
+    <button class="btn btn-primary btn-sm" (click)="onLoadData()" style="margin-left: 5px;"><i class="fa fa-search"></i></button>
+  </div>
+</section>
+<section class="content" style="margin-top: -5px;">
+  <div class="row">
+    <div class="col-12">
+<!----------------------------------------------------------------------------------------------------->
+      <div class="row">
+        <div class="col-6">
+          <div class="col-12 row" style="vertical-align: middle;">
+            <div style="margin-right: 5px; margin-top: 8px;"><span >Show</span></div>
+            <select (change)="onChangeRowPerPage($event)" style="width: 100px;" [(ngModel)]="searchData.ItemsPerPage">
+              <option *ngFor="let i of rowPerPage" value="{{i}}">{{i}}</option>
+            </select>
+            <div style="margin-left: 5px; margin-top: 8px;"><span >entries/page</span></div>
+          </div>
+        </div>
+        <div class="col-6" style="text-align: right;">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="">
+            <ngx-datatable class="material fullscreen custom" 
+              [externalSorting]="true" 
+              (sort)="onSort($event)"
+              [columnMode]="'force'" 
+              
+              [footerHeight]="25"
+              [rowHeight]="'auto'" 
+              [rows]="pagingModel.DataList" 
+              [count]="pagingModel.TotalItems" 
+              [offset]="pagingModel.CurrentPage-1"
+              [limit]="pagingModel.ItemsPerPage" 
+              [externalPaging]="true" 
+              (page)='setPage($event)' 
+              [scrollbarH]="true" 
+              [scrollbarV]="true" 
+              [virtualization]="false" 
+              [style.height.px]="innerHeight"
+              [loadingIndicator]="loadingIndicator">
+              <ngx-datatable-column [canAutoResize]="false" [width]="40" name="No." prop="RowIndex" cellClass="text-center" [sortable]="false"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="70" name="Status" cellClass="text-center">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <span class="badge" [style.background] = "row['StatusColor']" >{{row['StatusName']}}</span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="50" name="Section" prop="PICGroupName" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="100" name="PRNo" prop="PRNo" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [width]="100" name="Vendor" prop="SupplierName" cellClass="text-left"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="100" name="Delivery Date" prop="ReceiptDate" cellClass="text-center">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  {{value | date: 'dd/MM/yyyy'}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="150" name="PIC" prop="PICName" cellClass="text-left"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="90" name="RequestNo" prop="RequestNo" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="50" name="Item" prop="TotalItem" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="110" name="Total" prop="TotalPrice" cellClass="text-right">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{formatMoney(row['TotalPrice'], row['Currency'])}}
+                </ng-template>
+              </ngx-datatable-column>
+              <!-- <ngx-datatable-column [width]="110" name="Remark" prop="Remark" cellClass="text-left"></ngx-datatable-column> -->
+              <ngx-datatable-column [canAutoResize]="false" [width]="40" cellClass="text-center">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <a href='javascript:void(0)' 
+                    class='btn-edit btn btn-outline btn-sm btn-warning btn-icon' 
+                    title='Detail'
+                    style='width:30px;' 
+                    (click)="openPopupDetail(detailTemplate, row['PRNo'])">
+                    <i class='fa fa-info'></i>
+                  </a>
+                </ng-template>
+              </ngx-datatable-column>
+            </ngx-datatable>
+          </div>
+        </div>
+      </div>
+      <ng-template #detailTemplate>
+        <app-pr-master-detail [bsModalRef]="bsModalRefDetail" [updateBy]="userInfo.code" [id]="id" [prCheck]="true" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-pr-master-detail>
+      </ng-template>
+<!----------------------------------------------------------------------------------------------------->
+    </div>
+  </div>
+</section>

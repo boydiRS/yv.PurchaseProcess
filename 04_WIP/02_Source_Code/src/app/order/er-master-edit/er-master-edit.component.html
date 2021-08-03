@@ -1,0 +1,217 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="padding: 10px;">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-3" style="padding-left: 0px;padding-right: 5px;">
+        <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+          <div class="box-header with-border">
+            <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-info"></i></span>  Info</h5>
+          </div>
+          <div class="box-body">
+            <table class="table table-sm">
+              <tr>
+                <td><span class="col-form-label">Send To</span></td>
+                <td><ngx-select [items]="dataForm.SupplierList" [(ngModel)]="dataItem.SupplierID" placeholder="Select"></ngx-select></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">Send Date</span></td>
+                <td><input type="text" placeholder="dd/MM/yyyy" class="form-control" bsDatepicker [(ngModel)]="SendDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">Currency</span></td>
+                <td><ngx-select [items]="dataForm.CurrencyList" [(ngModel)]="dataItem.Currency" [allowClear]=false (selectionChanges)="onChangeCurrency($event)"></ngx-select></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">Shipment by</span></td>
+                <td><ngx-select [items]="dataForm.ShipmentByList" [(ngModel)]="dataItem.ShipmentBy" [allowClear]=false></ngx-select></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">Purpose</span></td>
+                <td><ngx-select [items]="dataForm.PurposeList" [(ngModel)]="dataItem.Purpose" [allowClear]=false></ngx-select></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">Type of goods</span></td>
+                <td><ngx-select [items]="dataForm.TypeGoodsList" [(ngModel)]="dataItem.ERType" [allowClear]=false></ngx-select></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">Shipment type</span></td>
+                <td><ngx-select [items]="dataForm.ShipmentTypeList" [(ngModel)]="dataItem.ShipmentType" [allowClear]=false></ngx-select></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">Payment</span></td>
+                <td><ngx-select [items]="dataForm.PaymentTypeList" [(ngModel)]="dataItem.PaymentType" [allowClear]=false></ngx-select></td>
+              </tr>
+              
+              <tr>
+                <td><span class="col-form-label">Remark</span></td>
+                <td><textarea class="form-control" [(ngModel)]="dataItem.Remark" rows="3"></textarea></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">PIC</span></td>
+                <td>
+                  <div>
+                    <!-- <div>
+                      <ngx-select [items]="dataForm.TranferSectionList" [(ngModel)]="dataItem.TranferSectionID" placeholder="Select tranfer section"></ngx-select>
+                    </div> -->
+                    <div>
+                      <ngx-select [items]="dataForm.TranferList" [(ngModel)]="dataItem.TranferID" placeholder="Select tranfer" (selectionChanges)="onChangeTranfer($event)"></ngx-select>
+                    </div>
+                    <div class="col-form-content">
+                      <i class="fa fa-envelope" style="margin-left: 10px;"></i> {{tranferMail}}
+                    </div>
+                    <div class="col-form-content">
+                      <i class="fa fa-phone" style="margin-left: 10px;"></i> {{tranferPhone}}
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="box box-outline-secondary" style="margin-top:5px; margin-bottom: 0px;">
+          <div class="box-header with-border">
+            <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-box"></i></span>  Cargo</h5>
+            <a class="btn btn-xs btn-success" href="#" (click)="onCreateERItem()" style="margin-left: 20px;"><i class="fa fa-plus"></i></a>
+          </div>
+          <div class="box-body">
+            <table class="table table-sm">
+              <tr>
+                <td class="headerTable">No.</td>
+                <td class="headerTable">Weight (kg)</td>
+                <td class="headerTable" colspan="3">Length x Width x Height (mm)</td>
+              </tr>
+              <tr>
+                <td class="bodyTable" style="width: 20px; ">1</td>
+                <td><input type="number" min="0" class="form-control" [(ngModel)]="dataItem.TotalWeight"></td>
+                <td><input class="form-control" type="number" [(ngModel)]="length"/></td>
+                <td><input class="form-control" type="number" [(ngModel)]="width"/></td>
+                <td><input class="form-control" type="number" [(ngModel)]="height"/></td>
+              </tr>
+              <tr>
+                <td class="bodyTable" style="width: 20px; ">2</td>
+                <td><input type="number" min="0" class="form-control" [(ngModel)]="dataItem.TotalWeight"></td>
+                <td><input class="form-control" type="number" [(ngModel)]="length"/></td>
+                <td><input class="form-control" type="number" [(ngModel)]="width"/></td>
+                <td><input class="form-control" type="number" [(ngModel)]="height"/></td>
+              </tr>
+              <!-- <tr>
+                <td><span class="col-form-label">Weight</span></td>
+                <td>
+                  <div class="input-group">
+                    <input type="number" min="0" class="form-control" [(ngModel)]="dataItem.TotalWeight">
+                    <span class="input-group-addon">kg</span>
+                  </div>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">Dimension (LxWxH)</span></td>
+                <td>
+                  <div class="input-group">
+                    <input class="form-control" type="number" [(ngModel)]="length"/>
+                    <input class="form-control" type="number" [(ngModel)]="width"/>
+                    <input class="form-control" type="number" [(ngModel)]="height"/>
+                    <span class="input-group-addon">mm</span>
+                  </div>
+                </td>
+              </tr> -->
+            </table>
+          </div>
+        </div>
+      </div>
+      
+      <div class="box box-outline-secondary col-9" style="margin-bottom: 0px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-boxes"></i></span>  Product</h5>
+          <a class="btn btn-xs btn-success" href="#" (click)="onCreateERItem()" style="margin-left: 20px;"><i class="fa fa-plus"></i> New Item</a>
+        </div>
+        <div class="box-body">
+          <div class="col-12" style="overflow-y: auto; padding-right: 10px; padding-left: 0px;" [style.height.px]="innerHeight">
+            <table class="table table-sm">
+              <thead>
+                <td class="headerTable">No.</td>
+                <td class="headerTable">Product</td>
+                <!-- <td class="headerTable">Product Description</td> -->
+                <td class="headerTable">Kind of test</td>
+                <td class="headerTable">InvoiceNo</td>
+                <td class="headerTable">ItemNo</td>
+                <!-- <td class="headerTable">RequestNo</td> -->
+                <td class="headerTable">Q'ty</td>
+                <td class="headerTable">Unit Price</td>
+                <td class="headerTable" style="text-align: right;">Subtotal</td>
+                <td></td>
+              </thead>
+              <ng-container *ngFor="let item of dataItem.ERItemList">
+                <tbody>
+                  <td class="bodyTable" style="width: 35px;">
+                    <div style="margin-top: 9px;">{{item.RowIndex}}</div>
+                    <select class="form-control" [(ngModel)]="item.UnitID" style="margin-top: 10px">
+                      <option *ngFor="let i of dataItem.CargoList" value="{{i.Value}}">{{i.Text}}</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" [(ngModel)]="item.ProductName" placeholder="Name">
+                    <input class="form-control" type="text" [(ngModel)]="item.ProductDes" style="margin-top: 2px;" placeholder="Description">
+                  </td>
+                  <td style="width: 95px;">
+                    <textarea class="form-control" [(ngModel)]="item.KindOfTest" style="height: 63px"></textarea>
+                  </td>
+                  <td style="width: 100px;">
+                    <input class="form-control" type="text" [(ngModel)]="item.InvoiceNoImport" style="margin-bottom: 2px;" placeholder="InvoiceNo">
+                    <input class="form-control" type="text" [(ngModel)]="item.RequestNo" placeholder="RequestNo">
+                    <!-- <ngx-select [items]="dataForm.CountryList" [(ngModel)]="item.Country" [allowClear]=false placeholder="Country"></ngx-select> -->
+                  </td>
+                  <td style="width: 50px;"><input class="form-control" type="number" [(ngModel)]="item.ItemNo" placeholder="ItemNo"></td>
+                  <!-- <td style="width: 95px;"><input class="form-control" type="text" [(ngModel)]="item.RequestNo" placeholder="RequestNo"></td> -->
+                  <td style="width: 100px;">
+                    <div class="input-group" style="margin-bottom: 2px;">
+                      <input class="form-control" type="number" min = "0" [(ngModel)]="item.Quantity" (keyup)="handleKeyUp($event)" (keypress)="handleKeyPress($event)"/>
+                      <select class="form-control" [(ngModel)]="item.UnitID" style="width: 20px;">
+                        <option *ngFor="let i of dataForm.UnitList" value="{{i.Value}}">{{i.Text}}</option>
+                      </select>
+                    </div>
+                    <div class="input-group">
+                      <input class="form-control" type="number" min = "0" [(ngModel)]="item.Weight"/>
+                      <span class="input-group-addon">kg</span>
+                    </div>
+                  </td>
+                  <td style="width: 80px;">
+                    <input class="form-control" type="number" min = "0"[(ngModel)]="item.Price" (keyup)="handleKeyUp($event)" (keypress)="handleKeyPress($event)"/>
+                  </td>
+                  <td class="bodyTable" style="text-align: right;">
+                    <div style="margin-top: 10px;">{{item.SubTotal}}</div>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href='javascript:void(0)' 
+                      title='Delete'
+                      (click)="onDeleteERItem(item.RowIndex)">
+                      <i class="fa fa-trash" style="color: #FF4961; font-size: 14px; margin-top: 10px"></i>
+                    </a>
+                  </td>
+                </tbody>
+              </ng-container>
+            </table>
+          </div>
+        </div>
+        <div class="box-footer" style="padding:0px 5px 0px;">
+          <div class="row">
+            <div class="col-6">
+              <!-- <a class="btn btn-flat btn-sm btn-primary" href="#" (click)="onCreatePRItem()">Add product</a> -->
+            </div>
+            <div class="col-6" style="padding-left: 0px;">
+              <span class="float-right" style="margin-left: 10px; margin-right: 20px; font-size: 14px; font-weight: bold; color: black;"> {{Total_String}}</span>
+              <span class="float-right" style="font-size: 14px;">Total: </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">CLOSE</button>
+  <button type="button" class="btn btn-success float-right" (click)="acceptBtnModalClicked()" autofocus>{{buttonName}}</button>
+</div>

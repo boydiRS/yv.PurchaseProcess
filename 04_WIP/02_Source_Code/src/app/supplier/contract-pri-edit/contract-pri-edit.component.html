@@ -1,0 +1,43 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="padding: 10px;">
+  <table class="table table-sm table-bordered" style="margin-bottom: 0;">
+    <tr>
+      <td><span class="col-form-label">Vendor</span></td>
+      <td><ngx-select [items]="dataForm.SupplierList" [(ngModel)]="dataItem.SupplierID" placeholder="Vendor"></ngx-select></td>
+    </tr>
+    <tr>
+      <td><span class="col-form-label">ContractNo</span></td>
+      <td><input class="form-control" type="text" [(ngModel)]="dataItem.ContractNo"/></td>
+    </tr>
+    <tr>
+      <td><span class="col-form-label">Effective Date</span></td>
+      <td><input type="text" placeholder="Find Date" class="form-control" bsDatepicker [(ngModel)]="EffectiveDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"></td>
+    </tr>
+    <tr>
+      <td><span class="col-form-label">File</span></td>
+      <td>
+        <label for="file-upload_{{idFile}}" class="btn btn-flat btn-sm lbl-for-file-upload" title="Select file" style="margin-bottom: 0px;">
+          <i class="fa fa-paperclip"></i> 
+        </label>
+        {{fileName}}
+        <label class="btn btn-flat btn-sm" title="Remove select" (click)="clearFileChoose()" *ngIf="fileName != ''" style="margin-bottom: 0px;">
+          <i class="fa fa-times"></i> 
+        </label>
+        <input #fileInput type="file" id="file-upload_{{idFile}}" class="file-upload" (change)="onFileChange($event)" />
+      </td>
+    </tr>
+    <tr>
+      <td><span class="col-form-label">Remark</span></td>
+      <td><input class="form-control" type="text" [(ngModel)]="dataItem.Remark"/></td>
+    </tr>
+  </table>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">CLOSE</button>
+  <button type="button" class="btn btn-success float-right" (click)="acceptBtnModalClicked()" autofocus>{{buttonName}}</button>
+</div>

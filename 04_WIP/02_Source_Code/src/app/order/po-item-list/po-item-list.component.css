@@ -1,0 +1,11 @@
+label {
+    margin-bottom: 0
+}
+
+[type=checkbox]+label {
+    padding-left: 20px;
+}
+
+[type=checkbox]+label:before, [type=checkbox]:not(.filled-in)+label:after {
+    margin-top: 0px;
+}

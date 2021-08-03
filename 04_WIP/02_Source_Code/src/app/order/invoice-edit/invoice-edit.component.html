@@ -1,0 +1,385 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{InvoiceNoTitle}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="padding: 10px;">
+  <div class="row">
+    <div class="col-6" style="padding-right: 0px;">
+      <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-file-invoice"></i></span>  Invoice</h5>
+        </div>
+        <div class="box-body">
+          <table class="table table-sm">
+            <tr>
+              <td><span class="col-form-label">InvoiceNo</span></td>
+              <td><input type="text" placeholder="..." class="form-control" [(ngModel)]="dataItem.InvoiceNo"></td>
+              <td><span class="col-form-label">Invoice Date</span></td>
+              <td><input type="text" placeholder="Invoice Date" class="form-control" bsDatepicker [(ngModel)]="InvoiceDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">Invoice Type</span></td>
+              <td>
+                <input type="radio" class="form-control radio-col-teal" [(ngModel)]="dataItem.InvoiceType" value="true" id="commercial">
+                <label for="commercial">Com</label>
+                <input type="radio" class="form-control radio-col-teal" [(ngModel)]="dataItem.InvoiceType" value="false" id="nonCommercial">
+                <label for="nonCommercial">Non-Com</label>
+              </td>
+              <td><span class="col-form-label">Bill</span></td>
+              <td><input type="text" placeholder="..." class="form-control" [(ngModel)]="dataItem.BillNo"></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-6" style="padding-left: 5px;">
+      <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-user-tie"></i></span>  Customs Declaration sheet</h5>
+        </div>
+        <div class="box-body">
+          <table class="table table-sm">
+            <tr>
+              <td><span class="col-form-label">CDSNo</span></td>
+              <td><input type="text" placeholder="..." class="form-control" [(ngModel)]="dataItem.CDSNo"></td>
+              <td><span class="col-form-label">CDS Date</span></td>
+              <td><input type="text" placeholder="Invoice Date" class="form-control" bsDatepicker [(ngModel)]="CDSDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">CDS Type</span></td>
+              <td>
+                <select class="form-control" [(ngModel)]="dataItem.CDSType">
+                  <option *ngFor="let i of dataForm.CDSTypeList" value="{{i.Value}}">{{i.Text}}</option>
+                </select>
+                <!-- <ngx-select [items]="dataForm.CDSTypeList" [(ngModel)]="dataItem.CDSType" [allowClear]=false placeholder="Select"></ngx-select> -->
+              </td>
+              <td><span class="col-form-label">Selectivity</span></td>
+              <td>
+                <select class="form-control" [(ngModel)]="dataItem.CDSSelectivity">
+                  <option *ngFor="let i of dataForm.CDSSelectivityList" value="{{i.Value}}">{{i.Text}}</option>
+                </select>
+                <!-- <ngx-select [items]="dataForm.CDSSelectivityList" [(ngModel)]="dataItem.CDSSelectivity" [allowClear]=false placeholder="Select"></ngx-select> -->
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 5px">
+    <div class="col-5" style="padding-right: 0px;">
+      <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-truck"></i></span> Transportation agent</h5>
+        </div>
+        <div class="box-body">
+          <table class="table table-sm">
+            <tr>
+              <td><span class="col-form-label">Oversea</span></td>
+              <td><ngx-select [items]="dataForm.SupplierList" [(ngModel)]="dataItem.TA_OverseaID" [allowClear]=false placeholder="Select"></ngx-select></td>
+              <td><span class="col-form-label">Oversea Fee</span></td>
+              <td><input type="number" min = "0"class="form-control" [(ngModel)]="dataItem.TA_OverseaFee"></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">Forwarder</span></td>
+              <td><ngx-select [items]="dataForm.SupplierList" [(ngModel)]="dataItem.TA_ForwaderID" [allowClear]=false placeholder="Select"></ngx-select></td>
+              <td><span class="col-form-label">Forwarder Fee</span></td>
+              <td><input type="number" min = "0"class="form-control" [(ngModel)]="dataItem.TA_ForwaderFee"></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">Trucking</span></td>
+              <td><ngx-select [items]="dataForm.SupplierList" [(ngModel)]="dataItem.TA_TruckingID" [allowClear]=false placeholder="Select"></ngx-select></td>
+              <td><span class="col-form-label">Trucking Fee</span></td>
+              <td><input type="number" min = "0"class="form-control" [(ngModel)]="dataItem.TA_TruckingFee"></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-3" style="padding-left: 5px; padding-right: 0px;">
+      <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-hand-holding-usd"></i></span> TAX</h5>
+        </div>
+        <div class="box-body">
+          <table class="table table-sm">
+            <tr>
+              <td><span class="col-form-label">Import Tax</span></td>
+              <td><input type="number" min = "0"class="form-control" [(ngModel)]="dataItem.ImportTax"></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">VAT Tax</span></td>
+              <td><input type="number" min = "0"class="form-control" [(ngModel)]="dataItem.VATTax"></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">Environ Tax</span></td>
+              <td><input type="number" min = "0"class="form-control" [(ngModel)]="dataItem.EnvironmentTax"></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-4" style="padding-left: 5px; ">
+      <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-box"></i></span> Cargo</h5>
+        </div>
+        <div class="box-body">
+          <table class="table table-sm">
+            <tr>
+              <td><span class="col-form-label">Weight</span></td>
+              <td colspan="3">
+                <div class="input-group">
+                  <input type="number" min="0" class="form-control" [(ngModel)]="dataItem.TotalWeight">
+                  <span class="input-group-addon">kg</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">Vendor</span></td>
+              <td colspan="3"><ngx-select [items]="dataForm.SupplierList" [(ngModel)]="dataItem.SupplierID" [allowClear]=false placeholder="Select"></ngx-select></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">Incoterm</span></td>
+              <td><ngx-select [items]="dataForm.IncotermList" [(ngModel)]="dataItem.IncotermID" placeholder="Select"></ngx-select></td>
+              <td><span class="col-form-label">Currency</span></td>
+              <td>
+                <select class="form-control" [(ngModel)]="dataItem.Currency">
+                  <option *ngFor="let i of dataForm.CurrencyList" value="{{i.Value}}">{{i.Text}}</option>
+                </select>
+              </td>
+            </tr>
+            <!-- <tr>
+              <td>
+                <input type="checkbox" class="form-control" [(ngModel)]="dataItem.HavePO" id="havePO"/>
+                <label for="havePO"><span class="col-form-label">PO</span></label>
+              </td>
+              <td>
+                <input *ngIf="dataItem.HavePO" class="form-control" [(ngModel)]="dataItem.PONo" placeholder="PONo" (keyup)="poNoTriggerEnter($event)">
+                <input *ngIf="!dataItem.HavePO" class="form-control" [(ngModel)]="dataItem.PONo" placeholder="PONo" disabled>
+              </td>
+            </tr> -->
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="box box-outline-secondary" style="margin-bottom: 0px; margin-top: 5px;">
+    <div class="box-header with-border">
+      <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-boxes"></i></span> Product</h5>
+      <button class="btn btn-xs btn-success" (click)="createPRItem()" style="margin-left: 30px;" *ngIf="!dataItem.HavePO"><i class="fa fa-plus"></i> Add Item</button>
+      <div class="box-controls" style="margin-top: -8px;">
+        <input type="checkbox" class="form-control" [(ngModel)]="dataItem.HavePO" id="havePO"/>
+        <label for="havePO"><span class="col-form-label">PO</span></label>
+      </div>
+    </div>
+    <div class="box-body">
+      <div *ngIf="dataItem.HavePO; then thenHavePO else elseHavePO"></div>
+      <ng-template #thenHavePO>
+        <table class="table table-sm">
+          <tr class="headerTable">
+            <td style="text-align: left">No.</td>
+            <td style="text-align: center">HSCode</td>
+            <td style="text-align: left">Type</td>
+            <td style="text-align: left">Product</td>
+            <td style="text-align: left">Description</td>
+            <td style="text-align: right">Q'ty</td>
+            <td style="text-align: center">Unit</td>
+            <td style="text-align: center">Unit Price</td>
+            <td style="text-align: right">Subtotal</td>
+            <td style="text-align: right; width: 20px">
+              <a href='javascript:void(0)' 
+                class="btn btn-flat btn-sm"
+                title='Remove All'
+                (click)="onRemoveAllFromPO()">
+                <i class="fa fa-angle-double-down" style="color: #FF4961; font-size: 14px;"></i>
+              </a>
+            </td>
+          </tr>
+          <ng-container *ngFor="let item of dataItem.PRItemList">
+            <tr class="bodyTable">
+              <td style="text-align: left;">{{item.RowIndex}}</td>
+              <td style="text-align: center;"><input style="width: 120px;" [(ngModel)]="item.HSCode"></td>
+              <td style="text-align: left">{{item.ProductTypeName}}</td>
+              <td style="text-align: left">{{item.ProductName}}</td>
+              <td style="text-align: left"><input style="width:500px" [(ngModel)]="item.POProductDes"></td>
+              <td style="text-align: right">{{item.Quantity}}</td>
+              <td style="text-align: center">{{item.UnitName}}</td>
+              <td style="text-align: center">{{moneyFormat(item.POPrice)}}</td>
+              <td style="text-align: right">{{item.SubTotal_String}}</td>
+              <td style="text-align: right;">
+                <a href='javascript:void(0)' 
+                  title='Remove'
+                  class="btn btn-flat btn-sm"
+                  style="line-height: 10px;"
+                  (click)="onRemoveFromPO(item.ID)">
+                  <i class="fa fa-angle-down" style="color: #FF4961;"></i>
+                </a>
+              </td>
+            </tr>
+          </ng-container>
+        </table>
+      </ng-template>
+      <ng-template #elseHavePO>
+        <table class="table table-sm">
+          <tr class="headerTable">
+            <td style="text-align: left">No.</td>
+            <td style="text-align: center">HSCode</td>
+            <td style="text-align: center">Section</td>
+            <!-- <td style="text-align: left">Type</td> -->
+            <td style="text-align: left">Code</td>
+            <td style="text-align: left">Product</td>
+            <td style="text-align: left">Description</td>
+            <td style="text-align: right">Q'ty</td>
+            <td style="text-align: center">Unit Price</td>
+            <td style="text-align: right">Subtotal</td>
+            <td style="text-align: right; width: 20px">
+              <a href='javascript:void(0)' 
+                class="btn btn-flat btn-sm"
+                title='Remove All'
+                (click)="onRemoveAllFromPO()">
+                <i class="fa fa-trash" style="color: #FF4961; font-size: 14px;"></i>
+              </a>
+            </td>
+          </tr>
+          <ng-container *ngFor="let item of dataItem.PRItemList">
+            <tr class="bodyTable">
+              <td style="text-align: left; width: 30px">{{item.RowIndex}}</td>
+              <td style="text-align: center; width: 100px;"><input class="form-control" [(ngModel)]="item.HSCode"></td>
+              <td style="width: 50px;">
+                <select class="form-control" [(ngModel)]="item.PICGroup" (change)="onChangeProductType($event)">
+                  <option *ngFor="let i of dataForm.PICGroupList" value="{{i.Value}}">{{i.Text}}</option>
+                </select>
+              </td>
+              <td style="width: 70px;">
+                <select class="form-control" [(ngModel)]="item.ProductCode" (change)="onChangeProductType($event)">
+                  <option *ngFor="let i of dataForm.ProductCodeList" value="{{i.Value}}">{{i.Text}}</option>
+                </select>
+              </td>
+              <td style="text-align: center;">
+                <input class="form-control" [(ngModel)]="item.HSCode">
+              </td>
+              <td style="text-align: center;">
+                <input class="form-control" [(ngModel)]="item.PODescription">
+              </td>
+              <!-- <td>
+                <ng-container *ngIf="item.ProductType == 1">
+                  <ngx-select [items]="productList" [(ngModel)]="item.ProductNo" placeholder="Select" (selectionChanges)="onChangeProductItem($event, item.RowIndex)" [allowClear]=false></ngx-select>
+                </ng-container>
+                <ng-container *ngIf="item.ProductType == 2">
+                  <div class="input-group input-group-sm">
+                    <input class="form-control" type="text" [(ngModel)]="item.ProductName" (keyup)="triggerEnter($event, item.RowIndex)" >
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-flat" (click)="loadJigData(item.RowIndex)"><i class="fa fa-search"></i></button>
+                    </span>
+                  </div>
+                </ng-container>
+                <div style="margin-top: 2px; margin-left: 5px;"><span class="bodyTable" style="font-size: 10px;">{{item.ProductDes}}</span></div>
+              </td> -->
+              <td style="width: 180px;">
+                <div class="input-group">
+                  <input class="form-control" type="number" min = "0" [(ngModel)]="item.Quantity" (keyup)="handleKeyUp($event)" (keypress)="handleKeyPress($event)"/>
+                  <select class="form-control" [(ngModel)]="item.UnitID">
+                    <option *ngFor="let i of dataForm.UnitList" value="{{i.Value}}">{{i.Text}}</option>
+                  </select>
+                </div>
+              </td>
+              <td style="text-align: center;width: 120px">
+                <input class="form-control" type="number" min = "0" [(ngModel)]="item.POPrice" (keyup)="handleKeyUp($event)" (keypress)="handleKeyPress($event)"/>
+              </td>
+              <td class="bodyTable" style="text-align: right;">
+                <div style="margin-top: 10px;">{{item.SubTotal}}</div>
+              </td>
+              <td style="text-align: right;">
+                <a href='javascript:void(0)' 
+                  title='Remove'
+                  class="btn btn-flat btn-sm"
+                  style="line-height: 10px;"
+                  (click)="onRemoveFromPO(item.ID)">
+                  <i class="fa fa-times" style="color: #FF4961;"></i>
+                </a>
+              </td>
+            </tr>
+          </ng-container>
+        </table>
+      </ng-template>
+    </div>
+    <div class="box-footer" style="padding: 0px;">
+      <div style="text-align: right; padding-right: 5px" class="col-12">
+        <!-- <p style="margin-bottom: 0px;">
+          <span style="font-size: 14px; font-weight: bold; color: black;">No Tax: </span>
+          <span style="margin-left: 10px; margin-right: 20px; font-size: 14px; color: black;"> {{TotalNoTax_String}}</span>
+        </p>
+        <p style="margin-bottom: 0px; margin-top: -3px;">
+          <span style="font-size: 14px; font-weight: bold;color: black;">Tax: </span>
+          <span style="margin-left: 10px; margin-right: 20px; font-size: 14px; color: black;"> {{TotalTax_String}}</span>
+        </p> -->
+        <p style="margin-bottom: 0px; margin-top: -3px;">
+          <span style="font-size: 14px; color: black;">Total: </span>
+          <span style="margin-left: 10px; margin-right: 20px; font-size: 14px; font-weight: bold; color: black;"> {{Total_String}}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="box box-outline-secondary" style="margin-bottom: 0px; margin-top: 5px;" *ngIf="dataItem.HavePO">
+    <div class="box-header with-border">
+      <div class="col-12 row">
+        <h5 class="box-title" style="margin-top: 7px;"><strong>Purchase Order</strong></h5>
+        <ngx-select style="width: 150px; margin-left: 20px;" [items]="dataForm.POList" [(ngModel)]="PONo" (selectionChanges)="onChangePONo($event)"></ngx-select>
+      </div>
+    </div>
+    <div class="box-body">
+      <table class="table table-sm" style="font-size: 14px;">
+        <tr class="headerTable">
+          <td style="text-align: left">No.</td>
+          <td style="text-align: left">Type</td>
+          <td style="text-align: left">Product</td>
+          <td style="text-align: left">Description</td>
+          <td style="text-align: right">Q'ty</td>
+          <td style="text-align: center">Unit</td>
+          <td style="text-align: right">Unit Price</td>
+          <!-- <td style="text-align: right">Subtotal</td> -->
+          <td style="text-align: right; width: 20px">
+            <a href='javascript:void(0)' 
+              class="btn btn-flat btn-sm"
+              title='Select All'
+              (click)="onAddAllToPO()">
+              <i class="fa fa-angle-double-up" style="color: #1E9FF2; font-size: 14px;"></i>
+            </a>
+          </td>
+        </tr>
+        <ng-container *ngFor="let item of prItemNotSelectList">
+          <tr class="bodyTable">
+            <td style="text-align: left">{{item.RowIndex}}</td>
+            <td style="text-align: left">{{item.ProductTypeName}}</td>
+            <td style="text-align: left">{{item.ProductName}}</td>
+            <td style="text-align: left">{{item.ProductDes}}</td>
+            <td style="text-align: right">{{item.Quantity}}</td>
+            <td style="text-align: center">{{item.UnitName}}</td>
+            <td style="text-align: right">{{moneyFormat(item.POPrice)}}</td>
+            <!-- <td style="text-align: right">{{item.SubTotal_String}}</td> -->
+            <td style="text-align: right;">
+              <a href='javascript:void(0)' 
+                title='Select'
+                class="btn btn-flat btn-sm"
+                style="line-height: 10px;"
+                (click)="onAddToPO(item.ID)">
+                <i class="fa fa-angle-up" style="color: #1E9FF2;"></i>
+              </a>
+            </td>
+          </tr>
+        </ng-container>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">CLOSE</button>
+  <button type="button" class="btn btn-success float-right" (click)="acceptBtnModalClicked()" autofocus>
+    <div *ngIf="InvoiceNoTitle == 'New'; then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock>ADD NEW</ng-template>
+    <ng-template #elseBlock>UPDATE</ng-template>
+  </button>
+</div>

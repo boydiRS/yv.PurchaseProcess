@@ -1,0 +1,112 @@
+table, th, td {
+    border: 1px solid black;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+p {
+    font-size: 8px;
+    margin-bottom: 0;
+}
+
+.HeaderText{
+    font-family: 'Tahoma', sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    color: black;
+    line-height: 1.3;
+}
+.TotalText{
+    font-family: 'Tahoma', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    line-height: 1.3;
+}
+.ReceiptInfoText{
+    font-family: 'Tahoma', sans-serif;
+    font-size: 14px;
+    color: black;
+    line-height: 1.2;
+}
+.VNText {
+    font-family: 'Tahoma', sans-serif;
+    font-size: 8px;
+    color: black;
+    line-height: 1.2;
+}
+.VNText-Italic {
+    font-family: 'Tahoma', sans-serif;
+    font-size: 8px;
+    color: black;
+    line-height: 1.2;
+    font-style: italic;
+}
+.LongText {
+    font-family: 'Tahoma', sans-serif;
+    font-size: 14px;
+    color: black;
+    line-height: 1.3;
+}
+.JPText {
+    font-family: 'Meiryo UI', sans-serif;
+    font-size: 14px;
+    color: black;
+    line-height: 1.3;
+}
+.CheckBox {
+    font-size: 20px;
+    line-height: 1;
+}
+
+@media screen {
+    div.divFooter {
+        display: none;
+    }
+    
+}
+
+@media print {
+    * { overflow: visible !important; } 
+    .pagebreak { page-break-before: always; }
+
+    div.divFilter {
+        display: none;    
+    }
+    div.divFooter {
+        position: fixed;
+        bottom: 0;
+    }
+
+    /* .VNText {
+        font-family: 'Tahoma', sans-serif;
+        font-size: 14px;
+        color: black;
+    }
+
+    .LongText {
+        font-family: 'Tahoma', sans-serif;
+        font-size: 14px;
+        color: black;
+    }
+    
+    .JPText {
+        font-family: 'Meiryo UI', sans-serif;
+        font-size: 10px;
+        color: black;
+    } */
+}
+
+@media print {
+    body * {
+      visibility: hidden;
+    }
+    a { text-decoration: none; }
+    #section-to-print, #section-to-print * {
+      visibility: visible;
+    }
+    #section-to-print {
+        margin-top: -50px !important;
+        height: auto;
+    }
+}

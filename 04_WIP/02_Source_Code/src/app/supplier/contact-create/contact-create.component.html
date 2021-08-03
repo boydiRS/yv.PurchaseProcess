@@ -1,0 +1,46 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">New</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="padding: 10px;">
+  <table class="table table-sm" style="margin-bottom: 0;">
+    <tr>
+      <td><span class="col-form-label">ContactName</span></td>
+      <td><input class="form-control" type="text" [(ngModel)]="dataItem.ContactName"/></td>
+    </tr>
+    <tr>
+      <td><span class="col-form-label">Title</span></td>
+      <td><ngx-select [items]="dataForm.TitleList" [(ngModel)]="dataItem.Title" placeholder="Select title"></ngx-select></td>
+    </tr>
+    <tr>
+      <td><span class="col-form-label">Company</span></td>
+      <td><ngx-select [items]="dataForm.SupplierList" [(ngModel)]="dataItem.SupplierID" placeholder="Select company"></ngx-select></td>
+    </tr>
+    <tr>
+      <td><span class="col-form-label">Job Position</span></td>
+      <td><input class="form-control" type="text" [(ngModel)]="dataItem.JobPosition"/></td>
+    </tr>
+    <tr>
+      <td><span class="col-form-label">Email</span></td>
+      <td><input class="form-control" type="text" [(ngModel)]="dataItem.Email"/></td>
+    </tr>
+    <tr>
+      <td><span class="col-form-label">Phone</span></td>
+      <td><input class="form-control" type="text" [(ngModel)]="dataItem.Phone"/></td>
+    </tr>
+    <tr>
+      <td><span class="col-form-label">Mobile</span></td>
+      <td><input class="form-control" type="text" [(ngModel)]="dataItem.Mobile"/></td>
+    </tr>
+    <tr>
+      <td><span class="col-form-label">Remark</span></td>
+      <td><input class="form-control" type="text" [(ngModel)]="dataItem.Remark"/></td>
+    </tr>
+  </table>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">CLOSE</button>
+  <button type="button" class="btn btn-success float-right" (click)="acceptBtnModalClicked()" autofocus>ADD NEW</button>
+</div>

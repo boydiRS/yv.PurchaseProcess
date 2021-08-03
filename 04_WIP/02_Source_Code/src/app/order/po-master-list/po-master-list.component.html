@@ -1,0 +1,196 @@
+<section class="content-header">
+  <div class="row col-12">
+    <div>
+      <span style="font-size: 20px;">PO</span>
+    </div>
+    <div style="width: 120px; margin-left: 10px;">
+      <input class="form-control" type="text" [(ngModel)]="searchData.PONo" placeholder="PO..." (keyup)="triggerEnter($event)">
+    </div>
+    <div style="width: 200px; margin-left: 5px;">
+      <ngx-select [items]="dataForm.StatusList" [(ngModel)]="searchData.Status" placeholder="Status" (selectionChanges)="onChangeStatus($event)"></ngx-select>
+    </div>
+    <div style="width: 140px; margin-left: 5px;">
+      <input class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" [(ngModel)]="ReceiptFromDate" placeholder="Delivery From Date">
+    </div>
+    <div style="width: 140px; margin-left: 5px;">
+      <input class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" [(ngModel)]="ReceiptToDate" placeholder="Delivery To Date">
+    </div>
+    <button class="btn btn-primary btn-sm" (click)="loadData()" style="margin-left: 5px;"><i class="fa fa-search"></i></button>
+  </div>
+</section>
+<section class="content" style="margin-top: -5px;">
+  <div class="row">
+    <div class="col-12">
+<!----------------------------------------------------------------------------------------------------->
+      <div class="row">
+        <div class="col-6">
+          <div class="col-12 row" style="vertical-align: middle;">
+            <div style="margin-right: 5px; margin-top: 8px;"><span >Show</span></div>
+            <select (change)="onChangeRowPerPage($event)" style="width: 100px;" [(ngModel)]="searchData.ItemsPerPage">
+              <option *ngFor="let i of rowPerPage" value="{{i}}">{{i}}</option>
+            </select>
+            <div style="margin-left: 5px; margin-top: 8px;"><span >entries/page</span></div>
+          </div>
+        </div>
+        <div class="col-6" style="text-align: right;">
+          <button class="btn btn-sm btn-success" (click)="openPopupEdit(editTemplate, 'New')" style="margin-left: 5px;" *ngIf="picPermissionData.IsPer"><i class="fa fa-plus"></i> CREATE NEW</button>
+          <a class="btn btn-sm" title="Grid" [routerLink]="['/order/po-detail-list']"><i class="fa fa-th" style="color: gray; font-size: 16px;"></i></a>
+          <a class="btn btn-sm" title="Table"><i class="fa fa-th-list" style="color: 666EE8; font-size: 16px;"></i></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="">
+            <ngx-datatable class="material fullscreen custom" 
+              [externalSorting]="true" 
+              (sort)="onSort($event)"
+              [columnMode]="'force'" 
+              
+              [footerHeight]="25"
+              [rowHeight]="'auto'" 
+              [rows]="pagingModel.DataList" 
+              [count]="pagingModel.TotalItems" 
+              [offset]="pagingModel.CurrentPage-1"
+              [limit]="pagingModel.ItemsPerPage" 
+              [externalPaging]="true" 
+              (page)='setPage($event)' 
+              [scrollbarH]="true" 
+              [scrollbarV]="true" 
+              [virtualization]="false" 
+              [style.height.px]="innerHeight"
+              [loadingIndicator]="loadingIndicator">
+              <ngx-datatable-column [canAutoResize]="false" [width]="35" name="No." prop="RowIndex" cellClass="text-center" [sortable]="false"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="70" name="Status" cellClass="text-center">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <span class="badge" [style.background] = "row['StatusColor']" >{{row['StatusName']}}</span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="80" name="PONo" cellClass="text-center">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <a href='javascript:void(0)' 
+                    (click)="openPopupDetail(detailTemplate, row['PONo'])">
+                    {{row['PONo']}}
+                  </a>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [width]="100" name="Vendor" prop="Supplier" cellClass="text-left"></ngx-datatable-column>
+              <!-- <ngx-datatable-column [canAutoResize]="false" [width]="70" name="Incoterm" prop="IncotermID" cellClass="text-center"></ngx-datatable-column> -->
+              <ngx-datatable-column [canAutoResize]="false" [width]="90" name="Delivery Date" prop="ReceiptDate" cellClass="text-center">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  {{value | date: 'dd/MM/yyyy'}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="50" name="VAT" prop="VATTax" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="40" name="Item" prop="TotalItem" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="130" name="Total Price" prop="TotalPrice" cellClass="text-right">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{formatMoney(row['TotalPrice'], row['Currency'])}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="60" name="PIC" prop="PIC" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="40" name="PR" prop="PR_Doc" cellClass="text-center">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <ng-template [ngIf]="value">
+                    <i class="fa fa-check" style="color: forestgreen;"></i>
+                  </ng-template>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="40" name="PO" prop="PO_Doc" cellClass="text-center">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <ng-template [ngIf]="value">
+                    <i class="fa fa-check" style="color: forestgreen;"></i>
+                  </ng-template>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="40" name="QUO" prop="Quotation_Doc" cellClass="text-center">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <ng-template [ngIf]="value">
+                    <i class="fa fa-check" style="color: forestgreen;"></i>
+                  </ng-template>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="40" name="DRW" prop="Drawing_Doc" cellClass="text-center">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <ng-template [ngIf]="value">
+                    <i class="fa fa-check" style="color: forestgreen;"></i>
+                  </ng-template>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="40" name="INV" prop="Invoice_Doc" cellClass="text-center">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <ng-template [ngIf]="value">
+                    <i class="fa fa-check" style="color: forestgreen;"></i>
+                  </ng-template>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="40" name="ROD" prop="ReceiptOfDelivery_Doc" cellClass="text-center">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <ng-template [ngIf]="value">
+                    <i class="fa fa-check" style="color: forestgreen;"></i>
+                  </ng-template>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="40" name="PAYR" prop="PaymentRequest_Doc" cellClass="text-center">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <ng-template [ngIf]="value">
+                    <i class="fa fa-check" style="color: forestgreen;"></i>
+                  </ng-template>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="40" name="BILL" prop="Bill_Doc" cellClass="text-center">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <ng-template [ngIf]="value">
+                    <i class="fa fa-check" style="color: forestgreen;"></i>
+                  </ng-template>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="40" name="CDS" prop="CustomsDeclarationSheet_Doc" cellClass="text-center">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <ng-template [ngIf]="value">
+                    <i class="fa fa-check" style="color: forestgreen;"></i>
+                  </ng-template>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="40" name="ARRN" prop="ArrivalNotice_Doc" cellClass="text-center">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <ng-template [ngIf]="value">
+                    <i class="fa fa-check" style="color: forestgreen;"></i>
+                  </ng-template>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [width]="110" name="Remark" prop="Remark" cellClass="text-left"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="80" cellClass="text-center">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <a href='javascript:void(0)' 
+                    class='btn btn-outline btn-sm btn-warning btn-icon' 
+                    title='Detail'
+                    style='width:30px;' 
+                    (click)="openPopupDetail(detailTemplate, row['PONo'])">
+                    <i class='fa fa-info'></i>
+                  </a>
+                  <a href='javascript:void(0)' 
+                    class='btn btn-outline btn-sm btn-primary btn-icon' 
+                    title='Edit'
+                    style='width:30px; margin-left: 3px;' 
+                    (click)="openPopupEdit(editTemplate, row['PONo'])"
+                    *ngIf="picPermissionData.IsPer">
+                    <i class='fa fa-edit'></i>
+                  </a>
+                </ng-template>
+              </ngx-datatable-column>
+            </ngx-datatable>
+          </div>
+        </div>
+      </div>
+      
+      <ng-template #detailTemplate>
+        <app-po-master-detail [bsModalRef]="bsModalRefDetail" [id]="id" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-po-master-detail>
+      </ng-template>
+
+      <ng-template #editTemplate>
+        <app-po-master-edit [bsModalRef]="bsModalRefEdit" [updateBy]="userInfo.code" [id]="id" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-po-master-edit>
+      </ng-template>
+<!----------------------------------------------------------------------------------------------------->
+    </div>
+  </div>
+</section>

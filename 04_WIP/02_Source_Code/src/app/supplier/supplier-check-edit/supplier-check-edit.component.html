@@ -1,0 +1,102 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="padding: 10px;">
+  <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+    <div class="box-header with-border">
+      <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-info"></i></span>  Info</h5>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <div class="col-12">
+          <table class="table table-sm table-bordered" style="margin-bottom: 0;">
+            <tr>
+              <td><span class="col-form-label">Description</span></td>
+              <td><input class="form-control" type="text" [(ngModel)]="dataItem.Description"/></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">Check Type</span></td>
+              <td><ngx-select [items]="dataForm.CheckTypeList" [(ngModel)]="dataItem.CheckType" placeholder="Check Type" (selectionChanges)="onChangeSupplier($event)"></ngx-select></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">PIC</span></td>
+              <td><ngx-select [items]="dataForm.PICList" [(ngModel)]="dataItem.PICCode" placeholder="PIC"></ngx-select></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">Check Date</span></td>
+              <td><input class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" [(ngModel)]="DateCheck" placeholder="dd/mm/yyyy"></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">Remark</span></td>
+              <td><input class="form-control" type="text" [(ngModel)]="dataItem.Remark"/></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="box box-outline-secondary" style="margin-bottom: 0px; margin-top: 5px;">
+    <div class="box-header with-border">
+      <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-truck"></i></span>  Vendor List</h5>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <div class="col-6" style="padding-right: 5px;">
+          <div class="box" style="margin-bottom: 0;">
+            <div class="box-header">
+              <div class="box-title">
+                <span style="font-size: 14px;">Remain:</span> <span style="font-size: 14px; color: blue;">{{employeeNotChoose.length}}</span>
+              </div>
+              <div class="float-right">
+                <a class="btn btn-block btn-success btn-xs" href="#" (click)="onClickAddAll()">Add all</a>
+              </div>
+            </div>
+            <div class="box-body p-0">
+              <input class="form-control" placeholder="Search..." (keyup)="onChangeSearch()" [(ngModel)]="searchNotChoose">
+              <div class="media-list media-list-hover media-list-divided inner-user-div" style="overflow-y:scroll; height: 250px;">
+                <div class="media media-single" *ngFor="let item of listEmployeeNotChoose" style="padding: 2px;">
+                  <div class="media-body" style="margin: 0px;">
+                    <span class="col-form-content">{{item.Text}}</span>
+                  </div>
+                  <div class="media-right" style>
+                    <a class="btn btn-block btn-success btn-xs" href="#" (click)="onClickAdd(item.Value)" style="width: 50px;">Add</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6" style="padding-left: 5px;">
+          <div class="box" style="margin-bottom: 0;">
+            <div class="box-header">
+              <span style="font-size: 14px;">Choose:</span> <span style="font-size: 14px; color: green;">{{dataItem.EmployeeChoose.length}}</span>
+              <div class="float-right">
+                <a class="btn btn-block btn-danger btn-xs" href="#" (click)="onClickDelAll()">Del all</a>
+              </div>
+            </div>
+            <div class="box-body p-0">
+              <input class="form-control" placeholder="Search..." (keyup)="onChangeSearch()" [(ngModel)]="searchChoose">
+              <div class="media-list media-list-hover media-list-divided inner-user-div" style="overflow-y:scroll; height: 250px;">
+                <div class="media media-single" *ngFor="let item of listEmployeeChoose" style="padding: 2px;">
+                  <div class="media-body" style="margin: 0px;">
+                    <span class="col-form-content">{{item.Text}}</span>
+                  </div>
+                  <div class="media-right">
+                    <a class="btn btn-block btn-danger btn-xs" href="#" (click)="onClickDel(item.Value)" style="width: 50px;">Del</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">CLOSE</button>
+  <button type="button" class="btn btn-success float-right" (click)="acceptBtnModalClicked()" autofocus>{{buttonName}}</button>
+</div>

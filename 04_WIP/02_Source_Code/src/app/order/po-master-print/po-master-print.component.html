@@ -1,0 +1,220 @@
+<section class="content-header">
+  <div class="row col-12">
+    <div>
+      <span style="font-size: 20px;">PO Print</span>
+    </div>
+    <div style="width: 100px; margin-left: 10px;">
+      <input class="form-control" type="number" [(ngModel)]="remainTask">
+    </div>
+    <div style="width: 100px; margin-left: 10px;">
+      <input class="form-control" type="number" [(ngModel)]="rowHeight">
+    </div>
+    <button class="btn btn-primary btn-sm" (click)="loadData()" style="margin-left: 10px;"><i class="fa fa-search"></i></button>
+    <button class="btn btn-sm btn-success" (click)="onPrint()" style="margin-left: 5px;"><i class="fa fa-print"></i> PRINT</button>
+  </div>
+</section>
+<section class="content" style="margin-top: -5px;">
+  <div class="row">
+    <div class="col-12">
+      <div class="content-grid " id="section-to-print" style="background-color:white;">
+        <div class="row">
+          <div class="col-3">
+            <img src="../../../assets/images/logo_full.png" style="width:200px; margin-top: 0px; margin-left: 10px;" />
+          </div>
+          <div class="col-6" style="text-align:center">
+            <div><span style="font-family: 'Tahoma', sans-serif; font-size:22px; color:black; font-weight: bold;">ĐỀ NGHỊ MUA HÀNG</span></div>
+            <div><span style="font-family: 'Tahoma', sans-serif; font-size:22px; color:black; font-weight: bold;">PURCHASE ORDER</span></div>
+          </div>
+          <div class="col-3" style="text-align: right;">
+            <ngx-barcode 
+                [bc-value]="poNo"
+                [bc-width]="1.1"
+                [bc-height]="35"
+                [bc-display-value]="false"
+                [bc-text-margin]="-2"
+                [bc-font-size]="24"
+                [bc-margin-top]="1"
+                [bc-margin-right]="1"
+                [bc-margin-left]="1"
+                [bc-margin-bottom]="1">
+            </ngx-barcode>
+            <span style="font-size:18px; color:black">{{poNo}}</span>
+          </div>
+        </div>
+        <div style="text-align: right; margin-top: -5px;">
+          <span style="color:black">{{currentDateVN}}</span><br>
+          <span style="color:black">{{currentDate}}</span>
+        </div>
+        <div class="row" style="margin-top: 5px;">
+          <div class="col-6" style="padding-right: 0px;"><span class="HeaderText" style="text-decoration: underline;">Kính gửi/Attn:</span></div>
+          <div class="col-6"><span class="HeaderText" style="text-decoration: underline;">Từ/From:</span></div>
+          <div class="col-6" style="padding-right: 0px;"><span class="HeaderText">{{dataItem.Supplier_VN}}</span></div>
+          <div class="col-6"><span class="HeaderText">Công ty TNHH Y-TEC Việt Nam</span></div>
+          <div class="col-6" style="padding-right: 0px;"><span class="ReceiptInfoText">{{dataItem.Supplier_AddressVN}}</span></div>
+          <div class="col-6"><span class="ReceiptInfoText">Số 2, đường số 9, Khu đô thị, công nghiệp và dịch vụ VSIP Hải Phòng, thuộc Khu Kinh tế Đình Vũ-Cát Hải, Xã Thủy Triều, Huyện Thủy Nguyên, Thành phố Hải Phòng, Việt Nam</span></div>
+          <div class="col-6" style="padding-right: 0px;"><span class="HeaderText">{{dataItem.Supplier}}</span></div>
+          <div class="col-6"><span class="HeaderText">Y-TEC Vietnam Co., Ltd.</span></div>
+          <div class="col-6" style="padding-right: 0px;"><span class="ReceiptInfoText">{{dataItem.Supplier_Address}}</span></div>
+          <div class="col-6"><span class="ReceiptInfoText">No. 2, Road No. 9, VSIP Haiphong Township, Industrial and Service Park, Dinh Vu-Cat Hai Economic Zone, Thuy Trieu Ward, Thuy Nguyen District, Haiphong City, Vietnam</span></div>
+          <div class="col-6" style="padding-right: 0px;"><span class="HeaderText" style="text-decoration: underline;">Người liên hệ/Contact person:</span></div>
+          <div class="col-6"><span class="HeaderText" style="text-decoration: underline;">Người liên hệ/Contact person:</span></div>
+          <div class="col-6" style="padding-right: 0px;"><span class="VNText">Name: {{dataItem.Contact_Title}} {{dataItem.Contact}}</span></div>
+          <div class="col-6"><span class="VNText">Name: {{dataItem.PIC}}</span></div>
+          <div class="col-6" style="padding-right: 0px;"><span class="VNText">Tel: {{dataItem.Contact_Tel}}</span></div>
+          <div class="col-6"><span class="VNText">Tel：+84-225-8831086</span></div>
+          <div class="col-6" style="padding-right: 0px;"><span class="VNText">Email: {{dataItem.Contact_Mail}}</span></div>
+          <div class="col-6"><span class="VNText">Email: {{dataItem.PIC_Mail}}</span></div>
+        </div>
+        <table style="width: 100%; margin-top: 5px;">
+          <tr style="height: 30px;">
+            <td style="width: 40px" rowspan="2">
+              <span class="HeaderText">STT</span><br>
+              <span class="HeaderText">(No.)</span>
+            </td>
+            <td rowspan="2">
+              <span class="HeaderText">Mô tả hàng hóa</span><br>
+              <span class="HeaderText">(Description)</span>
+            </td>
+            <td style="width: 60px" rowspan="2">
+              <span class="HeaderText">Đơn vị</span><br>
+              <span class="HeaderText">(Unit)</span>
+            </td>
+            <td style="width: 80px" rowspan="2">
+              <span class="HeaderText">Số lượng</span><br>
+              <span class="HeaderText">(Quant.)</span>
+            </td>
+            <td style="width: 130px">
+              <span class="HeaderText">Đơn Giá</span><br>
+              <span class="HeaderText">(Price)</span>
+            </td>
+            <td style="width: 130px">
+              <span class="HeaderText">Thành Tiền </span><br>
+              <span class="HeaderText">(Amount)</span>
+            </td>
+            <td style="width: 120px" rowspan="2">
+              <span class="HeaderText">Ngày giao hàng</span><br>
+              <span class="HeaderText">(Delivery time)</span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="HeaderText">{{dataItem.Currency}}</span>
+            </td>
+            <td>
+              <span class="HeaderText">{{dataItem.Currency}}</span>
+            </td>
+          </tr>
+          <tr *ngFor="let item of prItemList.DataList; index as i; first as isFirst" [style.height.px]="rowHeight">
+            <td><span class="VNText">{{item.RowIndex}}</span></td>
+            <td style="text-align: left;">
+              <span class="VNText">{{item.ProductName}}</span>
+              <br>
+              <span class="VNText">{{item.POProductDes}}</span>
+            </td>
+            <td><span class="VNText">{{item.UnitName}}</span></td>
+                        <td><span class="VNText">{{item.Quantity}}</span></td>
+            <td style="text-align: right;"><span class="VNText">{{formatMoney(item.POPrice, '')}}</span></td>
+            <td style="text-align: right;"><span class="VNText">{{item.SubTotal}}</span></td>
+            <td><span class="VNText">{{dataItem.ReceiptDate | date: 'dd/MM/yyyy'}}</span></td>
+          </tr>
+          <tr *ngFor='let in of [].constructor(remainTask) ;let i = index' [style.height.px]="rowHeight">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="4" style="text-align: right;">
+              <span class="TotalText">TỔNG CỘNG (TOTAL)</span><br>
+              <span class="TotalText" *ngIf="dataItem.VATTax != null">VAT {{dataItem.VATTax}}%</span><br>
+              <span class="TotalText" *ngIf="dataItem.VATTax != null">TỔNG CỘNG (TOTAL INCLUDED VAT)</span>
+            </td>
+            <td colspan="3" style="text-align: right;">
+              <span class="TotalText">{{TotalNoTax_String}}</span><br>
+              <span class="TotalText" *ngIf="dataItem.VATTax != null">{{TotalTax_String}}</span><br>
+              <span class="TotalText" *ngIf="dataItem.VATTax != null">{{Total_String}}</span>
+            </td>
+          </tr>
+        </table>
+        <div>
+          <span class="HeaderText">* Ghi chú/Remark:</span><br>
+          <span class="HeaderText">1. Báo giá số/ Quotation No.: </span><span class="ReceiptInfoText">{{dataItem.QuotationNo}}</span><br>
+          <span class="HeaderText">2. Điều kiện giao hàng/Delivery term: </span><br>
+
+          <ng-container *ngIf="dataItem.IncotermID == null || dataItem.IncotermID == ''">
+            <span class="ReceiptInfoText">Giao hàng đến Công ty TNHH Y-TEC Việt Nam/ Deliver to Y-TEC Vietnam co.,ltd</span><br>
+            <span class="ReceiptInfoText">Số 2, đường số 9, Khu đô thị, công nghiệp và dịch vụ VSIP Hải Phòng, thuộc Khu Kinh tế Đình Vũ-Cát Hải, Xã Thủy Triều, Huyện Thủy Nguyên, Thành phố Hải Phòng, Việt Nam.</span><br>
+            <span class="ReceiptInfoText">No. 2, Road No. 9, VSIP Haiphong Township, Industrial and Service Park, Dinh Vu-Cat Hai Economic Zone, Thuy Trieu Ward, Thuy Nguyen District, Haiphong City, Vietnam.</span><br>
+          </ng-container>
+          <ng-container *ngIf="dataItem.IncotermID == 'CIP'">
+            <span class="ReceiptInfoText">CIP Noi Bai Airport</span><br>
+          </ng-container>
+          <ng-container *ngIf="dataItem.IncotermID == 'EXW'">
+            <span class="ReceiptInfoText">EXW at {{dataItem.Supplier}}</span><br>
+          </ng-container>
+          <ng-container *ngIf="dataItem.IncotermID == 'CIF'">
+            <span class="ReceiptInfoText">CIF HaiPhong Port</span><br>
+          </ng-container>
+
+          <span class="HeaderText">3. Điều kiện thanh toán/ Payment term:</span><br>
+          <span class="ReceiptInfoText">{{dataItem.PaymenttermContent_Vn}}</span>. <span class="ReceiptInfoText">{{dataItem.PaymenttermContent_En}}</span><br>
+        </div>
+        <div class="row" style="margin-top: 5px;">
+          <div class="col-4">
+            <table style="width: 100%">
+              <tr>
+                <td>
+                  <span class="HeaderText">Đại diện cho nhà cung cấp</span><br>
+                  <span class="HeaderText">(For and on behalf of supplier)</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="height: 200px;"></td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-8">
+            <table style="width: 100%">
+              <tr>
+                <td style="width: 33%;">
+                  <span class="HeaderText">Người lập</span><br>
+                  <span class="HeaderText">Prepared by</span>
+                </td>
+                <td style="width: 33%;">
+                  <span class="HeaderText">Người kiểm tra</span><br>
+                  <span class="HeaderText">Checked by</span>
+                </td>
+                <td style="width: 34%;">
+                  <span class="HeaderText">Người phê duyệt</span><br>
+                  <span class="HeaderText">Approved by</span>
+                </td>
+              </tr>
+              <tr>
+                <td rowspan="2" style="height: 200px;"></td>
+                <td rowspan="2" ></td>
+                <td style="border-bottom: 0px;"></td>
+              </tr>
+              <tr>
+                <td style="height: 30px; border-top: 0px;">
+                  <span class="HeaderText">TAKAYUKI AMBO</span><br>
+                  <span class="HeaderText">General Director</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div style="margin-top: 5px;">
+          <span style="font-size:8px;">FM-YR87-800-02.EV02</span>
+          <br>
+          <span style="font-size:8px;">Thời hạn lưu trữ 20 năm</span>
+        </div>
+        <div class="pagebreak">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,223 @@
+<section class="content-header">
+  <div class="row col-12">
+    <div>
+      <span style="font-size: 20px;">PO Item</span>
+    </div>
+    <div style="width: 100px; margin-left: 10px;">
+      <input class="form-control" type="search" [(ngModel)]="searchData.PONo" placeholder="PO..." (keyup)="triggerEnter($event)">
+    </div>
+    <div style="width: 100px; margin-left: 5px;">
+      <input class="form-control" type="text" [(ngModel)]="searchData.PRNo" placeholder="PR..." (keyup)="triggerEnter($event)">
+    </div>
+    <div style="width: 200px; margin-left: 5px;">
+      <ngx-select [items]="dataForm.SupplierList" [(ngModel)]="searchData.SupplierID" placeholder="Vendor" (selectionChanges)="onChangeSupplier($event)"></ngx-select>
+    </div>
+    <div style="width: 90px; margin-left: 5px;">
+      <ngx-select [items]="dataForm.PICGroupList" [(ngModel)]="searchData.PICGroup" placeholder="Section" (selectionChanges)="onChangePICGroup($event)"></ngx-select>
+    </div>
+    <div style="width: 120px; margin-left: 5px;">
+      <input class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" [(ngModel)]="ReceiptFromDate" placeholder="dd/MM/yyyy" title="Delivery Estimated From Date">
+    </div>
+    <div style="width: 120px; margin-left: 5px;">
+      <input class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" [(ngModel)]="ReceiptToDate" placeholder="dd/MM/yyyy" title="Delivery Estimated To Date">
+    </div>
+    <div style="width: 120px; margin-left: 5px;">
+      <input class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" [(ngModel)]="ReceiptActualFromDate" placeholder="dd/MM/yyyy" title="Delivery Actual From Date">
+    </div>
+    <div style="width: 120px; margin-left: 5px;">
+      <input class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" [(ngModel)]="ReceiptActualToDate" placeholder="dd/MM/yyyy" title="Delivery Actual To Date">
+    </div>
+    <div style="width: 100px; margin-left: 5px; margin-top: 7px;">
+      <input id="ReceiptCheck" type="checkbox" (click)="onChangeReceiptCheck()" required [checked]="searchData.ReceiptCheck">
+      <label for="ReceiptCheck">Not receipt</label>
+    </div>
+    <div style="width: 100px; margin-left: 5px; margin-top: 7px;">
+      <input id="PaydayCheck" type="checkbox" (click)="onChangePaydayCheck()" required [checked]="searchData.PaydayCheck">
+      <label for="PaydayCheck">Not payday</label>
+    </div>
+    <div style="width: 100px; margin-left: 5px; margin-top: 7px;">
+      <input id="ContractCheck" type="checkbox" (click)="onChangeContractCheck()" required [checked]="searchData.ContractCheck">
+      <label for="ContractCheck">Contract</label>
+    </div>
+    <button class="btn btn-primary btn-sm" (click)="loadData()" style="margin-left: 5px;"><i class="fa fa-search"></i></button>
+    <button class="btn btn-success btn-sm" (click)="exportExcel()" style="margin-left: 5px;"><i class="fa fa-file-excel"></i></button>
+  </div>
+</section>
+<section class="content" style="margin-top: -5px;">
+  <div class="row">
+    <div class="col-12">
+<!----------------------------------------------------------------------------------------------------->
+      <div class="row">
+        <div class="col-6">
+          <div class="col-12 row" style="vertical-align: middle;">
+            <div style="margin-right: 5px; margin-top: 8px;"><span >Show</span></div>
+            <select (change)="onChangeRowPerPage($event)" style="width: 100px;" [(ngModel)]="searchData.ItemsPerPage">
+              <option *ngFor="let i of rowPerPage" value="{{i}}">{{i}}</option>
+            </select>
+            <div style="margin-left: 5px; margin-top: 8px;"><span >entries/page</span></div>
+          </div>
+        </div>
+        <div class="col-6" style="text-align: right;">
+          <ng-container *ngIf="picPermissionData.IsPer">
+            <button class="btn btn-sm btn-info" title="Table" (click)="openPopupReceipt(receiptTemplate)" style="margin-right: 5px;">RECEIPT</button>
+            <button class="btn btn-sm btn-info" title="Table" (click)="openPopupPayDay(paydayTemplate)">PAYDAY</button>
+            <button class="btn btn-sm btn-success" (click)="openPopupEdit(editTemplate, 'New')" style="margin-left: 5px;"><i class="fa fa-plus"></i> CREATE NEW</button>
+          </ng-container>
+          <a class="btn btn-sm" title="Grid"><i class="fa fa-th" style="color: #666EE8; font-size: 16px;"></i></a>
+          <a class="btn btn-sm" title="Table" [routerLink]="['/order/po-list']"><i class="fa fa-th-list" style="color: gray; font-size: 16px;"></i></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="">
+            <ngx-datatable class="material fullscreen custom" 
+              [externalSorting]="true" 
+              (sort)="onSort($event)"
+              [columnMode]="'force'" 
+              [footerHeight]="25"
+              [rowHeight]="'auto'" 
+              [selectionType]="'checkbox'" 
+              [selected]="selected"
+              (select)="onSelect($event)"
+              [rows]="pagingModel.DataList" 
+              [count]="pagingModel.TotalItems" 
+              [offset]="pagingModel.CurrentPage-1"
+              [limit]="pagingModel.ItemsPerPage" 
+              [externalPaging]="true" 
+              (page)='setPage($event)' 
+              [scrollbarH]="true" 
+              [scrollbarV]="true" 
+              [virtualization]="false" 
+              [style.height.px]="innerHeight"
+              [loadingIndicator]="loadingIndicator">
+              <ngx-datatable-column
+                [width]="30"
+                [sortable]="false"
+                [canAutoResize]="false"
+                [draggable]="false"
+                [resizeable]="true"
+                cellClass="text-center">
+                <ng-template
+                  ngx-datatable-header-template
+                  let-value="value"
+                  let-allRowsSelected="allRowsSelected"
+                  let-selectFn="selectFn">
+                  <input type="checkbox" [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)" id="all"/>
+                  <label for="all"></label>
+                </ng-template>
+                <ng-template 
+                  let-row="row"
+                  ngx-datatable-cell-template
+                  let-value="value"
+                  let-isSelected="isSelected"
+                  let-onCheckboxChangeFn="onCheckboxChangeFn">
+                  <input type="checkbox" [checked]="isSelected" (change)="onCheckboxChangeFn($event)" id="{{row['ID']}}"/>
+                  <label for="{{row['ID']}}" class="label_checkbox"></label>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="30" name="No." prop="RowIndex" cellClass="text-center" [sortable]="false"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="50" name="Section" prop="PICGroupName" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="40" name="Code" prop="PICGroupCode" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="55" name="Orderer" prop="Orderer" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="85" name="PRNo" prop="PRNo" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="85" name="PONo"cellClass="text-center">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <a href='javascript:void(0)' 
+                    (click)="openPopupDetail(detailTemplate, row['PONo'])">
+                    {{row['PONo']}}
+                  </a>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="85" name="ContractNo" prop="ContractNo" cellClass="text-center" *ngIf="isShowContract"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="80" name="Exp Date" cellClass="text-center" *ngIf="isShowContract">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row['ContractExpDate'] | date: 'dd/MM/yyyy'}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="80" name="Create Date" cellClass="text-center">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row['CreateDate'] | date: 'dd/MM/yyyy'}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="100" name="Vendor" prop="Supplier" cellClass="text-left"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="55" name="PIC" prop="PIC" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="30" name="Acc" prop="AccCode" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="100" name="Product No" prop="ProductNo" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [width]="110" name="Product Name" prop="ProductName" cellClass="text-left"></ngx-datatable-column>
+              <ngx-datatable-column [width]="200" name="Product Des" prop="ProductDes" cellClass="text-left"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="40" name="Unit" prop="UnitName" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="40" name="Q'ty" prop="Quantity" cellClass="text-right"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="90" name="Unit Price" prop="POPrice" cellClass="text-right">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{formatMoney(row['POPrice'], '')}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="110" name="Total" cellClass="text-right">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{formatMoney(row['TotalPrice'], '')}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="60" name="Currency" prop="POCurrency" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="80" name="Delivery Estimated" prop="POReceiptDate" cellClass="text-center">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  {{value | date: 'dd/MM/yyyy'}}
+                </ng-template>
+              </ngx-datatable-column>
+              <!-- <ngx-datatable-column [canAutoResize]="false" [width]="40" name="Code" prop="AccCode" cellClass="text-center"></ngx-datatable-column> -->
+              <ngx-datatable-column [canAutoResize]="false" [width]="80" name="Delivery Actual" prop="ReceiptActualDate" cellClass="text-center">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  {{value | date: 'dd/MM/yyyy'}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="80" name="PayDay" prop="PayDay" cellClass="text-center">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  {{value | date: 'dd/MM/yyyy'}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="70" cellClass="text-center">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <a href='javascript:void(0)' 
+                    class='btn btn-outline btn-sm btn-warning btn-icon' 
+                    title='Detail'
+                    style='width:30px;' 
+                    (click)="openPopupDetail(detailTemplate, row['PONo'])">
+                    <i class='fa fa-info'></i>
+                  </a>
+                  <a href='javascript:void(0)' 
+                    class='btn btn-outline btn-sm btn-primary btn-icon' 
+                    title='Edit'
+                    style='width:30px; margin-left: 3px;' 
+                    (click)="openPopupEdit(editTemplate, row['PONo'])"
+                    *ngIf="picPermissionData.IsPer">
+                    <i class='fa fa-edit'></i>
+                  </a>
+                </ng-template>
+              </ngx-datatable-column>
+            </ngx-datatable>
+          </div>
+        </div>
+      </div>
+      
+      <ng-template #detailTemplate>
+        <app-po-master-detail [bsModalRef]="bsModalRefDetail" [id]="id" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-po-master-detail>
+      </ng-template>
+
+      <ng-template #editTemplate>
+        <app-po-master-edit [bsModalRef]="bsModalRefEdit" [updateBy]="userInfo.code" [id]="id" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-po-master-edit>
+      </ng-template>
+
+      <ng-template #receiptTemplate>
+        <app-po-receipt [bsModalRef]="bsModalRefReceipt" [listID]="ListID" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-po-receipt>
+      </ng-template>
+
+      <ng-template #invoiceTemplate>
+        <app-po-invoice [bsModalRef]="bsModalRefInvoice" [updateBy]="userInfo.code" [productlist]="selected" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-po-invoice>
+      </ng-template>
+
+      <ng-template #paydayTemplate>
+        <app-po-payday [bsModalRef]="bsModalRefPayDay" [listID]="ListID" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-po-payday>
+      </ng-template>
+<!----------------------------------------------------------------------------------------------------->
+    </div>
+  </div>
+</section>

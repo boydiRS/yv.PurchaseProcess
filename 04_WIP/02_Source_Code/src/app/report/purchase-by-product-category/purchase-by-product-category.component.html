@@ -1,0 +1,29 @@
+<section class="content-header">
+  <div class="row col-12">
+    <div>
+      <span style="font-size: 20px;">By Product Category</span>
+    </div>
+    <div style="width: 130px; margin-left: 10px;">
+      <ngx-select [items]="dataForm.PICGroupList"
+                  [(ngModel)]="searchData.picGroup"
+                  placeholder="Section"
+                  [allowClear]=false
+                  style="padding: 0px;">
+      </ngx-select>
+    </div>
+    <div style="width: 200px; margin-left: 5px;">
+      <input type="month" class="form-control" [(ngModel)]="time" title="Time" placeholder="Year">
+    </div>
+    <button class="btn btn-success btn-sm" (click)="loadData()" style="margin-left: 5px;"><i class="fa fa-chart-bar" style="font-size: 15px;"></i></button>
+  </div>
+</section>
+<section class="content" style="margin-top: -5px;">
+  <div class="row">
+    <div class="col-12">
+<!----------------------------------------------------------------------------------------------------->
+      <div id="chart" style="height: 400px; width: 100%; margin-top: 5px; margin-left:auto;margin-right:auto;"></div>
+      <div id="chart1" style="height: 400px; width: 100%; margin-top: 5px; margin-left:auto;margin-right:auto;"></div>
+<!----------------------------------------------------------------------------------------------------->
+    </div>
+  </div>
+</section>

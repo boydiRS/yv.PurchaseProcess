@@ -1,0 +1,413 @@
+<script src="../../../assets/vendor_components/printjs/print.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../assets/vendor_components/printjs/print.min.css">
+<section class="content-header">
+  <div class="row col-12">
+    <div>
+      <span style="font-size: 20px;">Completion Report</span>
+    </div>
+    <div style="width: 100px; margin-left: 10px;">
+      <!-- <input type="text" [(ngModel)]="requestNo" (keyup)="requestnoUpdate($event)"> -->
+      <input class="form-control" type="text" [(ngModel)]="requestNo" (keyup)="prNoTriggerEnter($event)">
+    </div>
+    <div style="width: 400px; margin-left: 5px;">
+      <ngx-select [items]="dataForm.SampleTypeList" [(ngModel)]="dataSearch.SampleID"></ngx-select>
+    </div>
+    <button class="btn btn-primary btn-sm" (click)="onLoadDataReport()" style="margin-left: 5px;"><i class="fa fa-search"></i></button>
+    <ng-container *ngIf="permissionData.IsPer">
+      <button class="btn btn-sm btn-primary" 
+              [routerLink]="['/request/group-task', requestNo, dataSearch.SampleID]" routerLinkActive="router-link-active"
+              style="margin-left: 5px;"><i class="fa fa-bars"></i> GROUP TASK</button>
+    </ng-container>
+    <button class="btn btn-sm btn-success" (click)="onPrint()" style="margin-left: 5px;"><i class="fa fa-print"></i> PRINT</button>
+    <button class="btn btn-sm btn-success" (click)="print()" style="margin-left: 5px;"><i class="fa fa-print"></i> PRINT</button>
+    <div style="width: 100px; margin-left: 5px;">
+      <input class="form-control" type="number" [(ngModel)]="remainTask">
+    </div>
+  </div>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="#" [routerLink]="['/request/request-detail', requestNo]" routerLinkActive="router-link-active"><i class="fa fa-dashboard"></i> Request Info</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="#" [routerLink]="['/request/request-task', requestNo]" routerLinkActive="router-link-active"><i class="fa fa-dashboard"></i> Request Task</a>
+    </li>
+  </ol>
+</section>
+<section class="content" style="margin-top: -5px;">
+  <div class="row">
+    <div class="col-12">
+<!----------------------------------------------------------------------------------------------------->
+      <div class="content-grid " id="section-to-print" style="background-color:white;">
+        <!-- Sign Area -->
+        <table style="width: 100%;">
+          <tr>
+            <td rowspan="2" colspan="7">
+              <span style="font-size:16px; color: black; font-weight: bold;">Measurement Completion Report</span>
+            </td>
+            <td rowspan="2" style="font-size:10px;">
+              <span style="font-size:16px; color: black;">Plan Confirmation</span>
+            </td>
+            <td style="width: 120px;">
+              <span class="JPText">作成</span><span class="VNText">/Maker</span>
+            </td>
+            <td style="width: 120px;">
+              <span class="JPText">リーダー</span><span class="VNText">/Leader</span>
+            </td>
+            <td style="width: 120px;">
+              <span class="JPText">確認</span><span class="VNText">/Checker</span>
+            </td>
+            <td style="width: 120px;">
+              <span class="JPText">承認</span><span class="VNText">/Approver</span>
+            </td>
+            <td rowspan="2" style="width: 140px;">
+              <ngx-barcode 
+                [bc-value]="barcodeValue"
+                [bc-width]="1.1"
+                [bc-height]="35"
+                [bc-display-value]="false"
+                [bc-text-margin]="-3"
+                [bc-font-size]="10"
+                [bc-margin-top]="1"
+                [bc-margin-right]="1"
+                [bc-margin-left]="1"
+                [bc-margin-bottom]="1">
+              </ngx-barcode>
+            </td>
+          </tr>
+          <tr>
+            <td style="height: 30px;"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+        <!-- Request Info -->
+        <table style="width: 100%; margin-top: 5px;">
+          <tr>
+            <td style="width: 15%;"><span class="VNText">Request No</span></td>
+            <td style="width: 30%;">
+              <a href="#" placement="top" (click)="onCopyText(dataOrderItem.RequestNo)">
+                <span class="VNText">{{dataOrderItem.RequestNo}}</span>
+              </a>
+            </td>
+            <td><span class="VNText" style="float: left; margin-left: 3px;">Purpose</span></td>
+          </tr>
+          <tr>
+            <td><span class="VNText">Delivery Date (DD/MM/YYYY)</span></td>
+            <td>
+              <a href="#" placement="top" (click)="onCopyText(dataItem.ReceiveDate)">
+                <span class="VNText">{{dataItem.ReceiveDate | date: 'dd/MM/yyyy'}}</span>
+              </a>
+            </td>
+            <td rowspan="2">
+              <a href="#" placement="top" (click)="onCopyText(dataItem.PurposeTest_En)">
+                <span class="VNText" style="float: left; margin-left: 3px;"> {{dataItem.PurposeTest_En}}</span>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="VNText">Model</span></td>
+            <td>
+              <a href="#" placement="top" (click)="onCopyText(dataOrderItem.Model)">
+                <span class="VNText">{{dataOrderItem.Model}}</span>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="VNText">Part Name</span></td>
+            <td>
+              <a href="#" placement="top" (click)="onCopyText(dataOrderItem.PartName)">
+                <span class="VNText">{{dataOrderItem.PartName}}</span>
+              </a>
+            </td>
+            <td rowspan="2">
+              <a href="#" placement="top" (click)="onCopyText(dataItem.PurposeTest_Vn)">
+                <span class="VNText" style="float: left;margin-left: 3px;"> {{dataItem.PurposeTest_Vn}}</span>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="VNText">Part No</span></td>
+            <td>
+              <a href="#" placement="top" (click)="onCopyText(dataOrderItem.PartNo)">
+                <span class="VNText">{{dataOrderItem.PartNo}}</span>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="VNText">Location</span></td>
+            <td>
+              <a href="#" placement="top" (click)="onCopyText(dataItem.ProductionBaseName)">
+                <span class="VNText">{{dataItem.ProductionBaseName}}</span>
+              </a>
+            </td>
+            <td rowspan="3">
+              <span class="VNText" style="float: left;text-align: left;margin-left: 3px;">
+                Detail
+                <br>
+                <a href="#" placement="top" (click)="onCopyText(dataItem.PurposeTest_Jp)">
+                  <span class="VNText">{{dataItem.PurposeTest_Jp}}</span>
+                </a>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="VNText">Event</span></td>
+            <td>
+              <a href="#" placement="top" (click)="onCopyText(dataItem.EventMasterName)">
+                <span class="VNText">{{dataItem.EventMasterName}}</span>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td class="VNText">Purpose of request</td>
+            <td class="VNText">
+              <a href="#" placement="top" (click)="onCopyText(dataItem.PurposeRequestName)">
+                <span class="VNText">{{dataItem.PurposeRequestName}}</span>
+              </a>
+            </td>
+          </tr>
+        </table>
+        <!-- Task Info -->
+        <table style="width: 100%; margin-top: 5px;">
+          <tr>
+            <td rowspan="2" style="width: 2%;">
+              <span class="JPText">段階</span><br>
+              <span class="VNText">Step</span>
+            </td>
+            <td rowspan="2" style="width: 4%">
+              <span class="JPText">納期</span><br>
+              <span class="VNText">Deadline (DD/MM/YYYY)</span>
+            </td>
+            <td rowspan="2" style="width: 3%">
+              <span class="JPText">ミスカウント</span><br>
+              <span class="VNText">Mistake count</span>
+            </td>
+            <td rowspan="2" style="width: 4%">
+              <span class="JPText">レポート承認日</span><br>
+              <span class="VNText">Report <br>Approval Date<br>(DD/MM/YYYY)</span>
+            </td>
+            <td rowspan="2" style="width: 3%">
+              <span class="VNText">Test no.</span>
+            </td>
+            <td rowspan="2" style="width: 5%">
+              <span class="JPText">テスト項目</span><br>
+              <span class="VNText">Test items</span>
+            </td>
+            <td colspan="2">
+              <span class="JPText">詳細</span><br>
+              <span class="VNText">Details</span>
+            </td>
+            <td rowspan="2" style="width: 3%">
+              <span class="JPText">ｻﾝﾌﾟﾙ数</span><br>
+              <span class="VNText">Sample <br>Quantity</span>
+            </td>
+            <td rowspan="2" style="width: 4%">
+              <span class="JPText">ﾚﾎﾟｰﾄ枚数</span><br>
+              <span class="VNText">Report <br>Quantity</span>
+            </td>
+            <td rowspan="2" style="width: 6%">
+              <span class="JPText">見積り工数 JPN</span><br>
+              <span class="VNText">Budget Man<br>hours Japan</span>
+            </td>
+            <td rowspan="2" style="width: 6%">
+              <span class="JPText">見積り工数 VN</span><br>
+              <span class="VNText">Budget Man<br>hours VietNam</span>
+            </td>
+            <td rowspan="2" style="width: 5%">
+              <span class="JPText">実工数</span><br>
+              <span class="VNText">Actual<br>Man hours</span>
+            </td>
+            <td rowspan="2" style="width: 5%">
+              <span class="JPText">文書管理者</span><br>
+              <span class="VNText">Document<br>controller</span>
+            </td>
+            <td rowspan="2" style="width: 5%">
+              <span class="JPText">MG承認</span><br>
+              <span class="VNText">MG approve</span>
+            </td>
+            <td rowspan="2" style="width: 5%">
+              <span class="JPText">SMG承認</span><br>
+              <span class="VNText">SMG approve</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 14%;">
+              <span class="JPText">テスト名</span><br>
+              <span class="VNText">Test Name</span>
+            </td>
+            <td>
+              <span class="JPText">加振方向, 回数</span><br>
+              <span class="VNText">Direction, Cycles…</span>
+            </td>
+          </tr>
+          <ng-container *ngFor="let itemGroup of dataOrderItem.GroupTaskList">
+            <tr *ngFor="let item of itemGroup.TaskList; index as i; first as isFirst">
+              <!-- <td *ngIf="isFirst && itemGroup.StepTotal > 0" [attr.rowspan]="itemGroup.StepTotal"><span class="VNText">{{itemGroup.Step}}</span></td> -->
+              <td *ngIf="isFirst" [attr.rowspan]="itemGroup.RowTotal"><span class="VNText">{{itemGroup.Step}}</span></td>
+              <td *ngIf="isFirst" [attr.rowspan]="itemGroup.RowTotal"><span class="LongText">{{itemGroup.Deadline | date:'dd/MM/yyyy'}}</span></td>
+              <td>
+                <span class="VNText" *ngIf="item.MistakeQuantity == '0'"></span>
+                <span class="VNText" *ngIf="item.MistakeQuantity != '0'">{{item.MistakeQuantity}}</span>
+              </td>
+              <td *ngIf="isFirst" [attr.rowspan]="itemGroup.RowTotal"><span class="VNText">{{item.ReportApprovalDate}}</span></td>
+              <td><span class="VNText">{{item.TestNo}}</span></td>
+              <td><span class="VNText">{{item.TestItem}}</span></td>
+              <td>
+                <a href='javascript:void(0)' 
+                    title='Edit'
+                    (click)="openPopupOrderItemEdit(orderItemEditTemplate, item.ID)">
+                    <span class="LongText">{{item.TestName}}</span>
+                </a>
+              </td>
+              <td><span class="LongText">{{item.TaskName}}</span></td>
+              <td><span class="VNText">{{item.SampleQuatity}}</span></td>
+              <td *ngIf="isFirst" [attr.rowspan]="itemGroup.RowTotal" ><span class="VNText">{{itemGroup.ReportQuantity}}</span></td>
+              <td><span class="VNText">{{item.Manhour_Jp_Plan_Convert}}</span></td>
+              <td><span class="VNText">{{item.Manhour_Vn_Plan_Convert}}</span></td>
+              <td><span class="VNText">{{item.Manhour_Vn_Actual_Convert}}</span></td>
+              <td *ngIf="isFirst" [attr.rowspan]="itemGroup.RowTotal"></td>
+              <td *ngIf="isFirst" [attr.rowspan]="itemGroup.RowTotal"></td>
+              <td *ngIf="isFirst" [attr.rowspan]="itemGroup.RowTotal"></td>
+            </tr>
+          </ng-container>
+          <tr *ngFor='let in of [].constructor(remainTask) ;let i = index' height="14px;">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="7" style="border-bottom: hidden;border-left: hidden;"></td>
+            <td class="VNText">Total</td>
+            <td><span class="VNText">{{dataOrderItem.Total_Sample}}</span></td>
+            <td><span class="VNText">{{dataOrderItem.Total_Report}}</span></td>
+            <td><span class="VNText">{{dataOrderItem.Total_Manhour_Jp_Plan_Convert}}</span></td>
+            <td><span class="VNText">{{dataOrderItem.Total_Manhour_Vn_Plan_Convert}}</span></td>
+            <td>&emsp;</td>
+          </tr>
+        </table>
+        <!-- Footer of first page -->
+        <table style="width: 100%; margin-top: 5px;">
+          <tr>
+            <td style="text-align: left;">
+              <div>
+                <span class="VNText">※Trường hợp thay đổi deadline đánh dấu mũi tên "=>" ghi ngày thay đổi. Thay đổi theo chỉ thị bên Nhật ghi chữ màu xanh/ VN chậm muộn ghi màu đỏ</span><br>
+                <span class="JPText">納期変更する場合は"=>"を付け、変更した日を書く。JPの指示通りの変更は青字で書く/VN側の遅れの場合赤字で書く。</span><br>
+                <span class="VNText">Giải thích chi tiết lý do ghi ở mặt sau của báo cáo này/ </span><span class="JPText">理由の詳細説明は裏面に書いてください。</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: left;">
+              <div class="row">
+                <div class="col-4">
+                  <span style="font-size:8px;">FM-752-RPCO-15.E05</span><br>
+                  <!-- <span style="font-size:8px;">保留期間/Keeping time: 20 years/20年間</span> -->
+                  <span style="font-size:8px;">Thời hạn lưu trữ 20 năm</span>
+                </div>
+                <div class="col-4 VNText" style="text-align: center; vertical-align: middle;">
+                  <img src="../../../assets/images/logo-mea.png" style="width: 20px; height: 20px;">
+                  <span style="font-size:12px;"> Y-TEC VIETNAM CO.,LTD</span>
+                </div>
+                <div class="col-4">
+                  
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <!-- Second page -->
+        <table style="width: 100%; margin-top: 10px;">
+          <tr>
+            <td style="text-align: left;">
+              <div>
+                <span class="VNText" style="text-decoration: underline;font: bold;">Phần ghi chú:
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PIC sẽ ghi lại những nội dung sau vào mặt sau của Completion Report</span>                  
+                <br>
+                <span class="VNText" style="text-decoration: underline;font: bold">備考:
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;担当者は完了報告書の裏面に下記の内容を記入する</span>  
+                <br>
+                <span class="VNText">1. Chỉ thị từ leader, supporter bên Nhật, thiết kế /</span>
+                <span class="JPText">リーダー･JP支援者･設計者からの指示</span>
+                <br>
+                <span class="VNText">2. Nội dung xác nhận về spec, yêu cầu liên quan đến request /</span>
+                <span class="JPText">スペック･依頼関係確認内容</span>
+                <br>
+                <span class="VNText">3. Thay đổi deadline, bổ sung yêu cầu từ thiết kế (ai, khi nào , như thế nào ) /</span>
+                <span class="JPText">設計者からの納期変更･依頼追加の情報</span>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <table style="width: 100%; margin-top: 10px;">
+          <tr>
+            <td colspan="2" style="text-decoration: underline;font-size:10px;font-family: 'Tahoma', sans-serif;">
+              Preparation Process
+            </td>
+          </tr>
+          <tr>
+            <td class="VNText">PIC</td>
+            <td class="VNText" style="width: 10%;">Leader<br>(Confirm & Sign)</td>
+          </tr>
+          <tr *ngFor='let in of [].constructor(18) ;let i = index' height="14px;">
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="VNText">Operating → Finishing Process</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="VNText">PIC</td>
+            <td class="VNText">Leader<br>(Confirm & Sign)</td>
+          </tr>
+          <tr *ngFor='let in of [].constructor(18) ;let i = index' height="14px;">
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+        <!-- Footer of first page -->
+        <table style="width: 100%; margin-top: 5px;">
+          <tr>
+            <td style="text-align: left;">
+              <div class="row">
+                <div class="col-4">
+                  <span style="font-size:8px;">FM-752-RPCO-15.E05</span><br>
+                  <span style="font-size:8px;">Thời hạn lưu trữ 20 năm</span>
+                </div>
+                <div class="col-4 VNText" style="text-align: center; vertical-align: middle;">
+                  <img src="../../../assets/images/logo-mea.png" style="width: 20px; height: 20px;">
+                  <span style="font-size:12px;"> Y-TEC VIETNAM CO.,LTD</span>
+                </div>
+                <div class="col-4">
+                  
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- <ng-template #groupTaskTemplate>
+        <app-request-group-task [bsModalRef]="bsModalRefGroupTask" [requestNo]="requestNo" [sampleTypeID]="dataSearch.SampleID" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-request-group-task>
+      </ng-template> -->
+      <!-- <ng-template #orderItemEditTemplate>
+        <app-order-item-edit [bsModalRef]="bsModalRefOrderItemEdit" [comreport]="'1'" [updateBy]="userInfo.code" [id]="id" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-order-item-edit>
+      </ng-template> -->
+<!----------------------------------------------------------------------------------------------------->
+    </div>
+  </div>
+</section>

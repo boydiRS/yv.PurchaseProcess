@@ -1,0 +1,6 @@
+label {
+    margin-bottom: 0px;
+}
+[type=checkbox]+label {
+    padding-left: 25px;
+}

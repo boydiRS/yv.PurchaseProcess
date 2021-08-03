@@ -1,0 +1,98 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Detail</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="padding: 10px;">
+  <div class="row">
+    <div class="col-lg-8 col-md-12 col-sm-12" style="padding-right: 0px;">
+      <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-info"></i></span>  Info</h5>
+          <div class="box-controls pull-right">
+          </div>
+        </div>
+        <div class="box-body" style="padding:10px 10px 10px;">
+          <table class="table table-sm table-bordered" style="margin-bottom: 0;">
+            <tr>
+              <td><span class="col-form-label">Name</span></td>
+              <td colspan="3"><span class="col-form-content">{{dataItem.SupplierName}}</span></td>
+              <td><span class="col-form-label">Tel</span></td>
+              <td><span class="col-form-content">{{dataItem.Tel}}</span></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">VN Name</span></td>
+              <td colspan="3"><span class="col-form-content">{{dataItem.SupplierName_Vn}}</span></td>
+              <td><span class="col-form-label">Fax</span></td>
+              <td><span class="col-form-content">{{dataItem.Fax}}</span></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">Short Name</span></td>
+              <td><span class="col-form-content">{{dataItem.ShortName}}</span></td>
+              <td><span class="col-form-label">Email</span></td>
+              <td><span class="col-form-content">{{dataItem.Email}}</span></td>
+              <td><span class="col-form-label">Country</span></td>
+              <td><span class="col-form-content">{{dataItem.Country}}</span></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">Address</span></td>
+              <td colspan="3"><span class="col-form-content">{{dataItem.EnglishAddr}}</span></td>
+              <td><span class="col-form-label">Website</span></td>
+              <td><span class="col-form-content">{{dataItem.WebsiteLink}}</span></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">VN Address</span></td>
+              <td colspan="3"><span class="col-form-content">{{dataItem.Address}}</span></td>
+              <td rowspan="2"><span class="col-form-label">Tag</span></td>
+              <td rowspan="2"><span class="col-form-content">{{dataItem.Tag}}</span></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">Remark</span></td>
+              <td colspan="3"><span class="col-form-content">{{dataItem.Remark}}</span></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="box box-outline-secondary" style="margin-top: 5px; margin-bottom: 0px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-user-tie"></i></span>  Contact</h5>
+        </div>
+        <div class="box-body" style="padding:10px 10px 10px;">
+          <!-- [style.height.px]="innerHeight" -->
+          <div class="" style="overflow-y: auto;">  
+            <table class="table table-sm" style="width: 100%;">
+              <tr class="headerTable">
+                <td></td>
+                <td>No</td>
+                <td>Title</td>
+                <td>Name</td>
+                <td>Position</td>
+                <td>Email</td>
+                <td>Phone</td>
+                <td>Mobile</td>
+                <td>Remark</td>
+              </tr>
+              <ng-container *ngFor="let item of contactList.DataList">
+                <tr class="bodyTable">
+                  <td><span *ngIf="item.IsActive"><i class="fa fa-check"></i></span></td>
+                  <td style="width: 40px">{{item.RowIndex}}</td>
+                  <td>{{item.Title}}</td>
+                  <td>{{item.ContactName}}</td>
+                  <td>{{item.JobPosition}}</td>
+                  <td>{{item.Email}}</td>
+                  <td>{{item.Phone}}</td>
+                  <td>{{item.Mobile}}</td>
+                  <td>{{item.Remark}}</td>
+                </tr>
+              </ng-container>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-12 col-sm-12" style="padding-left: 5px;">
+      <app-supplier-history [id]="id"></app-supplier-history>
+    </div>
+  </div>
+</div>

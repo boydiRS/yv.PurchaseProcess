@@ -1,0 +1,41 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Update</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="padding: 10px;">
+  <table class="table table-sm table-bordered" style="margin-bottom: 0;">
+    <tr>
+      <td><span class="col-form-label">Product Code</span></td>
+      <td colspan="3"><input class="form-control" type="text" [(ngModel)]="dataItem.ProductNo" disabled/></td>
+      <!-- <td colspan="2"><ngx-select [items]="dataForm.ProductCodeList" [(ngModel)]="dataItem.ProductCode" [allowClear]=false></ngx-select></td> -->
+    </tr>
+    <tr>
+      <td><span class="col-form-label">Product Name</span></td>
+      <td colspan="3"><input class="form-control" type="text" [(ngModel)]="dataItem.ProductName"/></td>
+    </tr>
+    <tr>
+      <td><span class="col-form-label">Description</span></td>
+      <td colspan="3"><input class="form-control" type="text" [(ngModel)]="dataItem.Description"/></td>
+    </tr>
+    <tr>
+      <td><span class="col-form-label">Temp Price</span></td>
+      <td><input class="form-control" type="number" min = "0"[(ngModel)]="dataItem.OriginPrice"/></td>
+      <td><span class="col-form-label">Currency</span></td>
+      <td><ngx-select [items]="dataForm.CurrencyList" [(ngModel)]="dataItem.Currency" [allowClear]=false></ngx-select></td>
+    </tr>
+    <tr>
+      <td><span class="col-form-label">Category</span></td>
+      <td><ngx-select [items]="dataForm.CategoryList" [(ngModel)]="dataItem.ProductCategoryID" placeholder="Select category"></ngx-select></td>
+      <td><span class="col-form-label">Unit</span></td>
+      <td><ngx-select [items]="dataForm.UnitList" [(ngModel)]="dataItem.UnitID" placeholder="Select unit"></ngx-select></td>
+      <!-- <td><span class="col-form-label">Type</span></td>
+      <td><ngx-select [items]="dataForm.ProductTypeList" [(ngModel)]="dataItem.ProductType" placeholder="Select Type" [allowClear]=false></ngx-select></td> -->
+    </tr>
+  </table>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">CLOSE</button>
+  <button type="button" class="btn btn-success float-right" (click)="acceptBtnModalClicked()" autofocus>UPDATE</button>
+</div>

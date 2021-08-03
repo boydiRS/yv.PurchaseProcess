@@ -1,0 +1,142 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{prNo}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="padding: 10px;">
+  <div class="row" style="margin-top: 3px;">
+    <div class="col-12">
+      <div class="box box-outline-secondary" style="margin-bottom: 5px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-info"></i></span>  Info</h5>
+          <div class="box-controls pull-right">
+            <a href="#" (click)="onPrint(prNo)" routerLinkActive="router-link-active" title="Print" style="margin-top: -6px;"><i class="fa fa-print"></i></a>
+            <ng-container *ngIf="prCheck">
+              <a href="#" (click)="onExportExcel()" routerLinkActive="router-link-active" title="Export Excel" style="margin-top: -6px; margin-right: 10px;"><i class="fa fa-download"></i></a>
+            </ng-container>
+          </div>
+        </div>
+        <div class="box-body">
+          <div class="col-12 row">
+            <table class="table table-sm">
+              <tr>
+                <td><span class="col-form-label">Vendor</span></td>
+                <td><span class="col-form-content">{{dataItem.SupplierName}}</span></td>
+                <td><span class="col-form-label">Delivery Date</span></td>
+                <td><span class="col-form-content">{{dataItem.ReceiptDate | date: 'dd/MM/yyyy'}}</span></td>
+                <td><span class="col-form-label">AccCode</span></td>
+                <td><span class="col-form-content">{{dataItem.AccCode}}</span></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">Remark</span></td>
+                <td><span class="col-form-content">{{dataItem.Remark}}</span></td>
+                <td><span class="col-form-label">Currency</span></td>
+                <td><span class="col-form-content">{{dataItem.Currency}}</span></td>
+                <td><span class="col-form-label">RequestNo</span></td>
+                <td><span class="col-form-content">{{dataItem.RequestNo}}</span></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">Transfer</span></td>
+                <td colspan="3">
+                  <label class="col-form-content">
+                    <i class="fa fa-user"></i> {{dataItem.TranferName}}
+                    <i class="fa fa-users" style="margin-left: 10px;"></i> {{dataItem.TranferSectionName}}
+                    <i class="fa fa-envelope" style="margin-left: 10px;"></i> {{dataItem.TranferEmail}}
+                    <i class="fa fa-phone" style="margin-left: 10px;"></i> {{dataItem.TranferTel}}
+                  </label>
+                </td>
+                <td><span class="col-form-label">ThemeNo</span></td>
+                <td><span class="col-form-content">{{dataItem.ThemeNo}}</span></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-boxes"></i></span>  Product</h5>
+        </div>
+        <div class="box-body">
+          <div class="col-12" style="overflow-y: auto; padding-right: 10px; padding-left: 0px" [style.height.px]="innerHeight">
+            <table class="table table-sm">
+              <thead>
+                <td class="headerTable" style="text-align: center;">No.</td>
+                <td class="headerTable" style="text-align: center;">Type</td>
+                <td class="headerTable" style="text-align: left;">Product</td>
+                <td class="headerTable" style="text-align: left;">Description</td>
+                <td class="headerTable" style="text-align: center;">Q'ty</td>
+                <td class="headerTable" style="text-align: right;">Temp Unit Price</td>
+                <td class="headerTable" style="text-align: center;">Using Time</td>
+                <td class="headerTable" style="text-align: right;">Temp Subtotal</td>
+                <td class="headerTable" style="text-align: center;">PONo</td>
+                <td class="headerTable" style="text-align: center;">Delivery Actual</td>
+                <td class="headerTable" style="text-align: center;">Payday</td>
+              </thead>
+              <ng-container *ngFor="let item of prItemList.DataList">
+                <tbody>
+                  <td class="bodyTable" style="text-align: center; width: 40px">
+                    <div>{{item.RowIndex}}</div>
+                  </td>
+                  <td class="bodyTable" style="text-align: center;">
+                    <div>{{item.ProductTypeName}}</div>
+                  </td>
+                  <td class="bodyTable" style="text-align: left;">
+                    <div>{{item.ProductName}}</div>
+                  </td>
+                  <td class="bodyTable" style="text-align: left;">
+                    <div>{{item.ProductDes}}</div>
+                  </td>
+                  <td class="bodyTable" style="text-align: center;">
+                    <div>{{item.Quantity}}</div>
+                  </td>
+                  <td class="bodyTable" style="text-align: right;">
+                    <div>{{formatMoney(item.PRPrice, dataItem.Currency)}}</div>
+                  </td>
+                  <td class="bodyTable" style="text-align: center;">
+                    <div>{{item.UsingTime}} {{item.UsingTimeType}}</div>
+                  </td>
+                  <td class="bodyTable" style="text-align: right;">
+                    <div>{{item.SubTotal}}</div>
+                  </td>
+                  <td class="bodyTable" style="text-align: center;">
+                    <div>{{item.PONo}}</div>
+                  </td>
+                  <td class="bodyTable" style="text-align: center;">
+                    <div>{{item.ReceiptActualDate | date: 'dd/MM/yyyy'}}</div>
+                  </td>
+                  <td class="bodyTable" style="text-align: center;">
+                    <div>{{item.PayDay | date: 'dd/MM/yyyy'}}</div>
+                  </td>
+                </tbody>
+              </ng-container>
+            </table>
+          </div>
+        </div>
+        <div class="box-footer" style="padding:0px 5px 0px;">
+          <div class="row">
+            <div class="col-6">
+            </div>
+            <div class="col-6" style="padding-left: 0px;">
+              <span class="float-right" style="margin-left: 10px; margin-right: 20px; font-size: 14px; font-weight: bold; color: black;"> {{Total_String}}</span>
+              <span class="float-right" style="font-size: 14px;">Total: </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">CLOSE</button>
+  <ng-template [ngIf]="changePermissionData.IsPer">
+    <ng-container *ngIf="prCheck">
+      <ng-container *ngIf="isReturn">
+        <button type="button" class="btn btn-success float-right" (click)="onReturn()">RETURN</button>
+      </ng-container>
+      <ng-container *ngIf="isConfirm">
+        <button type="button" class="btn btn-success float-right" (click)="onConfirm()">CONFIRMED</button>
+      </ng-container>
+    </ng-container>
+  </ng-template>
+</div>

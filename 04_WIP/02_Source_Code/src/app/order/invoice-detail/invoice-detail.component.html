@@ -1,0 +1,197 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Detail</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="padding: 10px;">
+  <div class="row">
+    <div class="col-lg-8 col-md-12 col-sm-12" style="padding-right: 0px;">
+      <div class="row">
+        <div class="col-6" style="padding-right: 0px;">
+          <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+            <div class="box-header with-border">
+              <h5 class="box-title"><span class="box-title text-info"><i class="fa fa-file-invoice"></i></span>  Invoice</h5>
+              <div class="box-controls pull-right">
+                <!-- <a href="#" (click)="onPrint(poNo)" title="Print" style="margin-top: -6px;"><i class="fa fa-print" style="font-size: 14px;"></i></a> -->
+              </div>
+            </div>
+            <div class="box-body">
+              <table class="table table-sm">
+                <tr>
+                  <td><span class="col-form-label">InvoiceNo</span></td>
+                  <td><span class="col-form-content">{{dataItem.InvoiceNo}}</span></td>
+                  <td><span class="col-form-label">Invoice Date</span></td>
+                  <td><span class="col-form-content">{{dataItem.InvoiceDate | date: 'dd/MM/yyyy'}}</span></td>
+                </tr>
+                <tr>
+                  <td><span class="col-form-label">Invoice Type</span></td>
+                  <td><span class="col-form-content">{{dataItem.InvoiceTypeName}}</span></td>
+                  <td><span class="col-form-label">Bill</span></td>
+                  <td><span class="col-form-content">{{dataItem.BillNo}}</span></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-6" style="padding-left: 5px;">
+          <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+            <div class="box-header with-border">
+              <h5 class="box-title"><span class="box-title text-info"><i class="fa fa-user-tie"></i></span>  Customs Declaration sheet</h5>
+            </div>
+            <div class="box-body">
+              <table class="table table-sm">
+                <tr>
+                  <td><span class="col-form-label">CDSNo</span></td>
+                  <td><span class="col-form-content">{{dataItem.CDSNo}}</span></td>
+                  <td><span class="col-form-label">CDS Date</span></td>
+                  <td><span class="col-form-content">{{dataItem.CDSDate | date: 'dd/MM/yyyy'}}</span></td>
+                </tr>
+                <tr>
+                  <td><span class="col-form-label">CDS Type</span></td>
+                  <td><span class="col-form-content">{{dataItem.CDSType}}</span></td>
+                  <td><span class="col-form-label">Selectivity</span></td>
+                  <td>
+                    <!-- <span class="badge" [style.background] = "row['dataItem.CDSSelectivity']" >{{dataItem.CDSSelectivity}}</span> -->
+                    <span class="col-form-content">{{dataItem.CDSSelectivity}}</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 5px">
+        <div class="col-12">
+          <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+            <div class="box-header with-border">
+              <h5 class="box-title"><span class="box-title text-info"><i class="fa fa-truck"></i></span> Transportation agent</h5>
+            </div>
+            <div class="box-body">
+              <table class="table table-sm">
+                <tr>
+                  <td><span class="col-form-label">Oversea</span></td>
+                  <td><span class="col-form-content">{{dataItem.TA_Oversea}}</span></td>
+                  <td><span class="col-form-label">Oversea Fee</span></td>
+                  <td style="text-align: right;"><span class="col-form-content">{{formatMoney(dataItem.TA_OverseaFee,'VND')}}</span></td>
+                </tr>
+                <tr>
+                  <td><span class="col-form-label">Forwader</span></td>
+                  <td><span class="col-form-content">{{dataItem.TA_Forwader}}</span></td>
+                  <td><span class="col-form-label">Forwader Fee</span></td>
+                  <td style="text-align: right;"><span class="col-form-content">{{formatMoney(dataItem.TA_ForwaderFee,'VND')}}</span></td>
+                </tr>
+                <tr>
+                  <td><span class="col-form-label">Trucking</span></td>
+                  <td><span class="col-form-content">{{dataItem.TA_Trucking}}</span></td>
+                  <td><span class="col-form-label">Trucking Fee</span></td>
+                  <td style="text-align: right;"><span class="col-form-content">{{formatMoney(dataItem.TA_TruckingFee,'VND')}}</span></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 5px">
+        <div class="col-6" style="padding-right: 0px;">
+          <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+            <div class="box-header with-border">
+              <h5 class="box-title"><span class="box-title text-info"><i class="fa fa-hand-holding-usd"></i></span> TAX</h5>
+            </div>
+            <div class="box-body">
+              <table class="table table-sm">
+                <tr>
+                  <td><span class="col-form-label">Import Tax</span></td>
+                  <td style="text-align: right;"><span class="col-form-content">{{formatMoney(dataItem.ImportTax,'VND')}}</span></td>
+                </tr>
+                <tr>
+                  <td><span class="col-form-label">VAT Tax</span></td>
+                  <td style="text-align: right;"><span class="col-form-content">{{formatMoney(dataItem.VATTax,'VND')}}</span></td>
+                </tr>
+                <tr>
+                  <td><span class="col-form-label">Environ Tax</span></td>
+                  <td style="text-align: right;"><span class="col-form-content">{{formatMoney(dataItem.EnvironmentTax,'VND')}}</span></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-6" style="padding-left: 5px;">
+          <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+            <div class="box-header with-border">
+              <h5 class="box-title"><span class="box-title text-info"><i class="fa fa-box"></i></span> Cargo</h5>
+            </div>
+            <div class="box-body">
+              <table class="table table-sm">
+                <tr>
+                  <td><span class="col-form-label">Weight</span></td>
+                  <td colspan="3"><span class="col-form-content">{{dataItem.TotalWeight}} (kg)</span></td>
+                </tr>
+                <tr>
+                  <td><span class="col-form-label">Vendor</span></td>
+                  <td colspan="3"><span class="col-form-content">{{dataItem.SupplierName}}</span></td>
+                </tr>
+                <tr>
+                  <td><span class="col-form-label">Incoterm</span></td>
+                  <td><span class="col-form-content">{{dataItem.IncotermID}}</span></td>
+                  <td><span class="col-form-label">Currency</span></td>
+                  <td><span class="col-form-content">{{dataItem.Currency}}</span></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="box box-outline-secondary" style="margin-bottom: 0px; margin-top: 5px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-boxes"></i></span> Product</h5>
+        </div>
+        <div class="box-body">
+          <div class="" style="overflow-y: auto;" [style.height.px]="innerHeight">
+            <table class="table table-sm">
+              <tr class="headerTable">
+                <td style="text-align: left">No.</td>
+                <td style="text-align: center">HSCode</td>
+                <td style="text-align: left">Type</td>
+                <td style="text-align: left">Product</td>
+                <td style="text-align: left">Description</td>
+                <td style="text-align: right">Q'ty</td>
+                <td style="text-align: center">Unit</td>
+                <td style="text-align: center">Unit Price</td>
+                <td style="text-align: right">Subtotal</td>
+              </tr>
+              <ng-container *ngFor="let item of prItemList.DataList">
+                <tr class="bodyTable">
+                  <td style="text-align: left">{{item.RowIndex}}</td>
+                  <td style="text-align: center">{{item.HSCode}}</td>
+                  <td style="text-align: left">{{item.ProductTypeName}}</td>
+                  <td style="text-align: left">{{item.ProductName}}</td>
+                  <td style="text-align: left">{{item.POProductDes}}</td>
+                  <td style="text-align: right">{{item.Quantity}}</td>
+                  <td style="text-align: center">{{item.UnitName}}</td>
+                  <td style="text-align: center">{{formatMoney(item.POPrice, dataItem.Currency)}}</td>
+                  <td style="text-align: right">{{item.SubTotal}}</td>
+                </tr>
+              </ng-container>
+            </table>
+          </div>
+        </div>
+        <div class="box-footer" style="padding: 0px;">
+          <div style="text-align: right; padding-right: 5px" class="col-12">
+            <p style="margin-bottom: 0px; margin-top: -3px;">
+              <span style="font-size: 14px; color: black;">Total: </span>
+              <span style="margin-left: 10px; margin-right: 20px; font-size: 14px; font-weight: bold; color: black;"> {{Total_String}}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-4 col-md-12 col-sm-12" style="padding-left: 5px;">
+      <app-invoice-history [id]="id"></app-invoice-history>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">CLOSE</button>
+</div>

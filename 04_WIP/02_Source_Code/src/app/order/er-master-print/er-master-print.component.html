@@ -1,0 +1,472 @@
+<section class="content-header">
+  <div class="row col-12">
+    <div>
+      <span style="font-size: 20px;">ER Print</span>
+    </div>
+    <!-- <button class="btn btn-primary btn-sm" (click)="loadData()" style="margin-left: 10px;"><i class="fa fa-search"></i></button> -->
+    <button class="btn btn-sm btn-success" (click)="onPrint()" style="margin-left: 10px;"><i class="fa fa-print"></i> PRINT</button>
+  </div>
+</section>
+<section class="content" style="margin-top: -5px;">
+  <div class="row">
+    <div class="col-12">
+      <div class="content-grid " id="section-to-print" style="background-color:white;">
+        <div class="row">
+          <div class="col-3">
+            <img src="../../../assets/images/logo_full.png" style="width:120px; margin-top: 0px;" />
+          </div>
+          <div class="col-6" style="text-align:center">
+            <div>
+              <span style="font-family: 'Tahoma', sans-serif; font-size:18px; color:black; font-weight: bold;">Export Requirement / </span>
+              <span style="font-family: 'Tahoma', sans-serif; font-size:18px; color:black; font-weight: bold;">Thông tin hàng xuất</span>
+            </div>
+          </div>
+          <div class="col-3" style="text-align: right;">
+            <ngx-barcode 
+                [bc-value]="erNo"
+                [bc-width]="1.1"
+                [bc-height]="35"
+                [bc-display-value]="false"
+                [bc-text-margin]="-2"
+                [bc-font-size]="18"
+                [bc-margin-top]="1"
+                [bc-margin-right]="1"
+                [bc-margin-left]="1"
+                [bc-margin-bottom]="1">
+            </ngx-barcode>
+            <span style="font-size: 18px; color:black">{{erNo}}</span>
+          </div>
+        </div>
+        <!-- <div style="text-align: right;">
+          <span>3/12/2020</span><br>
+        </div> -->
+        <div class="row" style="margin-top: 5px;">
+          <div class="col-6" style="padding-right: 0px;">
+            <span class="HeaderText" style="text-decoration: underline;">From/Từ:</span>
+            <div class="row">
+              <div class="col-3">
+                <span class="VNText">Section</span><br>
+                <span class="VNText-Italic"></span>
+              </div>
+              <div class="col-9">
+                <span clas="VNText">{{dataItem.PICGroupName}}</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="VNText">Tell</span><br>
+                <span class="VNText-Italic">Điện thoại</span><br>
+              </div>
+              <div class="col-9">
+                <span class="VNText">{{dataItem.TranferTel}}</span><br>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="VNText">P.I.C</span><br>
+                <span class="VNText-Italic">Người phụ trách</span><br>
+              </div>
+              <div class="col-9">
+                <span class="VNText">{{dataItem.PIC}}</span><br>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-3">
+                <span class="VNText">Shipment by</span><br>
+                <span class="VNText-Italic">Hình thức xuất</span><br>
+              </div>
+              <div class="col-3 row">
+                <div>
+                  <i class="far fa-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.ShipmentBy != 1"></i>
+                  <i class="far fa-check-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.ShipmentBy == 1"></i>
+                </div>
+                <div>
+                  <span class="VNText">Air</span><br>
+                  <span class="VNText-Italic">Đường không</span><br>
+                </div>
+              </div>
+              <div class="col-3 row">
+                <div>
+                  <i class="far fa-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.ShipmentBy != 2"></i>
+                  <i class="far fa-check-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.ShipmentBy == 2"></i>
+                </div>
+                <div>
+                  <span class="VNText">Sea</span><br>
+                  <span class="VNText-Italic">Đường biển</span><br>
+                </div>
+              </div>
+              <div class="col-3 row">
+                <div>
+                  <i class="far fa-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.ShipmentBy != 3"></i>
+                  <i class="far fa-check-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.ShipmentBy == 3"></i>
+                </div>
+                <div>
+                  <span class="VNText">Truck</span><br>
+                  <span class="VNText-Italic">Đường bộ</span><br>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="VNText">Purpose</span><br>
+                <span class="VNText-Italic">Mục đích gửi hàng</span><br>
+              </div>
+              <div class="col-3 row">
+                <div>
+                  <i class="far fa-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.Purpose != 1"></i>
+                  <i class="far fa-check-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.Purpose == 1"></i>
+                </div>
+                <div>
+                  <span class="VNText">Sample/Gif</span><br>
+                  <span class="VNText-Italic">Mẫu/Quà</span><br>
+                </div>
+              </div>
+              <div class="col-3 row">
+                <div>
+                  <i class="far fa-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.Purpose != 2"></i>
+                  <i class="far fa-check-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.Purpose == 2"></i>
+                </div>
+                <div>
+                  <span class="VNText">Return</span><br>
+                  <span class="VNText-Italic">Trả về</span><br>
+                </div>
+              </div>
+              <div class="col-3 row">
+                <div>
+                  <i class="far fa-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.Purpose != 3"></i>
+                  <i class="far fa-check-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.Purpose == 3"></i>
+                </div>
+                <div>
+                  <span class="VNText">Repair</span><br>
+                  <span class="VNText-Italic">Sửa chữa</span><br>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="VNText">Type of goods</span><br>
+                <span class="VNText-Italic">Loại hàng</span><br>
+              </div>
+              <div class="col-3 row">
+                <div>
+                  <i class="far fa-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.ERType != true"></i>
+                  <i class="far fa-check-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.ERType == true"></i>
+                </div>
+                <div>
+                  <span class="VNText">Commercial</span><br>
+                  <span class="VNText-Italic">Mậu dịch</span><br>
+                </div>
+              </div>
+              <div class="col-6 row">
+                <div>
+                  <i class="far fa-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.ERType != false"></i>
+                  <i class="far fa-check-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.ERType == false"></i>
+                </div>
+                <div style="margin-top: 5px;">
+                  <span class="VNText">Non-Commercial</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="VNText">Shipment type</span><br>
+                <span class="VNText-Italic">Loại hình xuất</span><br>
+              </div>
+              <div class="col-3 row">
+                <div>
+                  <i class="far fa-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.ShipmentType != 1"></i>
+                  <i class="far fa-check-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.ShipmentType == 1"></i>
+                </div>
+                <div>
+                  <span class="VNText">Export</span><br>
+                  <span class="VNText-Italic">Xuất hẳn</span><br>
+                </div>
+              </div>
+              <div class="col-6 row">
+                <div>
+                  <i class="far fa-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.ShipmentType != 2"></i>
+                  <i class="far fa-check-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.ShipmentType == 2"></i>
+                </div>
+                <div>
+                  <span class="VNText">Temporary export, re-import</span><br>
+                  <span class="VNText-Italic">Tạm nhập tái xuất</span><br>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-6">
+            <span class="HeaderText" style="text-decoration: underline;">To/Đến:</span>
+            <div class="row">
+              <div class="col-3">
+                <span class="VNText">Company</span><br>
+                <span class="VNText-Italic">Công ty</span><br>
+              </div>
+              <div class="col-9">
+                <span class="VNText">{{dataItem.SupplierName}}</span><br>
+                <span class="VNText-Italic"></span><br>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="VNText">Address</span><br>
+                <span class="VNText-Italic">Địa chỉ</span><br>
+              </div>
+              <div class="col-9">
+                <span class="VNText">{{dataItem.SupplierAdrress}}</span><br>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="VNText">Tell/Fax</span><br>
+                <span class="VNText-Italic">Điện thoại</span><br>
+              </div>
+              <div class="col-9">
+                <span class="VNText">{{dataItem.TranferTel}}</span><br>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="VNText">Receiver</span><br>
+                <span class="VNText-Italic">Tên người nhận</span><br>
+              </div>
+              <div class="col-9">
+                <span class="VNText">{{dataItem.TranferName}}</span><br>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="VNText">Payment</span><br>
+                <span class="VNText-Italic">Thanh toán</span><br>
+              </div>
+              <div class="col-3 row">
+                <div>
+                  <i class="far fa-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.PaymentType != 1"></i>
+                  <i class="far fa-check-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.PaymentType == 1"></i>
+                </div>
+                <div style="margin-top: 5px;">
+                  <span class="VNText">Y-Tec Viet Nam</span><br>
+                </div>
+              </div>
+              <div class="col-3 row">
+                <div>
+                  <i class="far fa-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.PaymentType != 2"></i>
+                  <i class="far fa-check-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.PaymentType == 2"></i>
+                </div>
+                <div style="margin-top: 5px;">
+                  <span class="VNText">Recipient</span><br>
+                </div>
+              </div>
+              <div class="col-3 row">
+                <div>
+                  <i class="far fa-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.PaymentType != 3"></i>
+                  <i class="far fa-check-square CheckBox" style="font-size: 20px; margin-right: 5px;" *ngIf="dataItem.PaymentType == 3"></i>
+                </div>
+                <div style="margin-top: 5px;">
+                  <span class="VNText">SHA</span><br>
+                </div>
+              </div>
+            </div>
+            <span class="HeaderText" style="text-decoration: underline;">Note:</span><br>
+            <span class="HeaderText">Y-Tec: </span><span class="VNText-Italic">Pay all charges/ Người gửi thanh toán toàn bộ phí gửi và nhận (DDP)</span><br>
+            <span class="HeaderText">Recipient: </span><span class="VNText-Italic">Pay all charges/ Người nhận thanh toán toàn bộ phí gửi và nhận (EXW)</span><br>
+            <span class="HeaderText">Recipient's Account No. charges</span><span class="VNText-Italic">/ Phí trích từ tài khoản của người nhận số:</span><br>
+            <span class="HeaderText">SHA: </span><span class="VNText-Italic">Charge to be shared /Phí chia sẻ cho hai bên (CPT)</span>
+          </div>
+        </div>
+        <table style="width: 100%; margin-top: 5px;">
+          <tr style="height: 20px;">
+            <td style="width: 30px" rowspan="2">
+              <span class="HeaderText">STT</span><br>
+              <span class="VNText-Italic">(No.)</span>
+            </td>
+            <td colspan="2">
+              <span class="HeaderText">Goods</span><br>
+              <span class="VNText-Italic">Hàng hóa</span>
+            </td>
+            <td colspan="2">
+              <span class="HeaderText">Invoice</span><br>
+              <span class="VNText-Italic">Hóa đơn</span>
+            </td>
+            <td style="width: 60px" rowspan="2">
+              <span class="HeaderText">Request</span>
+            </td>
+            <td rowspan="2">
+              <span class="HeaderText">Kind of test</span>
+            </td>
+            <td style="width: 40px" rowspan="2">
+              <span class="HeaderText">Quantity</span><br>
+              <span class="VNText-Italic">Số lượng</span>
+            </td>
+            <td style="width: 40px" rowspan="2">
+              <span class="HeaderText">Unit</span><br>
+              <span class="VNText-Italic">Đơn vị</span>
+            </td>
+            <td style="width: 40px" rowspan="2">
+              <span class="HeaderText">Carton</span><br>
+              <span class="VNText-Italic">Số thùng carton</span>
+            </td>
+            <td style="width: 70px" rowspan="2">
+              <span class="HeaderText">Net Weight</span><br>
+              <span class="VNText-Italic">Trọng lượng tịnh của từng sp (kg)</span>
+            </td>
+            <td style="width: 70px" rowspan="2">
+              <span class="HeaderText">Gross weight</span><br>
+              <span class="VNText-Italic">Trọng lượng bao gồm đóng gói của thùng carton (kg)</span>
+            </td>
+            <td style="width: 70px" rowspan="2">
+              <span class="HeaderText">Dimension</span><br>
+              <span class="VNText-Italic">Kích thước carton dài x rộng x cao (mm)</span>
+            </td>
+            <td style="width: 60px" rowspan="2">
+              <span class="HeaderText">Estimated Price</span><br>
+              <span class="VNText-Italic">Đơn giá ước tính</span>
+            </td>
+            <td style="width: 60px" rowspan="2">
+              <span class="HeaderText">Amount</span><br>
+              <span class="VNText-Italic">Thành tiền</span>
+            </td>
+            <td style="width: 40px" rowspan="2">
+              <span class="HeaderText">Currency</span><br>
+              <span class="VNText-Italic">Loại tiền</span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="HeaderText">Name</span><br>
+              <span class="VNText-Italic">Tên hàng, Tên máy</span>
+            </td>
+            <td>
+              <span class="HeaderText">Code</span><br>
+              <span class="VNText-Italic">Mã hàng, Mã phụ tùng</span>
+            </td>
+            <td style="width: 80px" >
+              <span class="HeaderText">Invoice No.</span><br>
+              <span class="VNText-Italic">Số hóa đơn đã nhập</span>
+            </td>
+            <td style="width: 50px" >
+              <span class="HeaderText">Item No.</span><br>
+              <span class="VNText-Italic">Số TT của sp</span>
+            </td>
+          </tr>
+          <tr *ngFor="let item of prItemList.DataList; index as i; first as isFirst" height="20px">
+            <td><span class="VNText">{{item.RowIndex}}</span></td>
+            <td style="text-align: left;"><span class="VNText">{{item.ProductName}}</span></td>
+            <td style="text-align: left;"><span class="VNText">{{item.ProductDes}}</span></td>
+            <td><span class="VNText">{{item.InvoiceNo}}</span></td>
+            <td><span class="VNText">{{item.ItemNo}}</span></td>
+            <td><span class="VNText">{{item.RequestNo}}</span></td>
+            <td><span class="VNText">{{item.KindOfTest}}</span></td>
+            <td><span class="VNText">{{item.Quantity}}</span></td>
+            <td><span class="VNText">{{item.UnitName}}</span></td>
+            <td *ngIf="isFirst" [attr.rowspan]="rowTotal"><span class="VNText">1</span></td>
+            <td><span class="VNText">{{item.Weight}}</span></td>
+            <td *ngIf="isFirst" [attr.rowspan]="rowTotal"><span class="VNText">{{dataItem.TotalWeight}}</span></td>
+            <td *ngIf="isFirst" [attr.rowspan]="rowTotal"><span class="VNText">{{dataItem.Dimension}}</span></td>
+            <td style="text-align: right;"><span class="VNText">{{formatMoney(item.Price, '')}}</span></td>
+            <td style="text-align: right;"><span class="VNText">{{item.SubTotal}}</span></td>
+            <td><span class="VNText">{{dataItem.Currency}}</span></td>
+          </tr>
+          <tr *ngFor='let in of [].constructor(remainTask) ;let i = index' height="20px;">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr height="20px;">
+            <td><span class="HeaderText">Total</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="VNText" *ngIf="total_Unit != null">{{total_Quantity}}</span></td>
+            <td><span class="VNText">{{total_Unit}}</span></td>
+            <td><span class="VNText">1</span></td>
+            <td></td>
+            <td><span class="VNText">{{dataItem.TotalWeight}}</span></td>
+            <td></td>
+            <td><span class="VNText">{{total_Price}}</span></td>
+            <td><span class="VNText">{{total_Amount}}</span></td>
+            <td><span class="VNText">{{dataItem.Currency}}</span></td>
+          </tr>
+        </table>
+        <div class="row" style="margin-top: 5px;">
+          <div class="col-6">
+            <div class="row" style="margin-top: 15px;">
+              <div class="col-6">
+                <span class="VNText">ETD Required date</span><br>
+                <span class="VNText-Italic">Ngày yêu cầu dự kiến xuất hàng</span>
+              </div>
+              <div class="col-6">
+                <span class="VNText">{{dataItem.SendDate | date: 'dd/MM/yyyy'}}</span>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 15px;">
+              <div class="col-6">
+                <span class="VNText">ETA Required date</span><br>
+                <span class="VNText-Italic">Ngày yêu cầu dự kiến nhận hàng</span><br>
+              </div>
+              <div class="col-6">
+                <span class="VNText">{{dataItem.SendDate | date: 'dd/MM/yyyy'}}</span>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 15px;">
+              <div class="col-12">
+                <span class="HeaderText">Please send the Export Requirement to Import-Export Section 02 days before export day</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <table style="width: 100%">
+              <tr>
+                <td style="width: 33%;">
+                  <span class="HeaderText">Prepared by</span>
+                </td>
+                <td style="width: 33%;">
+                  <span class="HeaderText">Checked by</span>
+                </td>
+                <td style="width: 34%;">
+                  <span class="HeaderText">Approved by</span>
+                </td>
+              </tr>
+              <tr>
+                <td rowspan="2" style="height: 100px;"></td>
+                <td rowspan="2" ></td>
+                <td style="border-bottom: 0px;"></td>
+              </tr>
+              <tr>
+                <td style="height: 20px; border-top: 0px;">
+                  <span class="HeaderText">TAKAYUKI AMBO</span><br>
+                  <span class="HeaderText">General Director</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div style="margin-top: 5px;">
+          <span style="font-size:8px;">FM-YR87-800-02.EV02</span>
+          <br>
+          <span style="font-size:8px;">Thời hạn lưu trữ 20 năm</span>
+        </div>
+        <div class="pagebreak">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,122 @@
+<section class="content-header">
+  <div class="row col-12">
+    <div>
+      <span style="font-size: 20px;">Products</span>
+    </div>
+    <div style="width: 120px; margin-left: 10px;">
+      <ngx-select [items]="dataForm.PICGroupList"
+                  [(ngModel)]="searchData.PICGroupID"
+                  (selectionChanges)="onChangePICGroup($event)"
+                  [allowClear]=false>
+      </ngx-select>
+    </div>
+    <div style="width: 170px; margin-left: 5px;">
+      <ngx-select [items]="CategoryList"
+                  [(ngModel)]="searchData.CategoryID"
+                  (selectionChanges)="onChangeCategory($event)"
+                  placeholder="Category">
+      </ngx-select>
+    </div>
+    <div style="width: 120px; margin-left: 5px;">
+      <input class="form-control" type="text" [(ngModel)]="searchData.Name" placeholder="Name..." (keyup)="triggerEnter($event)">
+    </div>
+    <button class="btn btn-primary btn-sm" (click)="loadData()" style="margin-left: 5px;"><i class="fa fa-search"></i></button>
+    <button class="btn btn-primary btn-sm" (click)="onExportToExcel()" style="margin-left: 5px;"><i class="fa fa-download"></i></button>
+  </div>
+</section>
+<section class="content" style="margin-top: -5px;">
+  <div class="row">
+    <div class="col-12">
+<!----------------------------------------------------------------------------------------------------->
+      <div class="row">
+        <div class="col-9">
+          <div class="col-12 row" style="vertical-align: middle;">
+            <div style="margin-right: 5px; margin-top: 8px;"><span >Show</span></div>
+            <select (change)="onChangeRowPerPage($event)" style="width: 100px;" [(ngModel)]="searchData.ItemsPerPage">
+              <option *ngFor="let i of rowPerPage" value="{{i}}">{{i}}</option>
+            </select>
+            <div style="margin-left: 5px; margin-top: 8px;"><span >entries/page</span></div>
+          </div>
+        </div>
+        <div class="col-3">
+          <button class="btn btn-sm btn-success float-right" (click)="openPopupCreate(createTemplate)" *ngIf="permissionData.IsPer"><i class="fa fa-plus"></i> CREATE NEW</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="">
+            <ngx-datatable class="material fullscreen custom" 
+              [externalSorting]="true" 
+              (sort)="onSort($event)"
+              [columnMode]="'force'" 
+              
+              [footerHeight]="25"
+              [rowHeight]="'auto'" 
+              [rows]="pagingModel.DataList" 
+              [count]="pagingModel.TotalItems" 
+              [offset]="pagingModel.CurrentPage-1"
+              [limit]="pagingModel.ItemsPerPage" 
+              [externalPaging]="true" 
+              (page)='setPage($event)' 
+              [scrollbarH]="true" 
+              [scrollbarV]="true" 
+              [virtualization]="false" 
+              [style.height.px]="innerHeight"
+              [loadingIndicator]="loadingIndicator">
+              <ngx-datatable-column [canAutoResize]="false" [width]="40" name="No." prop="RowIndex" cellClass="text-center" [sortable]="false"></ngx-datatable-column>
+              <!-- <ngx-datatable-column [canAutoResize]="false" [width]="30" name="Avatar" cellClass="text-center" [sortable]="false">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <a href="#" placement="top" (click)="onShowImage(row['Avatar'])">
+                    <img src="{{row['Avatar']}}" alt="" style="object-fit: cover; width: 25px; height: 25px;">
+                  </a>
+                </ng-template>
+              </ngx-datatable-column> -->
+              <ngx-datatable-column [canAutoResize]="false" [width]="120" name="Product Code" prop="ProductNo" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [width]="100" name="Product Name" prop="ProductName" cellClass="text-left"></ngx-datatable-column>
+              <ngx-datatable-column [width]="100" name="Description" prop="Description" cellClass="text-left"></ngx-datatable-column>
+              <!-- <ngx-datatable-column [canAutoResize]="false" [width]="110" name="Type" prop="ProductTypeName" cellClass="text-center"></ngx-datatable-column> -->
+              <ngx-datatable-column [canAutoResize]="false" [width]="110" name="Category" prop="ProductCategoryName" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="130" name="Template Price" prop="OriginPrice" cellClass="text-right">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{formatMoney(row['OriginPrice'])}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="70" name="Currency" prop="Currency" cellClass="text-center"></ngx-datatable-column>
+              <ngx-datatable-column [canAutoResize]="false" [width]="60" name="Unit" prop="UnitName" cellClass="text-center"></ngx-datatable-column>
+              <!-- <ngx-datatable-column [width]="110" name="User" prop="Creater" cellClass="text-center"></ngx-datatable-column> -->
+              <ngx-datatable-column [canAutoResize]="false" [width]="70" cellClass="text-center">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <ng-template [ngIf]="permissionData.IsPer">
+                    <a href='javascript:void(0)' 
+                    class='btn-edit btn btn-outline btn-sm btn-primary btn-icon' 
+                    title='Edit'
+                    style='width:30px;' 
+                    (click)="openPopupEdit(editTemplate, row['ProductNo'])">
+                    <i class='fa fa-edit'></i>
+                    </a>
+                    <a href='javascript:void(0)' 
+                      class='btn-edit btn btn-outline btn-sm btn-danger btn-icon' 
+                      title='Delate'
+                      style='width:30px; margin-left: 3px;' 
+                      (click)="onDeleteProduct(row['ProductNo'])">
+                      <i class='fa fa-trash'></i>
+                    </a>
+                  </ng-template>
+                </ng-template>
+              </ngx-datatable-column>
+            </ngx-datatable>
+          </div>
+        </div>
+      </div>
+      
+      <ng-template #createTemplate>
+        <app-product-item-create [bsModalRef]="bsModalRefCreate" [createBy]="userInfo.code" [picGroup]="searchData.PICGroupID" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-product-item-create>
+      </ng-template>
+
+      <ng-template #editTemplate>
+        <app-product-item-edit [bsModalRef]="bsModalRefEdit" [updateBy]="userInfo.code" [id]="id" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-product-item-edit>
+      </ng-template>
+<!----------------------------------------------------------------------------------------------------->
+    </div>
+  </div>
+</section>

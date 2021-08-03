@@ -1,0 +1,169 @@
+<div class="main-nav">
+    <nav class="navbar navbar-expand-lg">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item" [class.active]="homeActive">
+                    <a class="nav-link" [routerLink]="['/']">
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown" [class.active]="ordersActive">
+                    <a class="nav-link dropdown-toggle"
+                        href=""
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                        <span> Orders</span>
+                    </a>
+                    <ul class="dropdown-menu multilevel scale-up-left">
+                        <li>
+                            <a class="nav-link" [routerLink]="['/order/po-detail-list']">
+                                <span style="font-size: 14px;">Purchase Order</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" [routerLink]="['/order/pr-list']">
+                                <span style="font-size: 14px;">Purchase Request</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" [routerLink]="['/order/pr-check']">
+                                <span style="font-size: 14px;">Purchase Request Check</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown" [class.active]="importexportActive">
+                    <a class="nav-link dropdown-toggle"
+                        href=""
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                        <span> Import/Export</span>
+                    </a>
+                    <ul class="dropdown-menu multilevel scale-up-left">
+                        <li>
+                            <a class="nav-link" [routerLink]="['/order/invoice-item-list']">
+                                <span style="font-size: 14px;">Import</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" [routerLink]="['/order/eo-list']">
+                                <span style="font-size: 14px;">Export Order</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" [routerLink]="['/order/er-list']">
+                                <span style="font-size: 14px;">Export Request</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" [routerLink]="['/order/er-check']">
+                                <span style="font-size: 14px;">Export Request Check</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <!-- <li class="nav-item" [class.active]="expensesActive">
+                    <a class="nav-link" [routerLink]="['/expenses/expenses-list']">
+                        <span>Expenses</span>
+                    </a>
+                </li> -->
+                <li class="nav-item dropdown" [class.active]="vendorsActive">
+                    <a class="nav-link dropdown-toggle"
+                        href=""
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                        <span>Vendor</span>
+                    </a>
+                    <ul class="dropdown-menu multilevel scale-up-left">
+                        <li>
+                            <a class="nav-link" [routerLink]="['/supplier/supplier-list']">
+                                <span style="font-size: 14px;">Vendor</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" [routerLink]="['/supplier/contact-list']">
+                                <span style="font-size: 14px;">Contact</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" [routerLink]="['/supplier/suppliermistake-list']">
+                                <span style="font-size: 14px;">Claim</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" [routerLink]="['/supplier/contract-pri-list']">
+                                <span style="font-size: 14px;">Contract Principles</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" [routerLink]="['/supplier/supplier-check-list']">
+                                <span style="font-size: 14px;">Supplier Check</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown" [class.active]="productsActive">
+                    <a class="nav-link dropdown-toggle"
+                        href=""
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                        <span> Product</span>
+                    </a>
+                    <ul class="dropdown-menu multilevel scale-up-left">
+                        <li>
+                            <a class="nav-link" [routerLink]="['/product/item-list']">
+                                <span style="font-size: 14px;">Item</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" [routerLink]="['/product/group-list']">
+                                <span style="font-size: 14px;">Category</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item" [class.active]="reportActive">
+                    <a class="nav-link" [routerLink]="['/report/report-list']">
+                        <span>Report</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown" [class.active]="settingActive">
+                    <a class="nav-link dropdown-toggle"
+                        href=""
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                        <span> Setting</span>
+                    </a>
+                    <ul class="dropdown-menu multilevel scale-up-left">
+                        <li>
+                            <a class="nav-link" [routerLink]="['/setting/unit-list']">
+                                <span style="font-size: 14px;">Unit</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" [routerLink]="['/setting/paymentterm-list']">
+                                <span style="font-size: 14px;">Payment Term</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" [routerLink]="['/supplier/mistaketype-list']">
+                                <span style="font-size: 14px;">Mistake Type</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" [routerLink]="['/supplier/tag-list']">
+                                <span style="font-size: 14px;">Tag</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>	  
+</div>

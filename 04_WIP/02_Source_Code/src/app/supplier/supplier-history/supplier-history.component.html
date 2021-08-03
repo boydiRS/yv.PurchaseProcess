@@ -1,0 +1,120 @@
+<div class="o_FormRenderer_chatterContainer o-aside">
+  <div class="o_ChatterContainer">
+    <div class="o_Chatter">
+      <div class="o_Chatter_scrollPanel" style="overflow-y: auto;" [style.height.px]="innerHeight">
+        <!-- Contract Principles -->
+        <div class="o_AttachmentBox o_Chatter_attachmentBox">
+          <div class="o_AttachmentBox_title">
+            <hr class="o_AttachmentBox_dashedLine">
+            <span class="o_AttachmentBox_titleText"> Contract Principles </span>
+            <hr class="o_AttachmentBox_dashedLine">
+          </div>
+          <div class="o_AttachmentBox_content">
+            <div class="o_AttachmentList o_attachmentBox_attachmentList">
+              <div class="o_AttachmentList_partialList o_AttachmentList_partialListNonImages">
+                <div class="o_Attachment o-downloadable o-editable o-has-card-details o_AttachmentList_attachment o_AttachmentList_nonImageAttachment" 
+                    *ngFor="let item of dataItem.ContractList">
+                  <div class="o_Attachment_image o_image o-small">
+                    <div [ngSwitch]="item.FileType">
+                      <div *ngSwitchCase="'docx'"><img src="../../../assets/images/system/word.svg"></div>
+                      <div *ngSwitchCase="'xlsx'"><img src="../../../assets/images/system/excel.svg"></div>
+                      <div *ngSwitchCase="'xls'"><img src="../../../assets/images/system/excel.svg"></div>
+                      <div *ngSwitchCase="'pptx'"><img src="../../../assets/images/system/powerpoint.svg"></div>
+                      <div *ngSwitchCase="'pdf'">
+                        <a href="{{item.FilePath}}" target="_blank" title="Open file" style="cursor: zoom-in;">
+                          <img src="../../../assets/images/system/pdf.svg">
+                        </a>
+                      </div>
+                      <div *ngSwitchDefault><img src="../../../assets/images/system/unknown.svg"></div>
+                    </div>
+                  </div>
+                  <div class="o_Attachment_details">
+                    <div class="o_Attachment_filename">{{item.ContractNo}}</div>
+                    <div class="o_Attachment_extension">{{item.EffectiveDate | date: 'dd/MM/yyyy'}}</div>
+                  </div>
+                  <div class="o_Attachment_aside o-has-multiple-action">
+                    <!-- <div title="Remove" class="o_Attachment_asideItem o_Attachment_asideItemUnlink" (click)="onDeleteFile(item.ID)"><i class="fa fa-times"></i></div> -->
+                    <div title="Download" class="o_Attachment_asideItem o_Attachment_asideItemDownload" (click)="onDownloadFile(item.FileName)"><i class="fa fa-download"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="o_FileUploader">
+            <input multiple="true" type="file" class="o_FileUploader_input">
+          </div>
+        </div>
+        <!-- Claim -->
+        <div class="o_ActivityBox o_Chatter_activityBox">
+          <div class="o_AttachmentBox_title">
+            <hr class="o_ActivityBox_titleLine">
+            <span class="o_ActivityBox_titleText"> Claim </span>
+            <hr class="o_ActivityBox_titleLine">
+          </div>
+          <div class="o_ActivityList">
+            <div class="o_Activity o_ActivityBox_activity" *ngFor="let item of dataItem.ClaimList">
+              <div class="o_Activity_sidebar">
+                <div class="o_Activity_user">
+                  <i class="o_Activity_userAvatar fa fa-bug" style="font-size: 20px; color: #FF4961;"></i>
+                  <!-- <div class="o_Activity_iconContainer bg-success-full">
+                    <i class="o_Activity_icon fa fa-bug"></i>
+                  </div> -->
+                </div>
+              </div>
+              <div class="o_Activity_core">
+                <div class="o_Activity_info">
+                  <div class="o_Activity_dueDateText o-planned">Find Date {{item.FindDate | date: 'dd/MM/yyyy'}}:</div>
+                  <div class="o_Activity_summary o_Activity_type">{{item.MistakeName}}</div>
+                  <!-- <div class="o_Activity_userName">for Phong Vu</div> -->
+                  <!-- <a role="button" class="o_Activity_detailsButton btn btn-link">
+                    <i role="img" title="Info" class="fa fa-info-circle"></i>
+                  </a> -->
+                </div>
+                <div name="tools" class="o_Activity_tools">
+                  <div class="o_Activity_summary o_Activity_type">In PO: {{item.PONo}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div data-thread-local-id="mail.thread_purchase.order_2" class="o_ThreadView o_Chatter_thread">
+          <div class="o_MessageList o_ThreadView_messageList">
+            <div class="o_MessageList_separator o_MessageList_separatorDate o_MessageList_item">
+              <hr class="o_MessageList_separatorLine">
+              <span class="o_MessageList_separatorLabel o_MessageList_separatorLabelDate">Check</span>
+              <hr class="o_MessageList_separatorLine">
+            </div>
+            <!-- List notes -->
+            <div class="o_Message o-not-discussion o-notification o_MessageList_item o_MessageList_message" *ngFor="let item of dataItem.CheckList">
+              <div class="o_Message_sidebar">
+                <div class="o_Message_authorAvatarContainer o_Message_sidebarItem">
+                  <img src="{{item.Avatar}}" alt="Avatar" class="o_Message_authorAvatar rounded-circle o_Message_authorRedirect o_redirect">
+                </div>
+              </div>
+              <div class="o_Message_core">
+                <div class="o_Message_header">
+                  <div class="o_Message_authorName o_Message_authorRedirect o_redirect">{{item.CheckTypeName}}</div>
+                  <div class="o_Message_date o_Message_headerDate"> - {{item.DateCheck | date: 'dd/MM/yyyy'}}</div>
+                </div>
+                <div class="o_Message_content">
+                  <p>{{item.Description}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <ng-template #createTemplate>
+  <app-po-master-activity-create [bsModalRef]="bsModalRefCreate" [createBy]="userInfo.code" [poNo]="poNo" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-po-master-activity-create>
+</ng-template>
+
+<ng-template #editTemplate>
+  <app-po-master-activity-edit [bsModalRef]="bsModalRefEdit" [updateBy]="userInfo.code" [id]="id" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-po-master-activity-edit>
+</ng-template>
+
+<ng-template #markdoneTemplate>
+  <app-po-master-activity-markdone [bsModalRef]="bsModalRefMarkDone" [updateBy]="userInfo.code" [id]="id" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-po-master-activity-markdone>
+</ng-template> -->

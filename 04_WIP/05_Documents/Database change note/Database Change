@@ -1,0 +1,10 @@
+1.	pur_Tag
+- Create new
+
+2.	sys_SupplierMaster
+- Add more: Tag nvarchar(200) column
+
+3.	pur_OrderMaster
+- Add more: IsContract bit
+			ContractNo varchar(20)
+			ContractExpDate date

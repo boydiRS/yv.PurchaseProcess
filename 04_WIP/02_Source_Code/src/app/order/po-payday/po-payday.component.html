@@ -1,0 +1,93 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Pay</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="padding: 10px;">
+  <div class="row">
+    <div class="col-12">
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">PayDay</label>
+        <div class="col-sm-9">
+          <input type="text" placeholder="Payday" class="form-control" bsDatepicker [(ngModel)]="UpdateDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+        </div>
+      </div>
+      <!-- <div class="box box-outline-secondary" style="margin-bottom: 0px; margin-top: 5px;">
+        <div class="box-header with-border">
+          <div class="col-12 row">
+            <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-boxes"></i></span>  Product</h5>
+          </div>
+        </div>
+        <div class="box-body">
+          <table class="table table-sm" style="font-size: 14px;">
+            <tr style="font-weight: bold;">
+              <td style="text-align: left">No.</td>
+              <td style="text-align: center">AccCode</td>
+              <td style="text-align: left">Type</td>
+              <td style="text-align: left">Product</td>
+              <td style="text-align: left">Description</td>
+              <td style="text-align: right">Quantity</td>
+              <td style="text-align: center">Unit</td>
+              <td style="text-align: center">Unit Price</td>
+              <td style="text-align: right">Subtotal</td>
+              <td style="text-align: right; width: 20px">
+                <a href='javascript:void(0)' 
+                  class="btn btn-flat btn-sm"
+                  title='Remove All'
+                  (click)="onRemoveAllFromPO()">
+                  <i class="fa fa-angle-double-down" style="color: #FF4961; font-size: 14px;"></i>
+                </a>
+              </td>
+            </tr>
+            <ng-container *ngFor="let item of dataItem.PRItemList">
+              <tr>
+                <td style="text-align: left">{{item.RowIndex}}</td>
+                <td style="text-align: center">{{item.AccCode}}</td>
+                <td style="text-align: left">{{item.ProductTypeName}}</td>
+                <td style="text-align: left">{{item.ProductName}}</td>
+                <td style="text-align: left">{{item.ProductDes}}</td>
+                <td style="text-align: right">{{item.Quantity}}</td>
+                <td style="text-align: center">{{item.UnitName}}</td>
+                <td style="text-align: center">
+                  <div class="input-group">
+                    <input #yourElement class="form-control" type="number" style="width: 100px;" [(ngModel)]="item.POPrice" (keyup)="handleKeyUp($event)" (keypress)="handleKeyPress($event)">
+                  </div>
+                </td>
+                <td style="text-align: right">{{item.SubTotal_String}}</td>
+                <td style="text-align: right;">
+                  <a href='javascript:void(0)' 
+                    title='Remove'
+                    class="btn btn-flat btn-sm"
+                    (click)="onRemoveFromPO(item.ID)">
+                    <i class="fa fa-angle-down" style="color: #FF4961;"></i>
+                  </a>
+                </td>
+              </tr>
+            </ng-container>
+          </table>
+        </div>
+        <div class="box-footer" style="padding: 0px;">
+          <div style="text-align: right; padding-right: 5px" class="col-12">
+            <p style="margin-bottom: 0px;">
+              <span style="font-size: 14px; font-weight: bold;">No Tax: </span>
+              <span style="margin-left: 10px; font-size: 14px;"> {{TotalNoTax_String}}</span>
+            </p>
+            <p style="margin-bottom: 0px; margin-top: -3px;">
+              <span style="font-size: 14px; font-weight: bold;">Tax: </span>
+              <span style="margin-left: 10px; font-size: 14px;"> {{TotalTax_String}}</span>
+            </p>
+            <p style="margin-bottom: 0px; margin-top: -3px;">
+              <span class="float-right" style="margin-left: 10px; font-size: 16px; font-weight: bold;"> {{Total_String}}</span>
+            <span class="float-right" style="font-size: 16px;">Total: </span>
+            </p>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">CLOSE</button>
+  <button type="button" class="btn btn-success float-right" (click)="acceptBtnModalClicked()" autofocus>UPDATE</button>
+</div>

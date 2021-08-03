@@ -1,0 +1,127 @@
+<div class="modal-header" style="padding:10px 10px 10px">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="padding: 10px;">
+  <div class="row">
+    <div class="col-12">
+      <div class="box box-outline-secondary" style="margin-bottom: 5px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-info"></i></span>  Info</h5>
+        </div>
+        <div class="box-body row">
+          <div class="col-12">
+            <table class="table table-sm table-bordered" style="margin-bottom: 0;">
+              <tr>
+                <td><span class="col-form-label">Name</span></td>
+                <td colspan="3"><input class="form-control" type="text" [(ngModel)]="dataItem.SupplierName"/></td>
+                <td><span class="col-form-label">Tel</span></td>
+                <td><input class="form-control" type="text" [(ngModel)]="dataItem.Tel"/></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">VN Name</span></td>
+                <td colspan="3"><input class="form-control" type="text" [(ngModel)]="dataItem.SupplierName_Vn"/></td>
+                <td><span class="col-form-label">Fax</span></td>
+                <td><input class="form-control" type="text" [(ngModel)]="dataItem.Fax"/></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">Short Name</span></td>
+                <td><input class="form-control" type="text" [(ngModel)]="dataItem.ShortName"/></td>
+                <td><span class="col-form-label">Email</span></td>
+                <td><input class="form-control" type="text" [(ngModel)]="dataItem.Email"/></td>
+                <td><span class="col-form-label">Country</span></td>
+                <td><ngx-select [items]="dataForm.CountryList" [(ngModel)]="dataItem.Country" placeholder="Select country"></ngx-select></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">Address</span></td>
+                <td colspan="3"><input class="form-control" type="text" [(ngModel)]="dataItem.EnglishAddr"/></td>
+                <td><span class="col-form-label">Website</span></td>
+                <td><input class="form-control" type="text" [(ngModel)]="dataItem.WebsiteLink"/></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">VN Address</span></td>
+                <td colspan="3"><input class="form-control" type="text" [(ngModel)]="dataItem.Address"/></td>
+                <td rowspan="2"><span class="col-form-label">Tag</span></td>
+                <td rowspan="2"><ngx-select [items]="dataForm.TagList" [multiple]="true" [(ngModel)]="dataItem.TagList" placeholder="Select tag"></ngx-select></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">Remark</span></td>
+                <td colspan="3"><input class="form-control" type="text" [(ngModel)]="dataItem.Remark"/></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-user-tie"></i></span>  Contact</h5>
+          <div class="box-controls" style="margin-top: -8px;">
+            <a class="btn btn-xs btn-success" href="#" (click)="onCreateContactItem()"><i class="fa fa-plus"></i> Add contact</a>
+          </div>
+        </div>
+        <div class="box-body row" style="padding:10px 10px 10px;">
+          <div class="col-12" style="overflow-y: auto; padding-right: 10px;" [style.height.px]="innerHeight">
+            <table class="table table-sm" style="width: 100%;">
+              <tr class="headerTable">
+                <td></td>
+                <td>No</td>
+                <td>Title</td>
+                <td>Name</td>
+                <td>Position</td>
+                <td>Email</td>
+                <td>Phone</td>
+                <td>Mobile</td>
+                <td>Remark</td>
+                <td></td>
+              </tr>
+              <ng-container *ngFor="let item of dataItem.ContactList">
+                <tr class="bodyTable">
+                  <td>
+                    <input type="radio" class="form-control radio-col-teal" [(ngModel)]="valueChoose" value="{{item.RowIndex}}"/>
+                    <label for="{{item.RowIndex}}"></label>
+                  </td>
+                  <td style="width: 40px">{{item.RowIndex}}</td>
+                  <td>
+                    <ngx-select [items]="dataForm.TitleList" [(ngModel)]="item.Title"></ngx-select>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" [(ngModel)]="item.ContactName"/>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" [(ngModel)]="item.JobPosition"/>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" [(ngModel)]="item.Email"/>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" [(ngModel)]="item.Phone"/>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" [(ngModel)]="item.Mobile"/>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" [(ngModel)]="item.Remark"/>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href='javascript:void(0)' 
+                      title='Delete'
+                      (click)="onDeleteContactItem(item.RowIndex)">
+                      <i class="fa fa-trash" style="color: #FF4961; font-size: 14px;"></i>
+                    </a>
+                  </td>
+                </tr>
+              </ng-container>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">CLOSE</button>
+  <button type="button" class="btn btn-success float-right" (click)="acceptBtnModalClicked()" autofocus>UPDATE</button>
+</div>

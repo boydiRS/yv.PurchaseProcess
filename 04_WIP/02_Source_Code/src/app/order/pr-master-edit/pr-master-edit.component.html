@@ -1,0 +1,205 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="padding: 10px;">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-3" style="padding-left: 0px;padding-right: 5px;">
+        <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+          <div class="box-header with-border">
+            <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-info"></i></span>  Info</h5>
+          </div>
+          <div class="box-body">
+            <table class="table table-sm">
+              <tr>
+                <td><span class="col-form-label">Vendor</span></td>
+                <td><ngx-select [items]="dataForm.SupplierList" [(ngModel)]="dataItem.SupplierID" placeholder="Select"></ngx-select></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">AccCode</span></td>
+                <td><ngx-select [items]="dataForm.AccCodeList" [(ngModel)]="dataItem.AccCode" placeholder="Select" (selectionChanges)="onChangeAccCode($event)" [allowClear]=false></ngx-select></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">Delivery</span></td>
+                <td><input type="text" placeholder="Receipt To Date" class="form-control" bsDatepicker [(ngModel)]="ReceiptDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">RequestNo</span></td>
+                <!-- <td><ngx-select [items]="dataForm.RequestList" [(ngModel)]="dataItem.RequestNo" placeholder="Select"></ngx-select></td> -->
+                <td><input class="form-control" type="text" [(ngModel)]="dataItem.RequestNo"></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">ThemeNo</span></td>
+                <td><input class="form-control" type="text" [(ngModel)]="dataItem.ThemeNo"></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">Currency</span></td>
+                <td><ngx-select [items]="dataForm.CurrencyList" [(ngModel)]="dataItem.Currency" [allowClear]=false (selectionChanges)="onChangeCurrency($event)"></ngx-select></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">Remark</span></td>
+                <td><textarea class="form-control" [(ngModel)]="dataItem.Remark" rows="2"></textarea></td>
+              </tr>
+              <tr>
+                <td><span class="col-form-label">Transfer</span></td>
+                <td>
+                  <div>
+                    <div>
+                      <ngx-select [items]="dataForm.TranferSectionList" [(ngModel)]="dataItem.TranferSectionID" placeholder="Select tranfer section"></ngx-select>
+                    </div>
+                    <div style="margin-top: 5px;">
+                      <ngx-select [items]="dataForm.TranferList" [(ngModel)]="dataItem.TranferID" placeholder="Select tranfer" (selectionChanges)="onChangeTranfer($event)"></ngx-select>
+                    </div>
+                    <div class="col-form-label">
+                      <i class="fa fa-envelope" style="margin-left: 10px;"></i> {{tranferMail}}
+                    </div>
+                    <div class="col-form-label">
+                      <i class="fa fa-phone" style="margin-left: 10px;"></i> {{tranferPhone}}
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="box box-outline-secondary" style="margin-top: 5px; margin-bottom: 0px;">
+          <div class="box-header with-border">
+            <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-comment-dollar"></i></span>  Budget description</h5>
+            <div class="box-controls" style="margin-top: -6px; margin-right: -15px;">
+              <select [(ngModel)]="dataItem.CurrencyBudget">
+                <option *ngFor="let i of dataForm.CurrencyList" value="{{i.Value}}">{{i.Text}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="box-body">
+            <span class="col-form-label">1. Budget in month</span> - <span style="color: #E91E63;">{{formatMoney(budgetUse.Total, '')}}</span>
+            <input type="number" class="form-control" [(ngModel)]="dataItem.WorkingBudget">
+            <span class="col-form-label">2. Remain budget in month</span> - <a href='javascript:void(0)' (click)="onCalRemainBudgetBefore()">Calculate</a>
+            <input type="number" class="form-control" [(ngModel)]="dataItem.RemainBudget">
+            <span class="col-form-label">3. PR Total</span> - <span style="color: #E91E63;">{{formatMoney(total, '')}}</span>
+            <input type="number" class="form-control" [(ngModel)]="dataItem.TotalBudget">
+            <span class="col-form-label">4. Remain</span> - <a href='javascript:void(0)' (click)="onCalRemainBudgetAfter()">Calculate</a>
+            <input type="number" class="form-control" [(ngModel)]="dataItem.RemainWorkingBudget">
+            <!-- <span class="col-form-label">1. Total</span>
+            <input type="number" class="form-control" [(ngModel)]="dataItem.TotalBudget">
+            <span class="col-form-label">2. Working Budget in month</span> - <span style="color: #E91E63;">{{formatMoney(budgetUse.Total, '')}}</span>
+            <input type="number" class="form-control" [(ngModel)]="dataItem.WorkingBudget">
+            <span class="col-form-label">3. The remain budget in month</span>
+            <input type="number" class="form-control" [(ngModel)]="dataItem.RemainBudget">
+            <span class="col-form-label">4. Remain working budget in month</span>
+            <input type="number" class="form-control" [(ngModel)]="dataItem.RemainWorkingBudget"> -->
+          </div>
+        </div>
+      </div>
+      
+      <div class="box box-outline-secondary col-9" style="margin-bottom: 0px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-boxes"></i></span>  Product</h5>
+          <a class="btn btn-xs btn-success" href="#" (click)="openPopupCreate(createTemplate)" style="margin-left: 20px;"><i class="fa fa-plus"></i> New Product</a>
+        </div>
+        <div class="box-body">
+          <div class="col-12" style="overflow-y: auto; padding-right: 10px; padding-left: 0px;" [style.height.px]="innerHeight">
+            <table class="table table-sm">
+              <thead>
+                <td class="headerTable">No.</td>
+                <!-- <td class="headerTable">AccCode</td> -->
+                <td class="headerTable" *ngIf="this.picGroup == '1'">Type</td>
+                <td class="headerTable">Product</td>
+                <td class="headerTable">Quantity</td>
+                <td class="headerTable">Unit Price</td>
+                <td class="headerTable">Using Time</td>
+                <td class="headerTable" style="text-align: right;">Subtotal</td>
+                <td></td>
+              </thead>
+              <ng-container *ngFor="let item of dataItem.PRItemList">
+                <tbody>
+                  <td class="bodyTable" style="width: 30px;">
+                    <div style="margin-top: 10px;">{{item.RowIndex}}</div>
+                  </td>
+                  <!-- <td style="width: 80px"><ngx-select [items]="dataForm.AccCodeList" [(ngModel)]="item.AccCode" placeholder="Select" [allowClear]=false></ngx-select></td> -->
+                  <td style="width: 50px;" *ngIf="this.picGroup == 1">
+                    <select class="form-control" [(ngModel)]="item.ProductType" (change)="onChangeProductType($event)">
+                      <option *ngFor="let i of dataForm.ProductTypeList" value="{{i.Value}}">{{i.Text}}</option>
+                    </select>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="item.ProductType == 1">
+                      <ngx-select [items]="dataForm.ProductList" [(ngModel)]="item.ProductNo" placeholder="Select" (selectionChanges)="onChangeProductItem($event, item.RowIndex)" [allowClear]=false></ngx-select>
+                    </ng-container>
+                    <ng-container *ngIf="item.ProductType == 2">
+                      <div class="input-group input-group-sm">
+                        <input class="form-control" type="text" [(ngModel)]="item.ProductName" (keyup)="triggerEnter($event, item.RowIndex)" >
+                        <span class="input-group-btn">
+                          <button type="button" class="btn btn-flat" (click)="loadJigData(item.RowIndex)"><i class="fa fa-search"></i></button>
+                        </span>
+                      </div>
+                    </ng-container>
+                    <div style="margin-top: 2px; margin-left: 5px;"><span class="bodyTable" style="font-size: 10px;">{{item.ProductDes}}</span></div>
+                  </td>
+                  <td style="width: 180px;">
+                    <div class="input-group">
+                      <input class="form-control" type="number" min = "0"[(ngModel)]="item.Quantity" (keyup)="handleKeyUp($event)" (keypress)="handleKeyPress($event)"/>
+                      <select class="form-control" [(ngModel)]="item.UnitID">
+                        <option *ngFor="let i of dataForm.UnitList" value="{{i.Value}}">{{i.Text}}</option>
+                      </select>
+                    </div>
+                  </td>
+                  <td style="width: 120px;">
+                    <input class="form-control" type="number" min = "0"[(ngModel)]="item.PRPrice" (keyup)="handleKeyUp($event)" (keypress)="handleKeyPress($event)"/>
+                  </td>
+                  <td style="width: 120px;">
+                    <div class="input-group">
+                      <input class="form-control" type="number" min = "0"[(ngModel)]="item.UsingTime"/>
+                      <select class="form-control" [(ngModel)]="item.UsingTimeType">
+                        <option *ngFor="let i of dataForm.UsingTimeTypeList" value="{{i.Value}}">{{i.Text}}</option>
+                      </select>
+                    </div>
+                  </td>
+                  <td class="bodyTable" style="text-align: right;">
+                    <div style="margin-top: 10px;">{{item.SubTotal}}</div>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href='javascript:void(0)' 
+                      title='Delete'
+                      (click)="onDeletePRItem(item.RowIndex)">
+                      <i class="fa fa-trash" style="color: #FF4961; font-size: 14px; margin-top: 10px"></i>
+                    </a>
+                  </td>
+                </tbody>
+              </ng-container>
+            </table>
+          </div>
+        </div>
+        <div class="box-footer" style="padding:0px 5px 0px;">
+          <div class="row">
+            <div class="col-6">
+              <!-- <a class="btn btn-flat btn-sm btn-primary" href="#" (click)="onCreatePRItem()">Add product</a> -->
+            </div>
+            <div class="col-6" style="padding-left: 0px;">
+              <span class="float-right" style="margin-left: 10px; margin-right: 20px; font-size: 14px; font-weight: bold; color: black;"> {{Total_String}}</span>
+              <span class="float-right" style="font-size: 14px;">Total: </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #createTemplate>
+    <app-product-item-create [bsModalRef]="bsModalRefCreate" [createBy]="userInfo.code" [picGroup]="picGroup" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-product-item-create>
+  </ng-template>
+
+  <ng-template #editTemplate>
+    <app-product-item-edit [bsModalRef]="bsModalRefEdit" [updateBy]="userInfo.code" [id]="id" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-product-item-edit>
+  </ng-template>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">CLOSE</button>
+  <button type="button" class="btn btn-success float-right" (click)="acceptBtnModalClicked()" autofocus>
+    <div *ngIf="type == 'Update'; then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock>UPDATE</ng-template>
+    <ng-template #elseBlock>ADD NEW</ng-template>
+  </button>
+</div>

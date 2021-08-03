@@ -1,0 +1,207 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{InvoiceNoTitle}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" style="padding: 10px;">
+  <div class="row">
+    <div class="col-6" style="padding-right: 0px;">
+      <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-file-invoice"></i></span>  Invoice</h5>
+        </div>
+        <div class="box-body">
+          <table class="table table-sm">
+            <tr>
+              <td><span class="col-form-label">Export Date</span></td>
+              <td><input type="text" placeholder="dd/mm/yyyy" class="form-control" bsDatepicker [(ngModel)]="ExportDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"></td>
+              <td><span class="col-form-label">Invoice Date</span></td>
+              <td><input type="text" placeholder="dd/mm/yyyy" class="form-control" bsDatepicker [(ngModel)]="InvoiceDate" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">Invoice Type</span></td>
+              <td>
+                <input type="radio" class="form-control radio-col-teal" [(ngModel)]="dataItem.InvoiceType" value="true" id="commercial">
+                <label for="commercial">Com</label>
+                <input type="radio" class="form-control radio-col-teal" [(ngModel)]="dataItem.InvoiceType" value="false" id="nonCommercial">
+                <label for="nonCommercial">Non-Com</label>
+              </td>
+              <td><span class="col-form-label">Bill</span></td>
+              <td><input type="text" placeholder="..." class="form-control" [(ngModel)]="dataItem.BillNo"></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-6" style="padding-left: 5px;">
+      <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-box"></i></span> Cargo</h5>
+        </div>
+        <div class="box-body">
+          <table class="table table-sm">
+            <tr>
+              <td><span class="col-form-label">Export To</span></td>
+              <td colspan="3"><ngx-select [items]="dataForm.SupplierList" [(ngModel)]="dataItem.SupplierID" placeholder="Select"></ngx-select></td>
+            </tr>
+            <tr>
+              <td><span class="col-form-label">Weight</span></td>
+              <td>
+                <div class="input-group">
+                  <input type="number" min="0" class="form-control" [(ngModel)]="dataItem.TotalWeight">
+                  <span class="input-group-addon">kg</span>
+                </div>
+              </td>
+              <td><span class="col-form-label">Incoterm</span></td>
+              <td><ngx-select [items]="dataForm.IncotermList" [(ngModel)]="dataItem.IncotermID" placeholder="Select"></ngx-select></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 5px">
+    <div class="col-6" style="padding-right: 0px;">
+      <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-truck"></i></span> Transportation agent</h5>
+        </div>
+        <div class="box-body">
+          <table class="table table-sm">
+            <tr>
+              <td><span class="col-form-label">Forwarder</span></td>
+              <td><ngx-select [items]="dataForm.SupplierList" [(ngModel)]="dataItem.ForwaderID" placeholder="Select"></ngx-select></td>
+              <td><span class="col-form-label">Carrier</span></td>
+              <td><ngx-select [items]="dataForm.SupplierList" [(ngModel)]="dataItem.CarierID" placeholder="Select"></ngx-select></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-6" style="padding-left: 5px;">
+      <div class="box box-outline-secondary" style="margin-bottom: 0px;">
+        <div class="box-header with-border">
+          <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-hand-holding-usd"></i></span> Fee</h5>
+        </div>
+        <div class="box-body">
+          <table class="table table-sm">
+            <tr>
+              <td><span class="col-form-label">Export Fee</span></td>
+              <td><input type="number" min = "0"class="form-control" [(ngModel)]="dataItem.ExportFee"></td>
+              <td><span class="col-form-label">CDS Fee</span></td>
+              <td><input type="number" min = "0"class="form-control" [(ngModel)]="dataItem.CDSFee"></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="box box-outline-secondary" style="margin-bottom: 0px; margin-top: 5px;">
+    <div class="box-header with-border">
+      <h5 class="box-title"><span class="box-title text-info" style="width: 20px; text-align: center;"><i class="fa fa-boxes"></i></span> Product</h5>
+    </div>
+    <div class="box-body">
+      <table class="table table-sm">
+        <tr class="headerTable">
+          <td style="text-align: left">No.</td>
+          <td style="text-align: left">Product</td>
+          <td style="text-align: left">Description</td>
+          <td style="text-align: right">Q'ty</td>
+          <td style="text-align: center">Unit</td>
+          <td style="text-align: center">Unit Price</td>
+          <td style="text-align: right">Subtotal</td>
+          <td style="text-align: right; width: 20px">
+            <a href='javascript:void(0)' 
+              class="btn btn-flat btn-sm"
+              title='Remove All'
+              (click)="onRemoveAllFromPO()">
+              <i class="fa fa-angle-double-down" style="color: #FF4961; font-size: 14px;"></i>
+            </a>
+          </td>
+        </tr>
+        <ng-container *ngFor="let item of dataItem.PRItemList">
+          <tr class="bodyTable">
+            <td style="text-align: left;">{{item.RowIndex}}</td>
+            <td style="text-align: left">{{item.ProductName}}</td>
+            <td style="text-align: left">{{item.ProductDes}}</td>
+            <td style="text-align: right">{{item.Quantity}}</td>
+            <td style="text-align: center">{{item.UnitName}}</td>
+            <td style="text-align: center">{{moneyFormat(item.Price)}}</td>
+            <td style="text-align: right">{{item.SubTotal_String}}</td>
+            <td style="text-align: right;">
+              <a href='javascript:void(0)' 
+                title='Remove'
+                class="btn btn-flat btn-sm"
+                style="line-height: 10px;"
+                (click)="onRemoveFromPO(item.ID)">
+                <i class="fa fa-angle-down" style="color: #FF4961;"></i>
+              </a>
+            </td>
+          </tr>
+        </ng-container>
+      </table>
+    </div>
+    <div class="box-footer" style="padding: 0px;">
+      <div style="text-align: right; padding-right: 5px" class="col-12">
+        <p style="margin-bottom: 0px; margin-top: -3px;">
+          <span style="font-size: 14px; color: black;">Total: </span>
+          <span style="margin-left: 10px; margin-right: 20px; font-size: 14px; font-weight: bold; color: black;"> {{Total_String}}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="box box-outline-secondary" style="margin-bottom: 0px; margin-top: 5px;">
+    <div class="box-header with-border">
+      <div class="col-12 row">
+        <h5 class="box-title" style="margin-top: 7px;"><strong>Export Request</strong></h5>
+        <ngx-select style="width: 150px; margin-left: 20px;" [items]="dataForm.ERList" [(ngModel)]="ERNo" (selectionChanges)="onChangeERNo($event)"></ngx-select>
+      </div>
+    </div>
+    <div class="box-body">
+      <table class="table table-sm" style="font-size: 14px;">
+        <tr class="headerTable">
+          <td style="text-align: left">No.</td>
+          <td style="text-align: left">Product</td>
+          <td style="text-align: left">Description</td>
+          <td style="text-align: right">Q'ty</td>
+          <td style="text-align: center">Unit</td>
+          <td style="text-align: right">Unit Price</td>
+          <!-- <td style="text-align: right">Subtotal</td> -->
+          <td style="text-align: right; width: 20px">
+            <a href='javascript:void(0)' 
+              class="btn btn-flat btn-sm"
+              title='Select All'
+              (click)="onAddAllToPO()">
+              <i class="fa fa-angle-double-up" style="color: #1E9FF2; font-size: 14px;"></i>
+            </a>
+          </td>
+        </tr>
+        <ng-container *ngFor="let item of prItemNotSelectList">
+          <tr class="bodyTable">
+            <td style="text-align: left">{{item.RowIndex}}</td>
+            <td style="text-align: left">{{item.ProductName}}</td>
+            <td style="text-align: left">{{item.ProductDes}}</td>
+            <td style="text-align: right">{{item.Quantity}}</td>
+            <td style="text-align: center">{{item.UnitName}}</td>
+            <td style="text-align: right">{{moneyFormat(item.Price)}}</td>
+            <!-- <td style="text-align: right">{{item.SubTotal_String}}</td> -->
+            <td style="text-align: right;">
+              <a href='javascript:void(0)' 
+                title='Select'
+                class="btn btn-flat btn-sm"
+                style="line-height: 10px;"
+                (click)="onAddToPO(item.ID)">
+                <i class="fa fa-angle-up" style="color: #1E9FF2;"></i>
+              </a>
+            </td>
+          </tr>
+        </ng-container>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">CLOSE</button>
+  <button type="button" class="btn btn-success float-right" (click)="acceptBtnModalClicked()" autofocus>{{ButtonName}}</button>
+</div>

@@ -1,0 +1,159 @@
+<div class="o_FormRenderer_chatterContainer o-aside">
+  <div class="o_ChatterContainer">
+    <div class="o_Chatter">
+      <div class="o_ChatterTopbar o_Chatter_topbar">
+        <div class="o_ChatterTopbar_actions">
+          <div class="o_ChatterTopbar_rightSection">
+            <button type="button" class="btn btn-sm btn-flat btn-info" (click)="onShowAttachment()" title="Attachment">
+              <i class="fa fa-paperclip"></i><span class="o_ChatterTopbar_buttonCount o_ChatterTopbar_buttonAttachmentsCount">{{dataItem.AttachmentList.length}}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="o_Chatter_fixedPanel">
+        <div class="o_Composer o-has-current-partner-avatar o-has-footer o_Chatter_composer">
+          <div class="o_FileUploader">
+            <input multiple="true" type="file" class="o_FileUploader_input">
+          </div>
+          <div class="o_Composer_sidebarMain">
+            <img src="{{userInfo.avatar}}" alt="" class="o_Composer_currentPartnerAvatar rounded-circle">
+          </div>
+          <div class="o_Composer_coreMain">
+            <div class="o_ComposerTextInput o_Composer_textInput o-has-current-partner-avatar">
+              <textarea placeholder="Log an internal note..." class="o_ComposerTextInput_textarea o_ComposerTextInput_textareaStyle" style="height: 39px;" [(ngModel)]="commentData.Comment"></textarea>
+              <textarea disabled="" class="o_ComposerTextInput_mirroredTextarea o_ComposerTextInput_textareaStyle"></textarea>
+            </div>
+            <div class="o_Composer_buttons">
+              <div class="o_Composer_toolButtons o-composer-has-current-partner-avatar">
+                <div class="o_Composer_primaryToolButtons">
+                  <label for="file-upload_{{idFile}}" class="btn btn-flat btn-sm lbl-for-file-upload" title="Select file" style="margin-bottom: 0px;">
+                    <i class="fa fa-paperclip"></i> 
+                  </label>
+                  {{fileName}}
+                  <label class="btn btn-flat btn-sm" title="Remove select" (click)="clearFileChoose()" *ngIf="fileName != ''" style="margin-bottom: 0px;">
+                    <i class="fa fa-times"></i> 
+                  </label>
+                  <input #fileInput type="file" id="file-upload_{{idFile}}" class="file-upload" (change)="onFileChange($event)" />
+                  <!-- <app-upload (onFileChanged)="onFileChange($event)" cssClass="fa-2x"></app-upload> -->
+                  <!-- <button title="Add attachment" type="button" class="btn btn-flat btn-sm">
+                    <i class="fa fa-paperclip"></i>
+                  </button> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="o_Composer_coreFooter">
+            <div class="o_Composer_actionButtons">
+              <button class="btn btn-sm btn-primary" (click)="onAcceptComment()">LOG</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="o_Chatter_scrollPanel" style="overflow-y: auto;" [style.height.px]="innerHeight">
+        <div class="o_AttachmentBox o_Chatter_attachmentBox" *ngIf="attachmentShow">
+          <div class="o_AttachmentBox_title">
+            <hr class="o_AttachmentBox_dashedLine">
+            <span class="o_AttachmentBox_titleText"> Attachments </span>
+            <hr class="o_AttachmentBox_dashedLine">
+          </div>
+          <div class="o_AttachmentBox_content">
+            <div class="o_AttachmentList o_attachmentBox_attachmentList">
+              <!-- <div class="o_AttachmentList_partialList o_AttachmentList_partialListImages"></div> -->
+              <div class="o_AttachmentList_partialList o_AttachmentList_partialListNonImages">
+                <div class="o_Attachment o-downloadable o-editable o-has-card-details o_AttachmentList_attachment o_AttachmentList_nonImageAttachment" 
+                    *ngFor="let item of dataItem.AttachmentList">
+                  <div class="o_Attachment_image o_image o-small">
+                    <div [ngSwitch]="item.FileType">
+                      <div *ngSwitchCase="'docx'"><img src="../../../assets/images/system/word.svg"></div>
+                      <div *ngSwitchCase="'xlsx'"><img src="../../../assets/images/system/excel.svg"></div>
+                      <div *ngSwitchCase="'xls'"><img src="../../../assets/images/system/excel.svg"></div>
+                      <div *ngSwitchCase="'pptx'"><img src="../../../assets/images/system/powerpoint.svg"></div>
+                      <div *ngSwitchCase="'pdf'">
+                        <a href="{{item.FilePath}}" target="_blank" title="Open file" style="cursor: zoom-in;">
+                          <img src="../../../assets/images/system/pdf.svg">
+                        </a>
+                      </div>
+                      <div *ngSwitchDefault><img src="../../../assets/images/system/unknown.svg"></div>
+                    </div>
+                  </div>
+                  <div class="o_Attachment_details">
+                    <div class="o_Attachment_filename">{{item.FileName}}</div>
+                    <div class="o_Attachment_extension">{{item.FileType}}</div>
+                  </div>
+                  <div class="o_Attachment_aside o-has-multiple-action">
+                    <div title="Remove" class="o_Attachment_asideItem o_Attachment_asideItemUnlink" (click)="onDeleteFile(item.ID)"><i class="fa fa-times"></i></div>
+                    <div title="Download" class="o_Attachment_asideItem o_Attachment_asideItemDownload" (click)="onDownloadFile(item.FileName)"><i class="fa fa-download"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <button type="button" class="o_AttachmentBox_buttonAdd btn btn-link">
+              <i class="fa fa-plus-square"></i> Add attachments 
+            </button> -->
+          </div>
+          <div class="o_FileUploader">
+            <input multiple="true" type="file" class="o_FileUploader_input">
+          </div>
+        </div>
+        <div data-thread-local-id="mail.thread_purchase.order_2" class="o_ThreadView o_Chatter_thread">
+          <div class="o_MessageList o_ThreadView_messageList">
+            <div class="o_MessageList_separator o_MessageList_separatorDate o_MessageList_item">
+              <hr class="o_MessageList_separatorLine">
+              <span class="o_MessageList_separatorLabel o_MessageList_separatorLabelDate">Notes</span>
+              <hr class="o_MessageList_separatorLine">
+            </div>
+            <!-- List notes -->
+            <div class="o_Message o-not-discussion o-notification o_MessageList_item o_MessageList_message" *ngFor="let item of dataItem.LogList">
+              <div class="o_Message_sidebar">
+                <div class="o_Message_authorAvatarContainer o_Message_sidebarItem">
+                  <img src="{{item.Avatar}}" alt="Avatar" class="o_Message_authorAvatar rounded-circle o_Message_authorRedirect o_redirect">
+                </div>
+              </div>
+              <div class="o_Message_core">
+                <div class="o_Message_header">
+                  <div class="o_Message_authorName o_Message_authorRedirect o_redirect">{{item.Creater}}</div>
+                  <div class="o_Message_date o_Message_headerDate"> - {{item.CreateDate | date: 'dd/MM/yyyy HH:mm'}}</div>
+                </div>
+                <div class="o_Message_content">
+                  <p>{{item.Comment}}</p>
+                </div>
+                <div class="o_Message_footer" *ngIf="item.FileName != ''">
+                  <div class="o_AttachmentList o_Message_attachmentList">
+                    <div class="o_AttachmentList_partialList o_AttachmentList_partialListImages"></div>
+                    <div class="o_AttachmentList_partialList o_AttachmentList_partialListNonImages">
+                      <div title="{{item.FileName}}" data-attachment-local-id="mail.attachment_179" class="o_Attachment o-downloadable o-editable o-has-card-details o_AttachmentList_attachment o_AttachmentList_nonImageAttachment">
+                        <div class="o_Attachment_image o_image o-medium">
+                          <div [ngSwitch]="item.FileType">
+                            <div *ngSwitchCase="'docx'"><img src="../../../assets/images/system/word.svg"></div>
+                            <div *ngSwitchCase="'xlsx'"><img src="../../../assets/images/system/excel.svg"></div>
+                            <div *ngSwitchCase="'xls'"><img src="../../../assets/images/system/excel.svg"></div>
+                            <div *ngSwitchCase="'pptx'"><img src="../../../assets/images/system/powerpoint.svg"></div>
+                            <div *ngSwitchCase="'pdf'">
+                              <a href="{{item.FilePath}}" target="_blank" title="Open file" style="cursor: zoom-in;">
+                                <img src="../../../assets/images/system/pdf.svg">
+                              </a>
+                              <!-- <img src="../../../assets/images/system/pdf.svg"> -->
+                            </div>
+                            <div *ngSwitchDefault><img src="../../../assets/images/system/unknown.svg"></div>
+                          </div>
+                        </div>
+                        <div class="o_Attachment_details">
+                          <div class="o_Attachment_filename">{{item.FileName}}</div>
+                          <div class="o_Attachment_extension">{{item.FileType}}</div>
+                        </div>
+                        <div class="o_Attachment_aside o-has-multiple-action">
+                          <div title="Remove" class="o_Attachment_asideItem o_Attachment_asideItemUnlink" (click)="onDeleteFile(item.ID)"><i class="fa fa-times"></i></div>
+                          <div title="Download" class="o_Attachment_asideItem o_Attachment_asideItemDownload" (click)="onDownloadFile(item.FileName)"><i class="fa fa-download"></i></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

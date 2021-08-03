@@ -1,0 +1,36 @@
+.o_form_view .o_form_statusbar > .o_statusbar_status > .o_arrow_button.btn-primary.disabled {
+    font-weight: bold;
+}
+.o_form_view .o_form_statusbar > .o_statusbar_status > .o_arrow_button.btn-primary.disabled {
+    color: #875A7B;
+    font-size: 11px;
+    background-color: #e9ecef;
+    cursor: default;
+}
+.o_form_view .o_form_statusbar > .o_statusbar_status > .o_arrow_button:first-of-type {
+    padding-right: 16px;
+}
+.o_form_view .o_form_statusbar > .o_statusbar_status > .o_arrow_button.disabled {
+    opacity: 1.0;
+    color: #adb5bd;
+    pointer-events: none;
+    border-left: 1px solid #dee2e6;
+}
+.o_form_view .o_form_statusbar > .o_statusbar_status > .o_arrow_button:first-child {
+    padding-right: 16px;
+    overflow-x: hidden;
+}
+.o_form_view .o_form_statusbar > .o_statusbar_status > .o_arrow_button {
+    font-weight: 500;
+}
+.o_form_view .o_form_statusbar > .o_statusbar_status > .o_arrow_button {
+    min-height: 33px;
+    font-size: 11px;
+    font-weight: bold;
+    position: relative;
+    padding-left: 22px;
+    color: #495057;
+    border-width: 0 0 0;
+    border-radius: 0;
+    transition: all 0.1s ease 0s;
+}

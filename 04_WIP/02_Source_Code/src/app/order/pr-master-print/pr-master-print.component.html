@@ -1,0 +1,253 @@
+<section class="content-header">
+  <div class="row col-12">
+    <div>
+      <span style="font-size: 20px;">PR Print</span>
+    </div>
+    <div style="width: 100px; margin-left: 10px;">
+      <input class="form-control" type="number" [(ngModel)]="remainTask">
+    </div>
+    <button class="btn btn-sm btn-success" (click)="onPrint()" style="margin-left: 5px;"><i class="fa fa-print"></i> PRINT</button>
+  </div>
+</section>
+<section class="content" style="margin-top: -5px;">
+  <div class="row">
+    <div class="col-12">
+      <div class="content-grid " id="section-to-print" style="background-color:white;">
+        <div class="row">
+          <div class="col-3">
+            <img src="../../../assets/images/logo_full.png" style="width:200px; margin-top: 0px; margin-left: 10px;" />
+          </div>
+          <div class="col-6" style="text-align:center">
+            <div><span style="font-family: 'Tahoma', sans-serif; font-size:24px; color:black; font-weight: bold;">PURCHASE REQUEST</span></div>
+          </div>
+          <div class="col-3" style="text-align: right;">
+            <ngx-barcode 
+                [bc-value]="prNo"
+                [bc-width]="1.1"
+                [bc-height]="35"
+                [bc-display-value]="true"
+                [bc-text-margin]="-3"
+                [bc-font-size]="24"
+                [bc-margin-top]="1"
+                [bc-margin-right]="1"
+                [bc-margin-left]="1"
+                [bc-margin-bottom]="1">
+            </ngx-barcode>
+          </div>
+        </div>
+        <div class="row" style="margin-top: 10px;">
+          <div class="col-4">
+            <table style="width: 100%">
+              <tr>
+                <td>
+                  <span class="HeaderText">Section request information</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: left;">
+                  <span class="HeaderText">Section/Group: </span><span class="VNText">{{dataItem.PICGroupName}} ({{dataItem.PRCode}})</span><br>
+                  <span class="HeaderText">Order PIC: </span><span class="VNText">{{dataItem.PICName}}</span><br>
+                  <span class="HeaderText">Create Date: </span>
+                    <span class="VNText" *ngIf="dataItem.UpdateDate != null">{{dataItem.UpdateDate | date: 'dd/MM/yyyy'}}</span>
+                    <span class="VNText" *ngIf="dataItem.UpdateDate == null">{{dataItem.CreateDate | date: 'dd/MM/yyyy'}}</span>
+                    <br>
+                  <span class="HeaderText">RequestNo: </span><span class="VNText">{{dataItem.RequestNo}}</span><br>
+                  <span class="HeaderText">Theme No: </span><span class="VNText">{{dataItem.ThemeNo}}</span><br>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-4"></div>
+          <div class="col-4">
+            <table style="width: 100%">
+              <tr>
+                <td>
+                  <span class="HeaderText">Transfer information</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: left;">
+                  <span class="HeaderText">Section: </span><span class="VNText">{{dataItem.TranferSectionName}}</span><br>
+                  <span class="HeaderText">Name: </span><span class="VNText">{{dataItem.TranferName}}</span><br>
+                  <span class="HeaderText">Email: </span><span class="VNText">{{dataItem.TranferEmail}}</span><br>
+                  <span class="HeaderText">Tel: </span><span class="VNText">{{dataItem.TranferTel}}</span><br>
+                  .
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <table style="width: 100%; margin-top: 5px;">
+          <tr style="height: 30px;">
+            <td style="width: 40px">
+              <span class="HeaderText">No</span>
+            </td>
+            <td style="width: 70px">
+              <span class="HeaderText">Acc Code</span>
+            </td>
+            <td>
+              <span class="HeaderText">Name and Type、Drawing No.</span>
+            </td>
+            <td style="width: 90px">
+              <span class="HeaderText">Delivery Date</span>
+            </td>
+            <td style="width: 70px">
+              <span class="HeaderText">Q'ty</span>
+            </td>
+            <td style="width: 70px">
+              <span class="HeaderText">Unit</span>
+            </td>
+            <td style="width: 70px">
+              <span class="HeaderText">Using time</span>
+            </td>
+            <td>
+              <span class="HeaderText">Unit Price</span><br>
+              <span class="HeaderText">{{dataItem.Currency}}</span>
+            </td>
+            <td>
+              <span class="HeaderText">Sub Total</span>
+            </td>
+          </tr>
+          <tr *ngFor="let item of prItemList.DataList; index as i; first as isFirst" height="35px">
+            <td><span class="VNText">{{item.RowIndex}}</span></td>
+            <td><span class="VNText">{{item.AccCode}}</span></td>
+            <td style="text-align: left;">
+              <span class="VNText">{{item.ProductName}}</span>
+              <br>
+              <span class="VNText">{{item.ProductDes}}</span>
+            </td>
+            <td><span class="VNText">{{dataItem.ReceiptDate | date: 'dd/MM/yyyy'}}</span></td>
+            <td><span class="VNText">{{item.Quantity}}</span></td>
+            <td><span class="VNText">{{item.UnitName}}</span></td>
+            <td><span class="VNText">{{item.UsingTime}} {{item.UsingTimeType}}</span></td>
+            <td style="text-align: right;"><span class="VNText">{{formatMoneyUnitPrice(item.PRPrice)}}</span></td>
+            <td style="text-align: right;"><span class="VNText">{{item.SubTotal}}</span></td>
+          </tr>
+          <tr *ngFor='let in of [].constructor(remainTask) ;let i = index' height="35px;">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr height="35px;">
+            <td colspan="4" class="TotalText">Total:</td>
+            <td class="TotalText">
+              <span *ngIf="difference == false">{{quaTotal}}</span>
+            </td>
+            <td colspan="4">
+              <div class="col-12" style="text-align: right; margin-top: 5px;">
+                <span class="TotalText">{{Total_String}}</span>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <div class="row" style="margin-top: 5px;">
+          <div class="col-4" style="padding-right: 0px;">
+            <table style="width: 100%">
+              <tr>
+                <td class="HeaderText">Description</td>
+              </tr>
+              <tr>
+                <td style="height: 80px; text-align: left; vertical-align: top;">
+                  <div class="row">
+                    <div class="col-7"><span class="LongText">1. Budget in month</span></div>
+                    <div class="col-5" style="text-align: right; padding-left: 0px"><span class="LongText">{{formatMoney(dataItem.WorkingBudget,dataItem.CurrencyBudget)}}</span></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-7"><span class="LongText">2. Remain budget in month</span></div>
+                    <div class="col-5" style="text-align: right;padding-left: 0px"><span class="LongText">{{formatMoney(dataItem.RemainBudget,dataItem.CurrencyBudget)}}</span></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-7"><span class="LongText">3. PR Total</span></div>
+                    <div class="col-5" style="text-align: right;padding-left: 0px"><span class="LongText">{{formatMoney(dataItem.TotalBudget,dataItem.CurrencyBudget)}}</span></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-7"></div>
+                    <div class="col-5" style="text-align: right;"><hr style="border-top: 1px solid; margin-top: 2px; margin-bottom: 2px;"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-7"><span class="LongText">4. Remain</span></div>
+                    <div class="col-5" style="text-align: right;padding-left: 0px"><span class="LongText">{{formatMoney(dataItem.RemainWorkingBudget,dataItem.CurrencyBudget)}}</span></div>
+                  </div>
+                  <!-- <div class="row">
+                    <div class="col-8"><span class="LongText">1. Total</span></div>
+                    <div class="col-4" style="text-align: right;"><span class="LongText">{{formatMoney(dataItem.TotalBudget,dataItem.CurrencyBudget)}}</span></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-8"><span class="LongText">2. Working Budget in month</span></div>
+                    <div class="col-4" style="text-align: right;"><span class="LongText">{{formatMoney(dataItem.WorkingBudget,dataItem.CurrencyBudget)}}</span></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-8"><span class="LongText">3. The remain budget in month</span></div>
+                    <div class="col-4" style="text-align: right;"><span class="LongText">{{formatMoney(dataItem.RemainBudget,dataItem.CurrencyBudget)}}</span></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-8"></div>
+                    <div class="col-4" style="text-align: right;"><hr style="border-top: 1px solid; margin-top: 2px; margin-bottom: 2px;"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-8"><span class="LongText">4. Remain working budget in month</span></div>
+                    <div class="col-4" style="text-align: right;"><span class="LongText">{{formatMoney(dataItem.RemainWorkingBudget,dataItem.CurrencyBudget)}}</span></div>
+                  </div> -->
+                </td>
+              </tr>
+              <tr>
+                <td style="height: 40px; text-align: left; vertical-align: top;">
+                  <span class="LongText">{{dataItem.Remark}}</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-5" style="padding-left: 5px; padding-right: 0px;">
+            <table style="width: 100%">
+              <tr>
+                <td class="HeaderText" style="width: 130px;">PIC</td>
+                <td class="HeaderText" style="width: 150px;">AMG/MG Confirm</td>
+                <td class="HeaderText">SMG Approval</td>
+              </tr>
+              <tr>
+                <td style="height: 120px;"></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-1" style="padding-right: 0px;">
+            <i class="fa fa-long-arrow-alt-right" style="font-size: 80px; margin-top: 5px;"></i>
+          </div>
+          <div class="col-2">
+            <table style="width: 100%">
+              <tr>
+                <td class="HeaderText">Receiver</td>
+              </tr>
+              <tr>
+                <td class="VNText" style="height: 120px; text-align: left; vertical-align: top;"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div style="margin-top: 0px;" class="row">
+          <div class="col-4">
+
+          </div>
+          <div class="col-8">
+            <span style="font-size:10px; color: black">PIC make ⇒ AMG/MG Confirm ⇒ SMG Approval ⇒ PIC of PP group (Receiver)</span>
+          </div>
+        </div>
+        <div style="margin-top: 5px;">
+          <span style="font-size:8px;">FM-YR87-800-01.E01</span>
+          <br>
+          <span style="font-size:8px;">Thời hạn lưu trữ 20 năm</span>
+        </div>
+        <div class="pagebreak">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
