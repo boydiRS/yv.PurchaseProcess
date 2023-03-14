@@ -1,0 +1,196 @@
+<section class="content-header">
+  <div class="row col-12">
+    <div>
+      <span style="font-size: 20px;">Overtime</span>
+    </div>
+    <div style="width: 110px; margin-left: 10px;">
+      <input type="text" [(ngModel)]="searchData.employeeCode" class="form-control" placeholder="Code..." (keyup)="triggerEnter($event)">
+    </div>
+    <div style="width: 130px; margin-left: 5px;">
+      <input type="text" [(ngModel)]="searchData.employeeName" class="form-control" placeholder="Employee Name..." (keyup)="triggerEnter($event)">
+    </div>
+    <div style="width: 130px; margin-left: 5px;">
+      <ngx-select [items]="dataForm.sectionList" [(ngModel)]="searchData.sectionID" placeholder="Section" (selectionChanges)="onChangeSection($event)" [allowClear]=false></ngx-select>
+    </div>
+    <div style="width: 150px; margin-left: 5px;">
+      <input type="date" [(ngModel)]="searchData.startDate" class="form-control" tooltip="Start Date">
+    </div>
+    <div style="width: 150px; margin-left: 5px;">
+      <input type="date" [(ngModel)]="searchData.toDate" class="form-control" tooltip="To Date">
+    </div>
+    <div style="width: 130px; margin-left: 5px;">
+      <ngx-select [items]="dataForm.statusList" [(ngModel)]="searchData.status" placeholder="Status" (selectionChanges)="onChangeStatus($event)"></ngx-select>
+    </div>
+    <button class="btn btn-primary btn-sm" (click)="loadData()" style="margin-left: 5px;"><i class="fa fa-search"></i></button>
+  </div>
+</section>
+<div class="row" style="margin-top: 5px;">
+  <div class="col-6">
+    <div class="col-12 row" style="vertical-align: middle;">
+      <div style="margin-right: 5px; margin-top: 8px;">Show</div>
+      <select class="" (change)="onChangeRowPerPage($event)" style="width: 100px;">
+        <option *ngFor="let i of rowPerPage" value="{{i}}" [attr.data-code]="i.appendData">{{i}}</option>
+      </select>
+      <div style="margin-left: 5px; margin-top: 8px;">entries/page</div>
+    </div>
+  </div>
+  <div class="col-6" style="text-align:right">
+    <ng-template [ngIf]="permissionData.isPerApprove && selected.length !== 0">
+      <button class="btn btn-sm btn-primary" (click)="onApprove()"><i class="fa fa-check"></i> APPROVE</button>  
+      &nbsp;
+      <button class="btn btn-sm btn-danger" (click)="openModalReturn(returnTemplate,selected,this.actionMultiForm.createBy)"><i class="fa fa-times"></i> RETURN</button>  
+    </ng-template>
+    <ng-template [ngIf]="permissionData.isPerApprove && selected.length == 0">
+      <button class="btn btn-sm btn-primary" (click)="onApprove()" disabled><i class="fa fa-check"></i> APPROVE</button>  
+      &nbsp;
+      <button class="btn btn-sm btn-danger" (click)="openModalReturn(returnTemplate,selected,this.actionMultiForm.createBy)" disabled><i class="fa fa-times"></i> RETURN</button>  
+    </ng-template>
+    <ng-template [ngIf]="!permissionData.isPerCreate">
+      &nbsp;
+      <button class="btn btn-sm btn-primary" (click)="onPrintClick()"><i class="fa fa-print"></i> PRINT</button>  
+      &nbsp;
+      <button class="btn btn-sm btn-success" (click)="openModalCreate(createTemplate)"><i class="fa fa-plus"></i> CREATE NEW</button>  
+    </ng-template>
+  </div>
+</div>
+<div class="row" style="margin-top:0px;">
+  <div class="col-12">
+    <ngx-datatable class="material fullscreen custom" 
+        [externalSorting]="true" 
+        (sort)="onSort($event)"
+        [columnMode]="'force'" 
+        [headerHeight]="40" 
+        [footerHeight]="30" 
+        [rowHeight]="'auto'" 
+        [selectionType]="'checkbox'" 
+        [selected]="selected"
+        [rows]="pagingModel.dataList" 
+        [count]="pagingModel.totalItems" 
+        [offset]="pagingModel.currentPage-1"          
+        [limit]="pagingModel.itemsPerPage" 
+        [externalPaging]="true" 
+        (page)='setPage($event)' 
+        [scrollbarH]="true" 
+        [scrollbarV]="true" 
+        [virtualization]="false" 
+        (select)="onSelect($event)"
+        [loadingIndicator]="loadingIndicator"
+        [style.height.px]="innerHeight">
+          <ngx-datatable-column
+            [width]="30"
+            [sortable]="false"
+            [canAutoResize]="false"
+            [draggable]="false"
+            [resizeable]="true"
+            cellClass="text-center">
+            <ng-template
+              ngx-datatable-header-template
+              let-value="value"
+              let-allRowsSelected="allRowsSelected"
+              let-selectFn="selectFn">
+              <input type="checkbox" [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)" id="all"/>
+              <label for="all"></label>
+            </ng-template>
+            <ng-template 
+              let-row="row"
+              ngx-datatable-cell-template
+              let-value="value"
+              let-isSelected="isSelected"
+              let-onCheckboxChangeFn="onCheckboxChangeFn">
+              <input type="checkbox" [checked]="isSelected" (change)="onCheckboxChangeFn($event)" id="{{row['id']}}"/>
+              <label for="{{row['id']}}" class="label_checkbox"></label>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [canAutoResize]="false" [width]="60" name="Avatar" cellClass="text-center">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <img class="avatar rounded-circle" 
+                    src="{{row['employeeAvatar']}}"
+                    alt=""
+                    style="object-fit: cover; object-position: 100% 0%; width: 35px; height: 35px;">
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [canAutoResize]="false" [width]="60" name="Code" prop="employeeCode" cellClass="text-center"></ngx-datatable-column>
+          <ngx-datatable-column [canAutoResize]="false" [width]="150" name="Name" prop="employeeName" cellClass="text-center"></ngx-datatable-column>
+          <ngx-datatable-column [canAutoResize]="false" [width]="60" name="Section" prop="sectionName" cellClass="text-center"></ngx-datatable-column>
+          <ngx-datatable-column [canAutoResize]="false" [width]="80" name="OT Date" prop="dateRequest" cellClass="text-center">
+            <ng-template let-value="value" ngx-datatable-cell-template>
+              {{value | date: 'dd/MM/yyyy'}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [canAutoResize]="false" [width]="70" name="Start" prop="startTime" cellClass="text-center"></ngx-datatable-column>
+          <ngx-datatable-column [canAutoResize]="false" [width]="70" name="End" prop="endTime" cellClass="text-center"></ngx-datatable-column>
+          <ngx-datatable-column [canAutoResize]="false" [width]="50" name="Total" prop="totalTime" cellClass="text-center"></ngx-datatable-column>
+          <ngx-datatable-column name="OT Reason" prop="endTime" style="text-align: left;">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <span style="color: #FF4961;">{{row['otReasonCode']}}</span> - {{row['detail']}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [canAutoResize]="false" [width]="100" name="OT Type" prop="otTypeName" cellClass="text-center"></ngx-datatable-column>
+          <ngx-datatable-column [canAutoResize]="false" [width]="70" name="Status" prop="statusName" cellClass="text-center">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <span class="badge" [style.background] = "row['statusColor']" >{{row['statusName']}}</span>  
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [canAutoResize]="false" [width]="210">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <a href='javascript:void(0)' 
+                class='btn btn-outline btn-sm btn-warning' 
+                title='Detail'
+                style='width:35px; margin-bottom: 5px;' 
+                (click)="openModalDetail(detailTemplate,row['id'])">
+                <i class="fa fa-info"></i>
+              </a>
+              &emsp;
+              <ng-template [ngIf] = "row['isEdit']">
+                <a href='javascript:void(0)' 
+                  class='btn btn-outline btn-sm btn-info' 
+                  title='Edit'
+                  style='width:35px; margin-left: 3px; margin-bottom: 5px;' 
+                  (click)="openModalEdit(editTemplate,row['id'])">
+                  <i class="fa fa-edit"></i>
+                </a>
+                <a href='javascript:void(0)' 
+                  class='btn btn-outline btn-sm btn-danger' 
+                  title='Delete'
+                  style='width:35px; margin-left: 3px; margin-bottom: 5px;' 
+                  (click)="deleteOT(row['id'])">
+                  <i class="fa fa-trash"></i>
+                </a>
+              </ng-template>
+              &emsp;
+              <ng-template [ngIf] = "row['listAction'] != null">
+                <ng-template ngFor let-item [ngForOf]="row['listAction']" let-i="index" [ngForTrackBy]="trackByFn">                  
+                  <a href='javascript:void(0)' 
+                    class='btn btn-outline btn-sm btn-primary' 
+                    title='{{item.actionName}}'
+                    style='margin-left: 3px; margin-bottom: 5px;' 
+                    (click)="onActionBtn(row['id'], item.id)">
+                    {{item.actionName}}
+                  </a>
+                  <!-- <button class="btn btn-outline btn-sm btn-primary" value="{{item.nextStatus}}" (click)="onActionBtn(row['id'],item.id,searchData.ownerCode)">
+                    <i class="fa fa-tasks"></i> {{item.actionName}}
+                  </button> -->
+                  &emsp;
+                </ng-template>
+              </ng-template>  
+            </ng-template>
+          </ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+</div>
+
+<ng-template #createTemplate>
+  <app-ot-create [bsModalRef]="modalCreate" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-ot-create>
+</ng-template>
+
+<ng-template #editTemplate>
+  <app-ot-edit [bsModalRef]="modalEdit" [ID]="ID" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-ot-edit>
+</ng-template>
+
+<ng-template #detailTemplate>
+  <app-ot-detail [bsModalRef]="modalDetail" [ID]="ID" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-ot-detail>
+</ng-template>
+
+<ng-template #returnTemplate>
+  <app-ot-return [bsModalRef]="modalReturn" [ListID]="selected" [createBy]="userInfo.code" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-ot-return>
+</ng-template>
