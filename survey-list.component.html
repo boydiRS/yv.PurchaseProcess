@@ -1,0 +1,62 @@
+<section class="content-header">
+    <div class="row col-12">
+      <div>
+        <span style="font-size: 20px;">Administration</span>
+      </div>
+      <div style="margin-left: 10px; width: 200px;">
+        <input class="form-control" type="text" placeholder="Title" [(ngModel)]="searchData.title" tabindex="1" (keydown)="triggerEnter($event)">
+      </div>
+      <button class="btn btn-primary btn-sm" (click)="loadData()" style="margin-left: 5px;"><i class="fa fa-search" ></i></button>
+      <button class="btn btn-sm btn-success" (click)="openPopupCreate(createTemplate)" style="margin-left: 5px;"><i class="fa fa-plus"></i> CREATE NEW</button>
+    </div>
+</section>
+<div class="form-horizontal row" style="margin-top:10px">
+    <div class="col-md-4 col-lg-3" *ngFor="let item of listModel.dataList">
+        <div class="box box-solid bg-primary">
+            <div class="box-header with-border">
+                <h5 class="box-title" style="color: white">{{item.title}}</h5>
+            </div>
+            <div class="box-body" style="height: 170px; text-align: center;">
+                <span>{{item.createDate | date:'dd/MMM/yyyy'}}</span><br>
+                <span>{{item.description}}</span><br>
+                <span style="color: #666EE8; font-weight: bold; font-size: 16px;">{{item.totalDid}} / {{item.totalMustDo}}</span>
+            </div>
+            <div class="box-footer" style="padding: 5px;">
+                <div class="col-12 text-center">
+                    <ui-switch 
+                        checkedLabel="ACTIVE"
+                        uncheckedLabel="INACTIVE"
+                        size="small"
+                        [checked]="item.isActive"
+                        (change)=onChangeActive(item.id)>
+                    </ui-switch>
+                </div>
+            </div>
+            <div class="box-footer bg-pale-secondary" style="padding: 5px;">
+                <div class="col-12 text-center">
+                    <a class="btn btn-sm" title="Setting" (click)="openPopupSetting(settingTemplate, item.id)"><i class="fa fa-sliders-h" style="color: #666EE8; font-size: 18px;"></i></a>
+                    <a class="btn btn-sm" title="Update" [routerLink]="['/survey/survey-edit', item.id]"><i class="fa fa-edit" style="color: #FF9149; font-size: 18px;"></i></a>
+                    <a class="btn btn-sm" title="Result" [routerLink]="['/survey/survey-result', item.id]"><i class="fa fa-poll" style="color: #1E9FF2; font-size: 18px;"></i></a>
+                    <a class="btn btn-sm" title="Delete" (click)="openPopupDelete(item.id)"><i class="fa fa-trash" style="color: #FF4961; font-size: 18px;"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #createTemplate>
+    <app-survey-create [bsModalRef]="bsModalRefCreate" [createBy]="userCode" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-survey-create>
+</ng-template>
+
+<ng-template #editTemplate>
+    <app-survey-edit [bsModalRef]="bsModalRefEdit" [updateBy]="userCode" [id]="id" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-survey-edit>
+</ng-template>
+      
+<ng-template #detailTemplate>
+    <app-survey-detail [bsModalRef]="bsModalRefDetail" [id]="id" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-survey-detail>
+</ng-template>
+
+<ng-template #settingTemplate>
+    <app-survey-setting [bsModalRef]="bsModalRefSetting" [id]="id"></app-survey-setting>
+</ng-template>
+        
