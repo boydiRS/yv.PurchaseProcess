@@ -1,0 +1,35 @@
+<section class="content-header">
+  <div class="row col-12">
+    <div>
+      <span style="font-size: 20px;">Survey</span>
+    </div>
+    <div style="width: 200px; margin-left: 20px;">
+      <input class="form-control" type="text" placeholder="Title" tabindex="1" [(ngModel)]="searchData.title" (keydown)="triggerEnter($event)">
+    </div>
+    <button class="btn btn-primary btn-sm" (click)="loadData()" style="margin-left: 10px;"><i class="fa fa-search" ></i></button>
+    <ng-template [ngIf]="permissionData.isPer">
+      <a class="btn btn-sm btn-rounded btn-outline btn-primary" [routerLink]="['/survey/survey-list']" style="margin-left: 10px;"><span class="tabText">Administration</span></a>
+    </ng-template>
+  </div>
+</section>
+<div class="form-horizontal row" style="margin-top:10px">
+  <div class="col-md-4 col-lg-3" *ngFor="let item of listModel.dataList">
+    <div class="box box-solid bg-primary">
+      <div class="box-header with-border"
+            title="{{item.title}}"
+            [routerLink]="['/survey/survey-detail', item.id]"
+            style="text-align: left; cursor: pointer;">
+        <h5 class="box-title" style="color: white;">{{item.title}}</h5>
+      </div>
+      <div class="box-body" style="height: 200px;">
+        <p><span style="font-size: 14px;">{{item.createDate | date:'dd/MMM/yyyy'}}</span></p>
+        <p><span style="font-size: 14px;">{{item.description}}</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #detailTemplate>
+  <app-survey-detail [bsModalRef]="bsModalRefDetail" [id]="id" [employeeCode]="employeeCode" (acceptBtnModalClick)="onAcceptBtnModalClick($event)"></app-survey-detail>
+</ng-template>
+  
